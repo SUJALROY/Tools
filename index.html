@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Explore our collection of free online tools for PDF editing, conversion, image compression, and more. Simplify your workflow with our easy-to-use tools.">
     <meta name="keywords" content="PDF tools, PDF editor, PDF converter, merge PDF, split PDF, compress PDF, PDF to Word, Word to PDF, image compressor, online tools">
-    <meta name="author" content="Sujal">
+    <meta name="author" content="Your Name">
     <meta name="robots" content="index, follow">
     <meta property="og:title" content="Online Tools - PDF Editing, Conversion & Image Compression Tools">
     <meta property="og:description" content="Explore our collection of free online tools for PDF editing, conversion, image compression, and more. Simplify your workflow with our easy-to-use tools.">
@@ -253,8 +253,8 @@
 <body>
     <header>
         <button class="dark-mode-toggle" onclick="toggleDarkMode()">🌙 Dark Mode</button>
-        <h1>Online Tools</h1>
-        <p>Your one-stop solution for PDF editing, conversion, image compression, and more.</p>
+        <h1 id="header-title">Online Tools</h1>
+        <p id="header-description">Your one-stop solution for PDF editing, conversion, image compression, and more.</p>
         
         <!-- Search Bar -->
         <div class="search-bar">
@@ -263,7 +263,7 @@
 
         <!-- Language Selector -->
         <div class="language-selector">
-            <button>🌐 English</button>
+            <button id="language-button">🌐 English</button>
             <div class="dropdown">
                 <button onclick="changeLanguage('en')">English</button>
                 <button onclick="changeLanguage('de')">Deutsch</button>
@@ -295,141 +295,131 @@
     <main>
         <!-- PDF Editing & Conversion Tools -->
         <section class="tool-category">
-            <h2>PDF Editing & Conversion Tools</h2>
+            <h2 id="pdf-tools-title">PDF Editing & Conversion Tools</h2>
             <div class="tool-grid">
                 <a href="/Tools/pdf-merge.html" class="tool-card">
                     <i class="fas fa-file-pdf"></i>
-                    <h3>Merge PDF</h3>
-                    <p>Combine multiple PDFs into one.</p>
+                    <h3 id="merge-pdf-title">Merge PDF</h3>
+                    <p id="merge-pdf-description">Combine multiple PDFs into one.</p>
                 </a>
                 <a href="split-pdf.html" class="tool-card">
                     <i class="fas fa-cut"></i>
-                    <h3>Split PDF</h3>
-                    <p>Extract pages or split a PDF into multiple files.</p>
+                    <h3 id="split-pdf-title">Split PDF</h3>
+                    <p id="split-pdf-description">Extract pages or split a PDF into multiple files.</p>
                 </a>
-                <a href="compress-pdf.html" class="tool-card">
-                    <i class="fas fa-compress"></i>
-                    <h3>Compress PDF</h3>
-                    <p>Reduce PDF file size while maintaining quality.</p>
-                </a>
-                <a href="pdf-to-word.html" class="tool-card">
-                    <i class="fas fa-file-word"></i>
-                    <h3>PDF to Word</h3>
-                    <p>Convert PDFs into editable Word documents.</p>
-                </a>
-                <a href="word-to-pdf.html" class="tool-card">
-                    <i class="fas fa-file-pdf"></i>
-                    <h3>Word to PDF</h3>
-                    <p>Convert Word documents (.docx) into PDFs.</p>
-                </a>
-                <a href="pdf-to-powerpoint.html" class="tool-card">
-                    <i class="fas fa-file-powerpoint"></i>
-                    <h3>PDF to PowerPoint</h3>
-                    <p>Convert PDFs to PowerPoint presentations.</p>
-                </a>
-                <a href="powerpoint-to-pdf.html" class="tool-card">
-                    <i class="fas fa-file-pdf"></i>
-                    <h3>PowerPoint to PDF</h3>
-                    <p>Convert PowerPoint slides into PDFs.</p>
-                </a>
-                <a href="pdf-to-excel.html" class="tool-card">
-                    <i class="fas fa-file-excel"></i>
-                    <h3>PDF to Excel</h3>
-                    <p>Convert PDFs to Excel spreadsheets.</p>
-                </a>
-                <a href="excel-to-pdf.html" class="tool-card">
-                    <i class="fas fa-file-pdf"></i>
-                    <h3>Excel to PDF</h3>
-                    <p>Convert Excel files into PDFs.</p>
-                </a>
-                <a href="pdf-to-jpg.html" class="tool-card">
-                    <i class="fas fa-file-image"></i>
-                    <h3>PDF to JPG</h3>
-                    <p>Convert PDF pages to JPG images.</p>
-                </a>
-                <a href="jpg-to-pdf.html" class="tool-card">
-                    <i class="fas fa-file-pdf"></i>
-                    <h3>JPG to PDF</h3>
-                    <p>Convert images (JPG, PNG, etc.) into PDF format.</p>
-                </a>
+                <!-- Add more tool cards here -->
             </div>
         </section>
 
         <!-- PDF Modification Tools -->
         <section class="tool-category">
-            <h2>PDF Modification Tools</h2>
+            <h2 id="pdf-modification-title">PDF Modification Tools</h2>
             <div class="tool-grid">
                 <a href="edit-pdf.html" class="tool-card">
                     <i class="fas fa-edit"></i>
-                    <h3>Edit PDF</h3>
-                    <p>Add text, images, or annotations to a PDF.</p>
+                    <h3 id="edit-pdf-title">Edit PDF</h3>
+                    <p id="edit-pdf-description">Add text, images, or annotations to a PDF.</p>
                 </a>
-                <a href="sign-pdf.html" class="tool-card">
-                    <i class="fas fa-signature"></i>
-                    <h3>Sign PDF</h3>
-                    <p>Digitally sign a PDF file.</p>
-                </a>
-                <a href="watermark-pdf.html" class="tool-card">
-                    <i class="fas fa-tint"></i>
-                    <h3>Watermark PDF</h3>
-                    <p>Add custom watermarks to PDFs.</p>
-                </a>
-                <a href="rotate-pdf.html" class="tool-card">
-                    <i class="fas fa-sync-alt"></i>
-                    <h3>Rotate PDF</h3>
-                    <p>Rotate PDF pages as needed.</p>
-                </a>
-                <a href="organize-pdf.html" class="tool-card">
-                    <i class="fas fa-layer-group"></i>
-                    <h3>Organize PDF</h3>
-                    <p>Reorder, remove, or add pages in a PDF.</p>
-                </a>
-                <a href="unlock-pdf.html" class="tool-card">
-                    <i class="fas fa-unlock"></i>
-                    <h3>Unlock PDF</h3>
-                    <p>Remove password protection from PDFs.</p>
-                </a>
-                <a href="protect-pdf.html" class="tool-card">
-                    <i class="fas fa-lock"></i>
-                    <h3>Protect PDF</h3>
-                    <p>Encrypt and add password protection to PDFs.</p>
-                </a>
-                <a href="repair-pdf.html" class="tool-card">
-                    <i class="fas fa-tools"></i>
-                    <h3>Repair PDF</h3>
-                    <p>Fix corrupted or damaged PDF files.</p>
-                </a>
-                <a href="add-page-numbers.html" class="tool-card">
-                    <i class="fas fa-list-ol"></i>
-                    <h3>Add Page Numbers</h3>
-                    <p>Insert page numbers into PDFs.</p>
-                </a>
-                <a href="add-header-footer.html" class="tool-card">
-                    <i class="fas fa-heading"></i>
-                    <h3>Add Header & Footer</h3>
-                    <p>Customize headers and footers in a PDF.</p>
-                </a>
+                <!-- Add more tool cards here -->
             </div>
         </section>
 
         <!-- Image Compression Tools -->
         <section class="tool-category">
-            <h2>Image Compression Tools</h2>
+            <h2 id="image-tools-title">Image Compression Tools</h2>
             <div class="tool-grid">
                 <a href="/Tools/img-compress.html" class="tool-card">
                     <i class="fas fa-file-image"></i>
-                    <h3>Image Compressor</h3>
-                    <p>Compress images to reduce file size without losing quality.</p>
+                    <h3 id="image-compressor-title">Image Compressor</h3>
+                    <p id="image-compressor-description">Compress images to reduce file size without losing quality.</p>
                 </a>
             </div>
         </section>
     </main>
 
     <footer>
-        <p>&copy; 2025 Online Tools. All rights reserved.</p>
+        <p id="footer-text">&copy; 2025 Online Tools. All rights reserved.</p>
     </footer>
 
     <script>
+        // Translations JSON
+        const translations = {
+            en: {
+                headerTitle: "Online Tools",
+                headerDescription: "Your one-stop solution for PDF editing, conversion, image compression, and more.",
+                pdfToolsTitle: "PDF Editing & Conversion Tools",
+                mergePdfTitle: "Merge PDF",
+                mergePdfDescription: "Combine multiple PDFs into one.",
+                splitPdfTitle: "Split PDF",
+                splitPdfDescription: "Extract pages or split a PDF into multiple files.",
+                pdfModificationTitle: "PDF Modification Tools",
+                editPdfTitle: "Edit PDF",
+                editPdfDescription: "Add text, images, or annotations to a PDF.",
+                imageToolsTitle: "Image Compression Tools",
+                imageCompressorTitle: "Image Compressor",
+                imageCompressorDescription: "Compress images to reduce file size without losing quality.",
+                footerText: "© 2025 Online Tools. All rights reserved."
+            },
+            de: {
+                headerTitle: "Online-Tools",
+                headerDescription: "Ihre All-in-One-Lösung für PDF-Bearbeitung, Konvertierung, Bildkomprimierung und mehr.",
+                pdfToolsTitle: "PDF-Bearbeitungs- und Konvertierungstools",
+                mergePdfTitle: "PDFs zusammenführen",
+                mergePdfDescription: "Kombinieren Sie mehrere PDFs zu einer Datei.",
+                splitPdfTitle: "PDF teilen",
+                splitPdfDescription: "Seiten extrahieren oder eine PDF-Datei in mehrere Dateien aufteilen.",
+                pdfModificationTitle: "PDF-Modifikationstools",
+                editPdfTitle: "PDF bearbeiten",
+                editPdfDescription: "Text, Bilder oder Anmerkungen zu einer PDF-Datei hinzufügen.",
+                imageToolsTitle: "Bildkomprimierungstools",
+                imageCompressorTitle: "Bildkompressor",
+                imageCompressorDescription: "Komprimieren Sie Bilder, um die Dateigröße zu reduzieren, ohne die Qualität zu verlieren.",
+                footerText: "© 2025 Online-Tools. Alle Rechte vorbehalten."
+            },
+            it: {
+                headerTitle: "Strumenti Online",
+                headerDescription: "La tua soluzione completa per la modifica, conversione e compressione di PDF e molto altro.",
+                pdfToolsTitle: "Strumenti di Modifica e Conversione PDF",
+                mergePdfTitle: "Unisci PDF",
+                mergePdfDescription: "Combina più PDF in un unico file.",
+                splitPdfTitle: "Dividi PDF",
+                splitPdfDescription: "Estrai pagine o dividi un PDF in più file.",
+                pdfModificationTitle: "Strumenti di Modifica PDF",
+                editPdfTitle: "Modifica PDF",
+                editPdfDescription: "Aggiungi testo, immagini o annotazioni a un PDF.",
+                imageToolsTitle: "Strumenti di Compressione Immagini",
+                imageCompressorTitle: "Compressore Immagini",
+                imageCompressorDescription: "Comprimi immagini per ridurre le dimensioni del file senza perdere qualità.",
+                footerText: "© 2025 Strumenti Online. Tutti i diritti riservati."
+            },
+            // Add more languages as needed
+        };
+
+        // Function to change language
+        function changeLanguage(lang) {
+            const translation = translations[lang];
+            if (!translation) return;
+
+            // Update all text content
+            document.getElementById("header-title").textContent = translation.headerTitle;
+            document.getElementById("header-description").textContent = translation.headerDescription;
+            document.getElementById("pdf-tools-title").textContent = translation.pdfToolsTitle;
+            document.getElementById("merge-pdf-title").textContent = translation.mergePdfTitle;
+            document.getElementById("merge-pdf-description").textContent = translation.mergePdfDescription;
+            document.getElementById("split-pdf-title").textContent = translation.splitPdfTitle;
+            document.getElementById("split-pdf-description").textContent = translation.splitPdfDescription;
+            document.getElementById("pdf-modification-title").textContent = translation.pdfModificationTitle;
+            document.getElementById("edit-pdf-title").textContent = translation.editPdfTitle;
+            document.getElementById("edit-pdf-description").textContent = translation.editPdfDescription;
+            document.getElementById("image-tools-title").textContent = translation.imageToolsTitle;
+            document.getElementById("image-compressor-title").textContent = translation.imageCompressorTitle;
+            document.getElementById("image-compressor-description").textContent = translation.imageCompressorDescription;
+            document.getElementById("footer-text").textContent = translation.footerText;
+
+            // Update language button text
+            document.getElementById("language-button").textContent = `🌐 ${lang.toUpperCase()}`;
+        }
+
         // Search functionality
         const searchInput = document.getElementById('search-input');
         const toolCards = document.querySelectorAll('.tool-card');
@@ -446,12 +436,6 @@
                 }
             });
         });
-
-        // Language selector functionality
-        function changeLanguage(lang) {
-            alert(`Language changed to ${lang}. Implement language translation logic here.`);
-            // Add logic to change the language of the website dynamically
-        }
 
         // Dark Mode Toggle with Magical Effect
         function toggleDarkMode() {
