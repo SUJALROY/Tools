@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Convert JPG images to PDF files easily with our free online tool. No limits on the number of images. Fast, secure, and user-friendly.">
+    <meta name="keywords" content="JPG to PDF, image to PDF, convert JPG to PDF, free PDF converter">
+    <meta name="author" content="sujal">
+    <title>Convert JPG to PDF - Free Online Tool</title>
+    <style>
+        /* CSS Styling */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #ffe6e6; /* Light pink background */
+            color: #333;
+        }
+
+        header {
+            background-color: #007BFF;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        main {
+            padding: 20px;
+        }
+
+        #upload-section {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        #file-input {
+            display: none; /* Hide the default file input */
+        }
+
+        .custom-file-upload {
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .custom-file-upload:hover {
+            background-color: #218838;
+            transform: scale(1.05); /* Button scale effect */
+        }
+
+        .custom-file-upload:active {
+            transform: scale(0.95); /* Button click effect */
+        }
+
+        #image-list {
+            margin: 20px auto;
+            max-width: 600px;
+        }
+
+        .image-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            padding: 10px;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .image-item:hover {
+            transform: translateY(-5px); /* Lift effect on hover */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .image-item img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            margin-right: 10px;
+            border-radius: 5px;
+        }
+
+        .image-item .drag-handle {
+            cursor: move;
+            margin-right: 10px;
+            font-size: 20px;
+            color: #777;
+        }
+
+        .image-item .status {
+            margin-right: 10px;
+            color: #007BFF;
+            font-size: 20px;
+        }
+
+        .image-item .remove-btn {
+            margin-left: auto;
+            background-color: #ff4d4d;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .image-item .remove-btn:hover {
+            background-color: #cc0000;
+            transform: scale(1.1); /* Button scale effect */
+        }
+
+        .image-item .remove-btn:active {
+            transform: scale(0.9); /* Button click effect */
+        }
+
+        #convert-btn {
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+            margin-top: 20px;
+            display: none; /* Initially hidden */
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        #convert-btn:hover {
+            background-color: #0056b3;
+            transform: scale(1.05); /* Button scale effect */
+        }
+
+        #convert-btn:active {
+            transform: scale(0.95); /* Button click effect */
+        }
+
+        #ad-section {
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        #output-section {
+            text-align: center;
+        }
+
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <!-- HTML Structure -->
+    <header>
+        <h1>JPG to PDF Converter</h1>
+        <p>Convert your JPG images to PDF files quickly and easily.</p>
+    </header>
+
+    <main>
+        <!-- File Upload Section -->
+        <section id="upload-section">
+            <label for="file-input" class="custom-file-upload">Choose JPG Files</label>
+            <input type="file" id="file-input" accept="image/jpeg" multiple>
+        </section>
+
+        <!-- Image List Section -->
+        <div id="image-list"></div>
+
+        <!-- Convert Button -->
+        <button id="convert-btn">Convert to PDF</button>
+
+        <!-- AdSense Ad Section -->
+        <section id="ad-section">
+            <!-- Google AdSense Ad Unit -->
+            <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-YOUR_AD_SENSE_ID"
+                    crossorigin="anonymous"></script>
+            <!-- Ad Unit -->
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-YOUR_AD_SENSE_ID"
+                 data-ad-slot="YOUR_AD_SLOT_ID"
+                 data-ad-format="auto"
+                 data-full-width-responsive="true"></ins>
+            <script>
+                 (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        </section>
+
+        <!-- PDF Output Section -->
+        <section id="output-section">
+            <h2>Download Your PDF</h2>
+            <div id="pdf-output"></div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 jpg to pdf. All rights reserved.</p>
+    </footer>
+
+    <!-- JavaScript Functionality -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
+    <script>
+        // Initialize jsPDF
+        const { jsPDF } = window.jspdf;
+
+        // Image list container
+        const imageList = document.getElementById('image-list');
+        const convertBtn = document.getElementById('convert-btn');
+
+        // File input handler
+        document.getElementById('file-input').addEventListener('change', function(event) {
+            const files = event.target.files;
+            if (files.length === 0) return;
+
+            Array.from(files).forEach(file => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const imageItem = document.createElement('div');
+                    imageItem.className = 'image-item';
+
+                    // Drag handle
+                    const dragHandle = document.createElement('span');
+                    dragHandle.className = 'drag-handle';
+                    dragHandle.innerHTML = '&#9776;'; // Hamburger icon
+                    imageItem.appendChild(dragHandle);
+
+                    // Blue tick for successful upload
+                    const status = document.createElement('span');
+                    status.className = 'status';
+                    status.innerHTML = '✔️';
+                    imageItem.appendChild(status);
+
+                    // Image preview
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    imageItem.appendChild(img);
+
+                    // Remove button
+                    const removeBtn = document.createElement('button');
+                    removeBtn.className = 'remove-btn';
+                    removeBtn.textContent = 'Remove';
+                    removeBtn.addEventListener('click', function() {
+                        imageList.removeChild(imageItem);
+                        toggleConvertButton();
+                    });
+                    imageItem.appendChild(removeBtn);
+
+                    // Append to image list
+                    imageList.appendChild(imageItem);
+
+                    // Enable the "Convert to PDF" button
+                    toggleConvertButton();
+                };
+                reader.readAsDataURL(file);
+            });
+        });
+
+        // Toggle the "Convert to PDF" button
+        function toggleConvertButton() {
+            if (imageList.children.length > 0) {
+                convertBtn.style.display = 'block';
+            } else {
+                convertBtn.style.display = 'none';
+            }
+        }
+
+        // Make image list sortable
+        let sortable;
+        function initializeSortable() {
+            sortable = new Sortable(imageList, {
+                animation: 150,
+                handle: '.drag-handle', // Use the drag handle for dragging
+                onUpdate: function() {
+                    console.log('Images reordered');
+                }
+            });
+        }
+
+        // Initialize Sortable after the DOM is fully loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeSortable();
+        });
+
+        // Convert to PDF
+        convertBtn.addEventListener('click', function() {
+            const imageItems = document.querySelectorAll('.image-item');
+            if (imageItems.length === 0) {
+                alert('Please upload at least one JPG file.');
+                return;
+            }
+
+            const pdf = new jsPDF();
+
+            let yOffset = 10; // Initial Y offset for the first image
+            const pageHeight = pdf.internal.pageSize.getHeight(); // Height of the PDF page
+
+            Array.from(imageItems).forEach((item, index) => {
+                const img = item.querySelector('img');
+                const width = pdf.internal.pageSize.getWidth() - 20; // Width of the PDF page with margins
+                const height = (img.naturalHeight * width) / img.naturalWidth; // Maintain aspect ratio
+
+                // Check if the image fits on the current page
+                if (yOffset + height > pageHeight) {
+                    pdf.addPage(); // Add a new page
+                    yOffset = 10; // Reset Y offset for the new page
+                }
+
+                // Add image to the current page
+                pdf.addImage(img, 'JPEG', 10, yOffset, width, height);
+                yOffset += height + 10; // Update Y offset for the next image
+            });
+
+            // Save the PDF
+            pdf.save('converted.pdf');
+        });
+    </script>
+</body>
+</html>
