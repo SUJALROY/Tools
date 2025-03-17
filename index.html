@@ -253,8 +253,8 @@
 <body>
     <header>
         <button class="dark-mode-toggle" onclick="toggleDarkMode()">🌙 Dark Mode</button>
-        <h1 id="header-title">Online Tools</h1>
-        <p id="header-description">Your one-stop solution for PDF editing, conversion, image compression, and more.</p>
+        <h1>Online Tools</h1>
+        <p>Your one-stop solution for PDF editing, conversion, image compression, and more.</p>
         
         <!-- Search Bar -->
         <div class="search-bar">
@@ -263,163 +263,210 @@
 
         <!-- Language Selector -->
         <div class="language-selector">
-            <button id="language-button">🌐 English</button>
+            <button>🌐 English</button>
             <div class="dropdown">
                 <button onclick="changeLanguage('en')">English</button>
-                <button onclick="changeLanguage('de')">Deutsch</button>
-                <button onclick="changeLanguage('it')">Italiano</button>
-                <button onclick="changeLanguage('pt')">Português</button>
-                <button onclick="changeLanguage('ja')">日本語</button>
-                <button onclick="changeLanguage('ru')">Pусский</button>
-                <button onclick="changeLanguage('ko')">한국어</button>
-                <button onclick="changeLanguage('zh-CN')">中文 (简体)</button>
-                <button onclick="changeLanguage('zh-TW')">中文 (繁體)</button>
-                <button onclick="changeLanguage('ar')">العربية</button>
-                <button onclick="changeLanguage('bg')">Български</button>
-                <button onclick="changeLanguage('ca')">Català</button>
-                <button onclick="changeLanguage('nl')">Nederlands</button>
-                <button onclick="changeLanguage('el')">Ελληνικά</button>
                 <button onclick="changeLanguage('hi')">हिन्दी</button>
-                <button onclick="changeLanguage('id')">Bahasa Indonesia</button>
-                <button onclick="changeLanguage('ms')">Bahasa Melayu</button>
-                <button onclick="changeLanguage('pl')">Polski</button>
-                <button onclick="changeLanguage('sv')">Svenska</button>
-                <button onclick="changeLanguage('th')">ภาษาไทย</button>
-                <button onclick="changeLanguage('tr')">Türkçe</button>
-                <button onclick="changeLanguage('uk')">Українська</button>
-                <button onclick="changeLanguage('vi')">Tiếng Việt</button>
             </div>
         </div>
     </header>
 
     <main>
-        <!-- PDF Editing & Conversion Tools -->
+        <!-- Image Compression Tool -->
         <section class="tool-category">
-            <h2 id="pdf-tools-title">PDF Editing & Conversion Tools</h2>
-            <div class="tool-grid">
-                <a href="/Tools/pdf-merge.html" class="tool-card">
-                    <i class="fas fa-file-pdf"></i>
-                    <h3 id="merge-pdf-title">Merge PDF</h3>
-                    <p id="merge-pdf-description">Combine multiple PDFs into one.</p>
-                </a>
-                <a href="split-pdf.html" class="tool-card">
-                    <i class="fas fa-cut"></i>
-                    <h3 id="split-pdf-title">Split PDF</h3>
-                    <p id="split-pdf-description">Extract pages or split a PDF into multiple files.</p>
-                </a>
-                <!-- Add more tool cards here -->
-            </div>
-        </section>
-
-        <!-- PDF Modification Tools -->
-        <section class="tool-category">
-            <h2 id="pdf-modification-title">PDF Modification Tools</h2>
-            <div class="tool-grid">
-                <a href="edit-pdf.html" class="tool-card">
-                    <i class="fas fa-edit"></i>
-                    <h3 id="edit-pdf-title">Edit PDF</h3>
-                    <p id="edit-pdf-description">Add text, images, or annotations to a PDF.</p>
-                </a>
-                <!-- Add more tool cards here -->
-            </div>
-        </section>
-
-        <!-- Image Compression Tools -->
-        <section class="tool-category">
-            <h2 id="image-tools-title">Image Compression Tools</h2>
+            <h2 id="image-compression-heading">Image Compression Tools</h2>
             <div class="tool-grid">
                 <a href="/Tools/img-compress.html" class="tool-card">
                     <i class="fas fa-file-image"></i>
-                    <h3 id="image-compressor-title">Image Compressor</h3>
-                    <p id="image-compressor-description">Compress images to reduce file size without losing quality.</p>
+                    <h3 id="image-compressor">Image Compressor</h3>
+                    <p id="image-compressor-desc">Compress images to reduce file size without losing quality.</p>
+                </a>
+            </div>
+        </section>
+
+        <!-- PDF Conversion Tools -->
+        <section class="tool-category">
+            <h2 id="pdf-conversion-heading">PDF Conversion Tools</h2>
+            <div class="tool-grid">
+                <!-- Convert to PDF -->
+                <a href="jpg-to-pdf.html" class="tool-card">
+                    <i class="fas fa-file-image"></i>
+                    <h3 id="jpg-to-pdf">JPG to PDF</h3>
+                    <p id="jpg-to-pdf-desc">Transform JPG images into PDF format.</p>
+                </a>
+                <a href="word-to-pdf.html" class="tool-card">
+                    <i class="fas fa-file-word"></i>
+                    <h3 id="word-to-pdf">Word to PDF</h3>
+                    <p id="word-to-pdf-desc">Convert DOC and DOCX files to PDFs.</p>
+                </a>
+                <a href="powerpoint-to-pdf.html" class="tool-card">
+                    <i class="fas fa-file-powerpoint"></i>
+                    <h3 id="powerpoint-to-pdf">PowerPoint to PDF</h3>
+                    <p id="powerpoint-to-pdf-desc">Turn PPT and PPTX presentations into PDFs.</p>
+                </a>
+                <a href="excel-to-pdf.html" class="tool-card">
+                    <i class="fas fa-file-excel"></i>
+                    <h3 id="excel-to-pdf">Excel to PDF</h3>
+                    <p id="excel-to-pdf-desc">Change Excel spreadsheets into PDFs.</p>
+                </a>
+                <a href="html-to-pdf.html" class="tool-card">
+                    <i class="fas fa-file-code"></i>
+                    <h3 id="html-to-pdf">HTML to PDF</h3>
+                    <p id="html-to-pdf-desc">Convert web pages to PDF by inputting the URL.</p>
+                </a>
+                <!-- Convert from PDF -->
+                <a href="pdf-to-jpg.html" class="tool-card">
+                    <i class="fas fa-file-image"></i>
+                    <h3 id="pdf-to-jpg">PDF to JPG</h3>
+                    <p id="pdf-to-jpg-desc">Extract images or convert pages from PDFs to JPG.</p>
+                </a>
+                <a href="pdf-to-word.html" class="tool-card">
+                    <i class="fas fa-file-word"></i>
+                    <h3 id="pdf-to-word">PDF to Word</h3>
+                    <p id="pdf-to-word-desc">Convert PDFs into editable Word documents.</p>
+                </a>
+                <a href="pdf-to-powerpoint.html" class="tool-card">
+                    <i class="fas fa-file-powerpoint"></i>
+                    <h3 id="pdf-to-powerpoint">PDF to PowerPoint</h3>
+                    <p id="pdf-to-powerpoint-desc">Transform PDFs into editable PowerPoint slides.</p>
+                </a>
+                <a href="pdf-to-excel.html" class="tool-card">
+                    <i class="fas fa-file-excel"></i>
+                    <h3 id="pdf-to-excel">PDF to Excel</h3>
+                    <p id="pdf-to-excel-desc">Extract data from PDFs into Excel spreadsheets.</p>
+                </a>
+                <a href="pdf-to-pdfa.html" class="tool-card">
+                    <i class="fas fa-file-pdf"></i>
+                    <h3 id="pdf-to-pdfa">PDF to PDF/A</h3>
+                    <p id="pdf-to-pdfa-desc">Convert PDFs to PDF/A for long-term archiving.</p>
+                </a>
+            </div>
+        </section>
+
+        <!-- PDF Editing Tools -->
+        <section class="tool-category">
+            <h2 id="pdf-editing-heading">PDF Editing Tools</h2>
+            <div class="tool-grid">
+                <a href="merge-pdf.html" class="tool-card">
+                    <i class="fas fa-file-pdf"></i>
+                    <h3 id="merge-pdf">Merge PDF</h3>
+                    <p id="merge-pdf-desc">Combine multiple PDF files into one.</p>
+                </a>
+                <a href="split-pdf.html" class="tool-card">
+                    <i class="fas fa-cut"></i>
+                    <h3 id="split-pdf">Split PDF</h3>
+                    <p id="split-pdf-desc">Divide a PDF into separate pages or sections.</p>
+                </a>
+                <a href="compress-pdf.html" class="tool-card">
+                    <i class="fas fa-compress"></i>
+                    <h3 id="compress-pdf">Compress PDF</h3>
+                    <p id="compress-pdf-desc">Reduce the file size of PDFs while maintaining quality.</p>
+                </a>
+                <a href="edit-pdf.html" class="tool-card">
+                    <i class="fas fa-edit"></i>
+                    <h3 id="edit-pdf">Edit PDF</h3>
+                    <p id="edit-pdf-desc">Add text, images, shapes, or annotations to PDFs.</p>
+                </a>
+                <a href="rotate-pdf.html" class="tool-card">
+                    <i class="fas fa-sync-alt"></i>
+                    <h3 id="rotate-pdf">Rotate PDF</h3>
+                    <p id="rotate-pdf-desc">Change the orientation of PDF pages.</p>
+                </a>
+                <a href="add-page-numbers.html" class="tool-card">
+                    <i class="fas fa-list-ol"></i>
+                    <h3 id="add-page-numbers">Add Page Numbers</h3>
+                    <p id="add-page-numbers-desc">Insert page numbers into PDFs.</p>
+                </a>
+                <a href="add-watermark.html" class="tool-card">
+                    <i class="fas fa-tint"></i>
+                    <h3 id="add-watermark">Add Watermark</h3>
+                    <p id="add-watermark-desc">Stamp text or images onto PDFs for branding or security.</p>
+                </a>
+            </div>
+        </section>
+
+        <!-- PDF Security Tools -->
+        <section class="tool-category">
+            <h2 id="pdf-security-heading">PDF Security Tools</h2>
+            <div class="tool-grid">
+                <a href="protect-pdf.html" class="tool-card">
+                    <i class="fas fa-lock"></i>
+                    <h3 id="protect-pdf">Protect PDF</h3>
+                    <p id="protect-pdf-desc">Encrypt PDFs with passwords to restrict access.</p>
+                </a>
+                <a href="unlock-pdf.html" class="tool-card">
+                    <i class="fas fa-unlock"></i>
+                    <h3 id="unlock-pdf">Unlock PDF</h3>
+                    <p id="unlock-pdf-desc">Remove passwords or restrictions from secured PDFs.</p>
+                </a>
+                <a href="sign-pdf.html" class="tool-card">
+                    <i class="fas fa-signature"></i>
+                    <h3 id="sign-pdf">Sign PDF</h3>
+                    <p id="sign-pdf-desc">Digitally sign PDFs or request signatures from others.</p>
+                </a>
+                <a href="redact-pdf.html" class="tool-card">
+                    <i class="fas fa-eye-slash"></i>
+                    <h3 id="redact-pdf">Redact PDF</h3>
+                    <p id="redact-pdf-desc">Permanently remove sensitive information from PDFs.</p>
+                </a>
+            </div>
+        </section>
+
+        <!-- PDF Organization Tools -->
+        <section class="tool-category">
+            <h2 id="pdf-organization-heading">PDF Organization Tools</h2>
+            <div class="tool-grid">
+                <a href="remove-pages.html" class="tool-card">
+                    <i class="fas fa-trash"></i>
+                    <h3 id="remove-pages">Remove Pages</h3>
+                    <p id="remove-pages-desc">Delete unwanted pages from PDFs.</p>
+                </a>
+                <a href="extract-pages.html" class="tool-card">
+                    <i class="fas fa-copy"></i>
+                    <h3 id="extract-pages">Extract Pages</h3>
+                    <p id="extract-pages-desc">Pull out specific pages to create a new PDF.</p>
+                </a>
+                <a href="organize-pdf.html" class="tool-card">
+                    <i class="fas fa-layer-group"></i>
+                    <h3 id="organize-pdf">Organize PDF</h3>
+                    <p id="organize-pdf-desc">Rearrange, add, or delete pages within a PDF.</p>
+                </a>
+                <a href="scan-to-pdf.html" class="tool-card">
+                    <i class="fas fa-camera"></i>
+                    <h3 id="scan-to-pdf">Scan to PDF</h3>
+                    <p id="scan-to-pdf-desc">Use mobile devices to scan documents directly into PDF format.</p>
+                </a>
+            </div>
+        </section>
+
+        <!-- Additional Features -->
+        <section class="tool-category">
+            <h2 id="additional-features-heading">Additional Features</h2>
+            <div class="tool-grid">
+                <a href="repair-pdf.html" class="tool-card">
+                    <i class="fas fa-tools"></i>
+                    <h3 id="repair-pdf">Repair PDF</h3>
+                    <p id="repair-pdf-desc">Fix corrupted or damaged PDF files.</p>
+                </a>
+                <a href="ocr-pdf.html" class="tool-card">
+                    <i class="fas fa-eye"></i>
+                    <h3 id="ocr-pdf">OCR PDF</h3>
+                    <p id="ocr-pdf-desc">Use Optical Character Recognition to extract text from images or scanned PDFs.</p>
+                </a>
+                <a href="compare-pdf.html" class="tool-card">
+                    <i class="fas fa-file-alt"></i>
+                    <h3 id="compare-pdf">Compare PDF</h3>
+                    <p id="compare-pdf-desc">Identify differences between two PDF documents.</p>
                 </a>
             </div>
         </section>
     </main>
 
     <footer>
-        <p id="footer-text">&copy; 2025 Online Tools. All rights reserved.</p>
+        <p>&copy; 2025 Online Tools. All rights reserved.</p>
     </footer>
 
     <script>
-        // Translations JSON
-        const translations = {
-            en: {
-                headerTitle: "Online Tools",
-                headerDescription: "Your one-stop solution for PDF editing, conversion, image compression, and more.",
-                pdfToolsTitle: "PDF Editing & Conversion Tools",
-                mergePdfTitle: "Merge PDF",
-                mergePdfDescription: "Combine multiple PDFs into one.",
-                splitPdfTitle: "Split PDF",
-                splitPdfDescription: "Extract pages or split a PDF into multiple files.",
-                pdfModificationTitle: "PDF Modification Tools",
-                editPdfTitle: "Edit PDF",
-                editPdfDescription: "Add text, images, or annotations to a PDF.",
-                imageToolsTitle: "Image Compression Tools",
-                imageCompressorTitle: "Image Compressor",
-                imageCompressorDescription: "Compress images to reduce file size without losing quality.",
-                footerText: "© 2025 Online Tools. All rights reserved."
-            },
-            de: {
-                headerTitle: "Online-Tools",
-                headerDescription: "Ihre All-in-One-Lösung für PDF-Bearbeitung, Konvertierung, Bildkomprimierung und mehr.",
-                pdfToolsTitle: "PDF-Bearbeitungs- und Konvertierungstools",
-                mergePdfTitle: "PDFs zusammenführen",
-                mergePdfDescription: "Kombinieren Sie mehrere PDFs zu einer Datei.",
-                splitPdfTitle: "PDF teilen",
-                splitPdfDescription: "Seiten extrahieren oder eine PDF-Datei in mehrere Dateien aufteilen.",
-                pdfModificationTitle: "PDF-Modifikationstools",
-                editPdfTitle: "PDF bearbeiten",
-                editPdfDescription: "Text, Bilder oder Anmerkungen zu einer PDF-Datei hinzufügen.",
-                imageToolsTitle: "Bildkomprimierungstools",
-                imageCompressorTitle: "Bildkompressor",
-                imageCompressorDescription: "Komprimieren Sie Bilder, um die Dateigröße zu reduzieren, ohne die Qualität zu verlieren.",
-                footerText: "© 2025 Online-Tools. Alle Rechte vorbehalten."
-            },
-            it: {
-                headerTitle: "Strumenti Online",
-                headerDescription: "La tua soluzione completa per la modifica, conversione e compressione di PDF e molto altro.",
-                pdfToolsTitle: "Strumenti di Modifica e Conversione PDF",
-                mergePdfTitle: "Unisci PDF",
-                mergePdfDescription: "Combina più PDF in un unico file.",
-                splitPdfTitle: "Dividi PDF",
-                splitPdfDescription: "Estrai pagine o dividi un PDF in più file.",
-                pdfModificationTitle: "Strumenti di Modifica PDF",
-                editPdfTitle: "Modifica PDF",
-                editPdfDescription: "Aggiungi testo, immagini o annotazioni a un PDF.",
-                imageToolsTitle: "Strumenti di Compressione Immagini",
-                imageCompressorTitle: "Compressore Immagini",
-                imageCompressorDescription: "Comprimi immagini per ridurre le dimensioni del file senza perdere qualità.",
-                footerText: "© 2025 Strumenti Online. Tutti i diritti riservati."
-            },
-            // Add more languages as needed
-        };
-
-        // Function to change language
-        function changeLanguage(lang) {
-            const translation = translations[lang];
-            if (!translation) return;
-
-            // Update all text content
-            document.getElementById("header-title").textContent = translation.headerTitle;
-            document.getElementById("header-description").textContent = translation.headerDescription;
-            document.getElementById("pdf-tools-title").textContent = translation.pdfToolsTitle;
-            document.getElementById("merge-pdf-title").textContent = translation.mergePdfTitle;
-            document.getElementById("merge-pdf-description").textContent = translation.mergePdfDescription;
-            document.getElementById("split-pdf-title").textContent = translation.splitPdfTitle;
-            document.getElementById("split-pdf-description").textContent = translation.splitPdfDescription;
-            document.getElementById("pdf-modification-title").textContent = translation.pdfModificationTitle;
-            document.getElementById("edit-pdf-title").textContent = translation.editPdfTitle;
-            document.getElementById("edit-pdf-description").textContent = translation.editPdfDescription;
-            document.getElementById("image-tools-title").textContent = translation.imageToolsTitle;
-            document.getElementById("image-compressor-title").textContent = translation.imageCompressorTitle;
-            document.getElementById("image-compressor-description").textContent = translation.imageCompressorDescription;
-            document.getElementById("footer-text").textContent = translation.footerText;
-
-            // Update language button text
-            document.getElementById("language-button").textContent = `🌐 ${lang.toUpperCase()}`;
-        }
-
         // Search functionality
         const searchInput = document.getElementById('search-input');
         const toolCards = document.querySelectorAll('.tool-card');
@@ -437,31 +484,167 @@
             });
         });
 
-        // Dark Mode Toggle with Magical Effect
+        // Language translations
+        const translations = {
+            en: {
+                "image-compression-heading": "Image Compression Tools",
+                "image-compressor": "Image Compressor",
+                "image-compressor-desc": "Compress images to reduce file size without losing quality.",
+                "pdf-conversion-heading": "PDF Conversion Tools",
+                "jpg-to-pdf": "JPG to PDF",
+                "jpg-to-pdf-desc": "Transform JPG images into PDF format.",
+                "word-to-pdf": "Word to PDF",
+                "word-to-pdf-desc": "Convert DOC and DOCX files to PDFs.",
+                "powerpoint-to-pdf": "PowerPoint to PDF",
+                "powerpoint-to-pdf-desc": "Turn PPT and PPTX presentations into PDFs.",
+                "excel-to-pdf": "Excel to PDF",
+                "excel-to-pdf-desc": "Change Excel spreadsheets into PDFs.",
+                "html-to-pdf": "HTML to PDF",
+                "html-to-pdf-desc": "Convert web pages to PDF by inputting the URL.",
+                "pdf-to-jpg": "PDF to JPG",
+                "pdf-to-jpg-desc": "Extract images or convert pages from PDFs to JPG.",
+                "pdf-to-word": "PDF to Word",
+                "pdf-to-word-desc": "Convert PDFs into editable Word documents.",
+                "pdf-to-powerpoint": "PDF to PowerPoint",
+                "pdf-to-powerpoint-desc": "Transform PDFs into editable PowerPoint slides.",
+                "pdf-to-excel": "PDF to Excel",
+                "pdf-to-excel-desc": "Extract data from PDFs into Excel spreadsheets.",
+                "pdf-to-pdfa": "PDF to PDF/A",
+                "pdf-to-pdfa-desc": "Convert PDFs to PDF/A for long-term archiving.",
+                "pdf-editing-heading": "PDF Editing Tools",
+                "merge-pdf": "Merge PDF",
+                "merge-pdf-desc": "Combine multiple PDF files into one.",
+                "split-pdf": "Split PDF",
+                "split-pdf-desc": "Divide a PDF into separate pages or sections.",
+                "compress-pdf": "Compress PDF",
+                "compress-pdf-desc": "Reduce the file size of PDFs while maintaining quality.",
+                "edit-pdf": "Edit PDF",
+                "edit-pdf-desc": "Add text, images, shapes, or annotations to PDFs.",
+                "rotate-pdf": "Rotate PDF",
+                "rotate-pdf-desc": "Change the orientation of PDF pages.",
+                "add-page-numbers": "Add Page Numbers",
+                "add-page-numbers-desc": "Insert page numbers into PDFs.",
+                "add-watermark": "Add Watermark",
+                "add-watermark-desc": "Stamp text or images onto PDFs for branding or security.",
+                "pdf-security-heading": "PDF Security Tools",
+                "protect-pdf": "Protect PDF",
+                "protect-pdf-desc": "Encrypt PDFs with passwords to restrict access.",
+                "unlock-pdf": "Unlock PDF",
+                "unlock-pdf-desc": "Remove passwords or restrictions from secured PDFs.",
+                "sign-pdf": "Sign PDF",
+                "sign-pdf-desc": "Digitally sign PDFs or request signatures from others.",
+                "redact-pdf": "Redact PDF",
+                "redact-pdf-desc": "Permanently remove sensitive information from PDFs.",
+                "pdf-organization-heading": "PDF Organization Tools",
+                "remove-pages": "Remove Pages",
+                "remove-pages-desc": "Delete unwanted pages from PDFs.",
+                "extract-pages": "Extract Pages",
+                "extract-pages-desc": "Pull out specific pages to create a new PDF.",
+                "organize-pdf": "Organize PDF",
+                "organize-pdf-desc": "Rearrange, add, or delete pages within a PDF.",
+                "scan-to-pdf": "Scan to PDF",
+                "scan-to-pdf-desc": "Use mobile devices to scan documents directly into PDF format.",
+                "additional-features-heading": "Additional Features",
+                "repair-pdf": "Repair PDF",
+                "repair-pdf-desc": "Fix corrupted or damaged PDF files.",
+                "ocr-pdf": "OCR PDF",
+                "ocr-pdf-desc": "Use Optical Character Recognition to extract text from images or scanned PDFs.",
+                "compare-pdf": "Compare PDF",
+                "compare-pdf-desc": "Identify differences between two PDF documents."
+            },
+            hi: {
+                "image-compression-heading": "छवि संपीड़न उपकरण",
+                "image-compressor": "छवि संपीड़क",
+                "image-compressor-desc": "गुणवत्ता खोए बिना छवि फाइल का आकार कम करें।",
+                "pdf-conversion-heading": "PDF रूपांतरण उपकरण",
+                "jpg-to-pdf": "JPG से PDF",
+                "jpg-to-pdf-desc": "JPG छवियों को PDF प्रारूप में बदलें।",
+                "word-to-pdf": "Word से PDF",
+                "word-to-pdf-desc": "DOC और DOCX फाइलों को PDF में बदलें।",
+                "powerpoint-to-pdf": "PowerPoint से PDF",
+                "powerpoint-to-pdf-desc": "PPT और PPTX प्रस्तुतियों को PDF में बदलें।",
+                "excel-to-pdf": "Excel से PDF",
+                "excel-to-pdf-desc": "Excel स्प्रेडशीट को PDF में बदलें।",
+                "html-to-pdf": "HTML से PDF",
+                "html-to-pdf-desc": "URL दर्ज करके वेब पेजों को PDF में बदलें।",
+                "pdf-to-jpg": "PDF से JPG",
+                "pdf-to-jpg-desc": "PDF से छवियाँ निकालें या पृष्ठों को JPG में बदलें।",
+                "pdf-to-word": "PDF से Word",
+                "pdf-to-word-desc": "PDF को संपादन योग्य Word दस्तावेज़ में बदलें।",
+                "pdf-to-powerpoint": "PDF से PowerPoint",
+                "pdf-to-powerpoint-desc": "PDF को संपादन योग्य PowerPoint स्लाइड में बदलें।",
+                "pdf-to-excel": "PDF से Excel",
+                "pdf-to-excel-desc": "PDF से डेटा निकालकर Excel स्प्रेडशीट में बदलें।",
+                "pdf-to-pdfa": "PDF से PDF/A",
+                "pdf-to-pdfa-desc": "PDF को PDF/A में बदलें लंबी अवधि के संग्रहण के लिए।",
+                "pdf-editing-heading": "PDF संपादन उपकरण",
+                "merge-pdf": "PDF मर्ज करें",
+                "merge-pdf-desc": "एकाधिक PDF फाइलों को एक में जोड़ें।",
+                "split-pdf": "PDF विभाजित करें",
+                "split-pdf-desc": "PDF को अलग-अलग पृष्ठों या भागों में विभाजित करें।",
+                "compress-pdf": "PDF संपीड़ित करें",
+                "compress-pdf-desc": "गुणवत्ता बनाए रखते हुए PDF का आकार कम करें।",
+                "edit-pdf": "PDF संपादित करें",
+                "edit-pdf-desc": "PDF में पाठ, छवियाँ, आकृतियाँ या टिप्पणियाँ जोड़ें।",
+                "rotate-pdf": "PDF घुमाएँ",
+                "rotate-pdf-desc": "PDF पृष्ठों की दिशा बदलें।",
+                "add-page-numbers": "पृष्ठ संख्या जोड़ें",
+                "add-page-numbers-desc": "PDF में पृष्ठ संख्या डालें।",
+                "add-watermark": "वॉटरमार्क जोड़ें",
+                "add-watermark-desc": "ब्रांडिंग या सुरक्षा के लिए PDF पर पाठ या छवियाँ मुद्रित करें।",
+                "pdf-security-heading": "PDF सुरक्षा उपकरण",
+                "protect-pdf": "PDF सुरक्षित करें",
+                "protect-pdf-desc": "PDF को पासवर्ड से एन्क्रिप्ट करें।",
+                "unlock-pdf": "PDF अनलॉक करें",
+                "unlock-pdf-desc": "सुरक्षित PDF से पासवर्ड या प्रतिबंध हटाएँ।",
+                "sign-pdf": "PDF पर हस्ताक्षर करें",
+                "sign-pdf-desc": "PDF पर डिजिटल हस्ताक्षर करें या अन्यों से हस्ताक्षर अनुरोध करें।",
+                "redact-pdf": "PDF रिडक्ट करें",
+                "redact-pdf-desc": "PDF से संवेदनशील जानकारी स्थायी रूप से हटाएँ।",
+                "pdf-organization-heading": "PDF संगठन उपकरण",
+                "remove-pages": "पृष्ठ हटाएँ",
+                "remove-pages-desc": "PDF से अनचाहे पृष्ठ हटाएँ।",
+                "extract-pages": "पृष्ठ निकालें",
+                "extract-pages-desc": "विशिष्ट पृष्ठ निकालकर एक नया PDF बनाएँ।",
+                "organize-pdf": "PDF व्यवस्थित करें",
+                "organize-pdf-desc": "PDF में पृष्ठों को पुनर्व्यवस्थित, जोड़ें या हटाएँ।",
+                "scan-to-pdf": "स्कैन से PDF",
+                "scan-to-pdf-desc": "मोबाइल उपकरणों का उपयोग करके दस्तावेज़ों को सीधे PDF प्रारूप में स्कैन करें।",
+                "additional-features-heading": "अतिरिक्त सुविधाएँ",
+                "repair-pdf": "PDF मरम्मत करें",
+                "repair-pdf-desc": "क्षतिग्रस्त या खराब PDF फाइलों को ठीक करें।",
+                "ocr-pdf": "OCR PDF",
+                "ocr-pdf-desc": "छवियों या स्कैन किए गए PDF से पाठ निकालने के लिए ऑप्टिकल कैरेक्टर रिकग्निशन का उपयोग करें।",
+                "compare-pdf": "PDF तुलना करें",
+                "compare-pdf-desc": "दो PDF दस्तावेज़ों के बीच अंतर पहचानें।"
+            }
+        };
+
+        // Change language function
+        function changeLanguage(lang) {
+            const elements = document.querySelectorAll('[id]');
+            elements.forEach(element => {
+                const key = element.id;
+                if (translations[lang][key]) {
+                    element.textContent = translations[lang][key];
+                }
+            });
+        }
+
+        // Dark Mode Toggle
         function toggleDarkMode() {
             const body = document.body;
             body.classList.toggle('dark-mode');
 
-            // Magical spreading effect
-            const overlay = document.createElement('div');
-            overlay.style.position = 'fixed';
-            overlay.style.top = '0';
-            overlay.style.left = '0';
-            overlay.style.width = '100%';
-            overlay.style.height = '100%';
-            overlay.style.backgroundColor = body.classList.contains('dark-mode') ? '#1e1e2f' : '#ffcccb';
-            overlay.style.zIndex = '1000';
-            overlay.style.opacity = '1';
-            overlay.style.transition = 'opacity 1s ease';
+            // Save user preference in localStorage
+            const isDarkMode = body.classList.contains('dark-mode');
+            localStorage.setItem('dark-mode', isDarkMode);
+        }
 
-            document.body.appendChild(overlay);
-
-            setTimeout(() => {
-                overlay.style.opacity = '0';
-                setTimeout(() => {
-                    document.body.removeChild(overlay);
-                }, 1000);
-            }, 500);
+        // Check for saved dark mode preference
+        const savedDarkMode = localStorage.getItem('dark-mode');
+        if (savedDarkMode === 'true') {
+            document.body.classList.add('dark-mode');
         }
     </script>
 </body>
