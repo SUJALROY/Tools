@@ -293,6 +293,11 @@
             renderFileList();
         });
 
+        // Click to upload
+        dropZone.addEventListener('click', () => {
+            fileInput.click();
+        });
+
         // Clear all files
         clearAllBtn.addEventListener('click', () => {
             files = [];
