@@ -228,10 +228,9 @@
         <div class="progress-bar"><div></div></div>
 
         <!-- PDF Preview -->
-        <iframe id="pdf-preview" src="" frameborder="0"></iframe>
+        <embed id="pdf-preview" src="" type="application/pdf" width="100%" height="500px">
 
         <a id="download-link" class="btn" href="#" download="merged.pdf" style="display: none;">Download Merged PDF</a>
-        <button id="share-btn" class="btn" style="display: none;">Share Merged PDF</button>
 
         <!-- Bottom Ad Unit -->
         <div class="ad-section">
@@ -265,7 +264,6 @@
         const mergeBtn = document.getElementById('merge-btn');
         const fileList = document.getElementById('file-list');
         const downloadLink = document.getElementById('download-link');
-        const shareBtn = document.getElementById('share-btn');
         const progressBar = document.querySelector('.progress-bar div');
         const popup = document.getElementById('popup');
         const pdfPreview = document.getElementById('pdf-preview');
@@ -356,20 +354,6 @@
 
                 downloadLink.href = url;
                 downloadLink.style.display = 'block';
-
-                // Enable share button
-                shareBtn.style.display = 'block';
-                shareBtn.onclick = () => {
-                    if (navigator.share) {
-                        navigator.share({
-                            title: 'Merged PDF',
-                            text: 'Check out this merged PDF!',
-                            url: url,
-                        });
-                    } else {
-                        alert("Sharing is not supported in your browser.");
-                    }
-                };
 
                 popup.classList.add('show');
                 setTimeout(() => popup.classList.remove('show'), 2000);
