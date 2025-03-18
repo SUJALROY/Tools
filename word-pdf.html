@@ -1,0 +1,59 @@
+using Microsoft.Office.Interop.Word;
+using System;
+using System.IO;
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        // Create a new Microsoft Word application object
+        Application word = new Application();
+
+        // Dummy value for optional arguments
+        object oMissing = System.Reflection.Missing.Value;
+
+        // Specify the directory containing Word files
+        DirectoryInfo dirInfo = new DirectoryInfo(@"C:\Users\YourName\Documents\WordFiles");
+        FileInfo[] wordFiles = dirInfo.GetFiles("*.doc");
+
+        // Configure Word application
+        word.Visible = false; // Hide Word application
+        word.ScreenUpdating = false; // Disable screen updates for performance
+
+        // Process each Word file
+        foreach (FileInfo wordFile in wordFiles)
+        {
+            // Cast file path to Object for Word's Open method
+            Object filename = (Object)wordFile.FullName;
+
+            // Open the Word document
+            Document doc = word.Documents.Open(ref filename, ref oMissing,
+                ref oMissing, ref oMissing, ref oMissing, ref oMissing, ref oMissing,
+                ref oMissing, ref oMissing, ref oMissing, ref oMissing, ref oMissing,
+                ref oMissing, ref oMissing, ref oMissing, ref oMissing);
+            doc.Activate();
+
+            // Define the output PDF file path
+            object outputFileName = wordFile.FullName.Replace(".doc", ".pdf");
+            object fileFormat = WdSaveFormat.wdFormatPDF;
+
+            // Save the document as PDF
+            doc.SaveAs(ref outputFileName,
+                ref fileFormat, ref oMissing, ref oMissing,
+                ref oMissing, ref oMissing, ref oMissing, ref oMissing,
+                ref oMissing, ref oMissing, ref oMissing, ref oMissing,
+                ref oMissing, ref oMissing, ref oMissing, ref oMissing);
+
+            // Close the document without saving changes
+            object saveChanges = WdSaveOptions.wdDoNotSaveChanges;
+            ((_Document)doc).Close(ref saveChanges, ref oMissing, ref oMissing);
+            doc = null;
+        }
+
+        // Quit the Word application
+        ((_Application)word).Quit(ref oMissing, ref oMissing, ref oMissing);
+        word = null;
+
+        Console.WriteLine("Conversion completed successfully!");
+    }
+}
