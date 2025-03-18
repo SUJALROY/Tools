@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Convert JPG or images to PDF easily. Add, remove, and rearrange files with a user-friendly interface.">
-  <meta name="keywords" content="PDF converter, JPG to PDF, image to PDF, online PDF tool, online image to pdf, convert image to pdf">
-  <meta name="author" content="Sujal">
+  <meta name="keywords" content="PDF converter, JPG to PDF, image to PDF, online PDF tool">
+  <meta name="author" content="Your Name">
   <title>Image to PDF Converter - Convert JPG to PDF Online</title>
   <style>
     /* General Styles */
@@ -13,7 +13,7 @@
       font-family: Arial, sans-serif;
       margin: 0;
       padding: 0;
-      background-color: #ffe6e6; /* Light pink background */
+      background-color: #f8f9fa;
       color: #333;
     }
 
@@ -22,45 +22,39 @@
       color: white;
       padding: 20px;
       text-align: center;
-      border-radius: 8px 8px 0 0;
     }
 
     main {
       padding: 20px;
+      max-width: 800px;
+      margin: 0 auto;
     }
 
-    #upload-section {
+    .upload-section {
       background: white;
       padding: 20px;
       border-radius: 8px;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      max-width: 600px;
-      margin: 0 auto;
+      text-align: center;
     }
 
-    #file-input {
-      display: none;
-    }
-
-    #add-files, #convert-btn {
-      background-color: #4CAF50;
-      color: white;
-      border: none;
-      padding: 12px 24px;
-      border-radius: 5px;
+    .upload-area {
+      border: 2px dashed #4CAF50;
+      border-radius: 8px;
+      padding: 20px;
+      margin: 20px 0;
       cursor: pointer;
-      margin: 10px 0;
+      transition: background-color 0.3s ease;
+    }
+
+    .upload-area:hover {
+      background-color: #f0f8f0;
+    }
+
+    .upload-area p {
+      margin: 0;
       font-size: 16px;
-      transition: background-color 0.3s ease, transform 0.2s ease;
-    }
-
-    #add-files:hover, #convert-btn:hover {
-      background-color: #45a049;
-      transform: scale(1.05);
-    }
-
-    #add-files:active, #convert-btn:active {
-      transform: scale(0.95);
+      color: #666;
     }
 
     .file-list {
@@ -69,13 +63,20 @@
 
     .file-item {
       display: flex;
-      justify-content: space-between;
       align-items: center;
+      justify-content: space-between;
       padding: 10px;
       border: 1px solid #ddd;
       border-radius: 5px;
       margin-bottom: 10px;
       background-color: #f9f9f9;
+    }
+
+    .file-item img {
+      width: 50px;
+      height: 50px;
+      object-fit: cover;
+      border-radius: 5px;
     }
 
     .file-item button {
@@ -92,9 +93,24 @@
       background-color: #cc0000;
     }
 
-    .ad-unit {
-      margin: 20px auto;
-      text-align: center;
+    .convert-btn {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    .convert-btn:hover {
+      background-color: #45a049;
+      transform: scale(1.05);
+    }
+
+    .convert-btn:active {
+      transform: scale(0.95);
     }
 
     footer {
@@ -118,11 +134,13 @@
 
   <main>
     <!-- File Upload Section -->
-    <section id="upload-section">
-      <input type="file" id="file-input" accept="image/*" multiple>
-      <button id="add-files">Add Files</button>
+    <section class="upload-section">
+      <div class="upload-area" id="upload-area">
+        <p>Drag & Drop your files here or click to upload</p>
+        <input type="file" id="file-input" accept="image/*" multiple style="display: none;">
+      </div>
       <div id="file-list" class="file-list"></div>
-      <button id="convert-btn">Convert to PDF</button>
+      <button class="convert-btn" id="convert-btn">Convert to PDF</button>
     </section>
 
     <!-- AdSense Ad Unit -->
@@ -140,19 +158,37 @@
   </main>
 
   <footer>
-    <p>&copy; 2025 Image to PDF Converter. All rights reserved.</p>
+    <p>&copy; 2023 Image to PDF Converter. All rights reserved.</p>
   </footer>
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const fileInput = document.getElementById('file-input');
-      const addFilesBtn = document.getElementById('add-files');
+      const uploadArea = document.getElementById('upload-area');
       const fileList = document.getElementById('file-list');
       const convertBtn = document.getElementById('convert-btn');
       let files = [];
 
-      // Trigger file input on button click
-      addFilesBtn.addEventListener('click', () => fileInput.click());
+      // Drag and drop functionality
+      uploadArea.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        uploadArea.style.backgroundColor = '#f0f8f0';
+      });
+
+      uploadArea.addEventListener('dragleave', () => {
+        uploadArea.style.backgroundColor = 'white';
+      });
+
+      uploadArea.addEventListener('drop', (e) => {
+        e.preventDefault();
+        uploadArea.style.backgroundColor = 'white';
+        const newFiles = Array.from(e.dataTransfer.files);
+        files = [...files, ...newFiles];
+        renderFileList();
+      });
+
+      // Click to upload
+      uploadArea.addEventListener('click', () => fileInput.click());
 
       // Handle file selection
       fileInput.addEventListener('change', (e) => {
@@ -169,13 +205,14 @@
           fileItem.className = 'file-item';
           fileItem.draggable = true;
           fileItem.innerHTML = `
+            <img src="${URL.createObjectURL(file)}" alt="${file.name}">
             <span>${file.name}</span>
             <button onclick="removeFile(${index})">Remove</button>
           `;
           fileList.appendChild(fileItem);
         });
 
-        // Add drag and drop functionality
+        // Add drag and drop functionality for reordering
         const fileItems = document.querySelectorAll('.file-item');
         fileItems.forEach((item, index) => {
           item.addEventListener('dragstart', (e) => {
