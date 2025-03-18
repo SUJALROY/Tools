@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Convert JPG or images to PDF easily. Add, remove, and rearrange files with a user-friendly interface.">
-  <meta name="keywords" content="PDF converter, JPG to PDF, image to PDF, online PDF tool, jpg to pdf online, convert image to pdf">
+  <meta name="keywords" content="PDF converter, JPG to PDF, image to PDF, online PDF tool, online image to pdf, convert image to pdf">
   <meta name="author" content="Sujal">
   <title>Image to PDF Converter - Convert JPG to PDF Online</title>
   <style>
@@ -222,17 +222,17 @@
           const img = await loadImage(file);
           const imgProps = await getImageDimensions(img);
 
-          // PDF page dimensions
-          const pdfWidth = doc.internal.pageSize.getWidth();
-          const pdfHeight = doc.internal.pageSize.getHeight();
+          // A4 dimensions in mm (210mm x 297mm)
+          const pdfWidth = 210; // A4 width in mm
+          const pdfHeight = 297; // A4 height in mm
 
-          // Calculate image dimensions to fit the page
+          // Calculate image dimensions to fit within A4
           const aspectRatio = imgProps.width / imgProps.height;
-          let imgWidth = pdfWidth - 40; // 20px margin on each side
+          let imgWidth = pdfWidth - 20; // 10mm margin on each side
           let imgHeight = imgWidth / aspectRatio;
 
-          if (imgHeight > pdfHeight - 40) {
-            imgHeight = pdfHeight - 40; // 20px margin on top and bottom
+          if (imgHeight > pdfHeight - 20) {
+            imgHeight = pdfHeight - 20; // 10mm margin on top and bottom
             imgWidth = imgHeight * aspectRatio;
           }
 
