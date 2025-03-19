@@ -319,7 +319,7 @@
   </main>
 
   <footer>
-    <p>© 2025 PDF Compressor. All rights reserved.</p>
+    <p>© 2023 PDF Compressor. All rights reserved.</p>
   </footer>
 
   <script>
@@ -386,20 +386,35 @@
           }, i * 20);
         }
 
-        // Simulate Compression (Replace with actual backend logic)
-        setTimeout(() => {
-          const originalFileSize = files[0].size / 1024 / 1024;
-          const compressedFileSize = (originalFileSize * (level === 'low' ? 0.8 : level === 'recommend' ? 0.5 : 0.2)).toFixed(2);
-          compressedSize.textContent = `${compressedFileSize} MB`;
+        // Compress PDF using ILovePDF API
+        const formData = new FormData();
+        formData.append('file', files[0]);
 
-          // Simulate compressed file creation
-          compressedFileUrl = URL.createObjectURL(files[0]);
-          previewAfter.src = compressedFileUrl;
+        try {
+          const response = await fetch('https://api.ilovepdf.com/v1/compress', {
+            method: 'POST',
+            headers: {
+              'Authorization': 'Bearer project_public_7a4c3c39c7cad424d5661a2c0af0324b_kPvUcf3bfc7f3b1a5125128f185d8a5460240', // Replace with your ILovePDF Public Key
+            },
+            body: formData,
+          });
 
-          // Show Download Button
-          downloadOptions.style.display = 'flex';
-          alert('Compression complete!');
-        }, 2000);
+          const data = await response.json();
+          if (data.success) {
+            compressedFileUrl = data.compressed_file_url;
+            compressedSize.textContent = `${(data.compressed_file_size / 1024 / 1024).toFixed(2)} MB`;
+            previewAfter.src = compressedFileUrl;
+
+            // Show Download Button
+            downloadOptions.style.display = 'flex';
+            alert('Compression complete!');
+          } else {
+            alert('Compression failed. Please try again.');
+          }
+        } catch (error) {
+          console.error('Error compressing PDF:', error);
+          alert('An error occurred. Please try again.');
+        }
       });
 
       // Download Handlers
