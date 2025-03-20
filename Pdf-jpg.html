@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Free PDF to JPG Converter - Convert PDF to Image Online Fast</title>
+    <meta name="description" content="Easily convert PDF to JPG or JPEG images for free. High-quality, fast, and no registration needed. Try our online PDF converter now!">
+    <meta name="keywords" content="PDF to JPG converter, convert PDF to image, free PDF converter online, PDF to JPEG tool, online PDF to JPG conversion, best PDF converter">
+    <!-- AdMob Script -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=YOUR_ADMOB_CLIENT_ID" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* CSS Variables for theming */
+        :root {
+            --background-color: #ffffff;
+            --text-color: #000000;
+            --accent-color: #007bff;
+            --card-background: #ffffff;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+        }
+        body.dark-mode {
+            --background-color: #333333;
+            --text-color: #ffffff;
+            --accent-color: #66a3ff;
+            --card-background: #444444;
+            --shadow-color: rgba(255, 255, 255, 0.1);
+        }
+
+        /* General styling */
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+
+        /* Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background-color: var(--accent-color);
+            color: #ffffff;
+            box-shadow: 0 2px 10px var(--shadow-color);
+        }
+        header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        /* Dark mode toggle */
+        .toggle-container {
+            position: relative;
+        }
+        #darkModeToggle {
+            display: none;
+        }
+        .toggle-label {
+            width: 50px;
+            height: 25px;
+            background-color: #cccccc;
+            border-radius: 25px;
+            position: relative;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .toggle-label::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 21px;
+            height: 21px;
+            background-color: #ffffff;
+            border-radius: 50%;
+            transition: transform 0.3s ease;
+        }
+        #darkModeToggle:checked + .toggle-label {
+            background-color: var(--accent-color);
+        }
+        #darkModeToggle:checked + .toggle-label::after {
+            transform: translateX(25px);
+        }
+
+        /* Main content */
+        main {
+            padding: 20px;
+        }
+        section {
+            margin: 20px 0;
+            padding: 20px;
+            background-color: var(--card-background);
+            border-radius: 8px;
+            box-shadow: 0 2px 10px var(--shadow-color);
+            transition: background-color 0.5s ease;
+        }
+
+        /* Upload section */
+        #uploadSection input[type="file"] {
+            margin-bottom: 10px;
+        }
+        #settings {
+            margin: 10px 0;
+        }
+        #settings label {
+            margin-right: 20px;
+        }
+
+        /* Premium Button Styling */
+        .premium-button {
+            background: linear-gradient(45deg, #007bff, #0056b3);
+            color: #ffffff;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-size: 16px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px var(--shadow-color);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .premium-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px var(--shadow-color);
+        }
+        .premium-button:active {
+            transform: translateY(1px);
+            box-shadow: 0 2px 4px var(--shadow-color);
+        }
+        .premium-button:disabled {
+            background: #cccccc;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        /* Results section */
+        #resultsContainer {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .result-item {
+            text-align: center;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        .result-item.fade-in {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .result-item img {
+            width: 200px;
+            height: auto;
+            border: 1px solid var(--text-color);
+            border-radius: 5px;
+            margin-bottom: 5px;
+        }
+
+        /* Download Link Styling */
+        .download-link {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 8px 16px;
+            background-color: var(--accent-color);
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        .download-link:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Ad -->
+    <div class="ad-container top-ad">
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="YOUR_ADMOB_CLIENT_ID"
+             data-ad-slot="YOUR_TOP_AD_SLOT_ID"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+        <script>
+            (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+    </div>
+
+    <!-- Header with title and dark mode toggle -->
+    <header>
+        <h1>PDF to JPG Converter 🔥</h1>
+        <div class="toggle-container">
+            <input type="checkbox" id="darkModeToggle">
+            <label for="darkModeToggle" class="toggle-label"></label>
+        </div>
+    </header>
+
+    <!-- Main content -->
+    <main>
+        <!-- Upload and settings section -->
+        <section id="uploadSection">
+            <input type="file" accept=".pdf" id="pdfInput">
+            <p id="fileName">No file selected</p>
+            <div id="settings">
+                <label>Scale: 
+                    <select id="scaleSelect">
+                        <option value="0.5">50%</option>
+                        <option value="1" selected>100%</option>
+                        <option value="1.5">150%</option>
+                        <option value="2">200%</option>
+                    </select>
+                </label>
+                <label>Quality: 
+                    <input type="range" min="0" max="100" value="80" id="qualitySlider">
+                </label>
+            </div>
+            <button id="convertButton" class="premium-button" disabled>Convert</button>
+        </section>
+
+        <!-- Progress section (hidden initially) -->
+        <section id="progress" style="display: none;">
+            <p>Converting... <span id="progressText"></span></p>
+        </section>
+
+        <!-- Results section (hidden initially) -->
+        <section id="results" style="display: none;">
+            <h2>Results</h2>
+            <div id="resultsContainer"></div>
+        </section>
+    </main>
+
+    <!-- Bottom Ad -->
+    <div class="ad-container bottom-ad">
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="YOUR_ADMOB_CLIENT_ID"
+             data-ad-slot="YOUR_BOTTOM_AD_SLOT_ID"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+        <script>
+            (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+    </div>
+
+    <!-- External libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
+
+    <!-- Application script -->
+    <script>
+        // Configure pdf.js worker
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.worker.min.js';
+
+        // DOM elements
+        const pdfInput = document.getElementById('pdfInput');
+        const fileName = document.getElementById('fileName');
+        const convertButton = document.getElementById('convertButton');
+        const scaleSelect = document.getElementById('scaleSelect');
+        const qualitySlider = document.getElementById('qualitySlider');
+        const progress = document.getElementById('progress');
+        const progressText = document.getElementById('progressText');
+        const results = document.getElementById('results');
+        const resultsContainer = document.getElementById('resultsContainer');
+        const darkModeToggle = document.getElementById('darkModeToggle');
+
+        let selectedFile = null;
+
+        // Handle file selection
+        pdfInput.addEventListener('change', () => {
+            selectedFile = pdfInput.files[0];
+            fileName.textContent = selectedFile ? selectedFile.name : 'No file selected';
+            convertButton.disabled = !selectedFile;
+        });
+
+        // Handle convert button click
+        convertButton.addEventListener('click', async () => {
+            if (!selectedFile) return;
+            const scale = parseFloat(scaleSelect.value);
+            const quality = parseInt(qualitySlider.value) / 100;
+            progress.style.display = 'block';
+            results.style.display = 'none';
+            resultsContainer.innerHTML = '';
+            await convertPDF(selectedFile, scale, quality);
+        });
+
+        // Handle dark mode toggle
+        darkModeToggle.addEventListener('change', () => {
+            document.body.classList.toggle('dark-mode');
+        });
+
+        // Convert PDF to JPG
+        async function convertPDF(file, scale, quality) {
+            try {
+                const url = URL.createObjectURL(file);
+                const pdf = await pdfjsLib.getDocument(url).promise;
+                const numPages = pdf.numPages;
+                const zip = new JSZip();
+
+                for (let i = 1; i <= numPages; i++) {
+                    const page = await pdf.getPage(i);
+                    const viewport = page.getViewport({ scale });
+                    const canvas = document.createElement('canvas');
+                    canvas.width = viewport.width;
+                    canvas.height = viewport.height;
+                    const context = canvas.getContext('2d');
+                    await page.render({ canvasContext: context, viewport }).promise;
+
+                    // Convert to JPG blob
+                    const blob = await new Promise(resolve => 
+                        canvas.toBlob(resolve, 'image/jpeg', quality)
+                    );
+                    zip.file(`page_${i}.jpg`, blob);
+
+                    // Create thumbnail
+                    const thumbCanvas = document.createElement('canvas');
+                    const thumbWidth = 200;
+                    const thumbScale = thumbWidth / viewport.width;
+                    thumbCanvas.width = thumbWidth;
+                    thumbCanvas.height = viewport.height * thumbScale;
+                    const thumbContext = thumbCanvas.getContext('2d');
+                    thumbContext.drawImage(canvas, 0, 0, thumbCanvas.width, thumbCanvas.height);
+                    const thumbData = thumbCanvas.toDataURL('image/jpeg', 0.5);
+
+                    // Display result
+                    displayResult(i, thumbData, URL.createObjectURL(blob));
+                    progressText.textContent = `Page ${i} of ${numPages}`;
+                }
+
+                // Generate and display zip download
+                const zipBlob = await zip.generateAsync({ type: 'blob' });
+                displayZipDownload(zipBlob);
+                progress.style.display = 'none';
+                results.style.display = 'block';
+                URL.revokeObjectURL(url);
+            } catch (error) {
+                console.error('Conversion failed:', error);
+                progressText.textContent = 'Error during conversion. Check console for details.';
+            }
+        }
+
+        // Display individual page result
+        function displayResult(pageNum, thumbData, fullUrl) {
+            const resultDiv = document.createElement('div');
+            resultDiv.className = 'result-item';
+            const img = document.createElement('img');
+            img.src = thumbData;
+            img.alt = `Page ${pageNum}`;
+            const link = document.createElement('a');
+            link.href = fullUrl;
+            link.download = `page_${pageNum}.jpg`;
+            link.textContent = `Download Page ${pageNum}`;
+            link.className = 'download-link';
+            resultDiv.appendChild(img);
+            resultDiv.appendChild(link);
+            resultsContainer.appendChild(resultDiv);
+            setTimeout(() => {
+                resultDiv.classList.add('fade-in');
+            }, 10);
+        }
+
+        // Display zip download link
+        function displayZipDownload(zipBlob) {
+            const zipLink = document.createElement('a');
+            zipLink.href = URL.createObjectURL(zipBlob);
+            zipLink.download = 'converted_pages.zip';
+            zipLink.textContent = 'Download All as ZIP';
+            zipLink.className = 'download-link';
+            resultsContainer.appendChild(zipLink);
+            setTimeout(() => {
+                zipLink.classList.add('fade-in');
+            }, 10);
+        }
+    </script>
+</body>
+</html>
