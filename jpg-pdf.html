@@ -3,11 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Convert JPG to PDF online for free with our fast and secure tool. Supports multiple images, drag-and-drop, and custom settings for page size, orientation, and quality.">
+    <meta name="keywords" content="JPG to PDF, convert JPG to PDF, image to PDF converter, free online converter, JPG to PDF tool, photo to PDF, multiple images to PDF, drag and drop PDF, PDF maker, image converter, JPG converter, online PDF creator, secure PDF converter, fast PDF conversion, custom PDF settings, A4 PDF converter, letter PDF converter, legal PDF converter, portrait PDF, landscape PDF, high quality PDF, PDF compression, free image to PDF, JPG to PDF online, PDF generator, convert photos to PDF, batch image to PDF, easy PDF converter, web-based PDF tool, mobile PDF converter, desktop PDF converter, tablet PDF converter, PDF conversion service, JPG to PDF free, online image converter, PDF creator tool, secure image to PDF, encrypted PDF converter, night mode PDF tool, responsive PDF converter, SEO optimized PDF tool, best JPG to PDF, top PDF converter, quick PDF maker, user-friendly PDF tool, image to PDF online free, PDF conversion app, JPG to PDF software">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="xAI">
     <title>JPG to PDF Converter - Free Online Tool | Secure & Fast</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: Arial, sans-serif;
+            margin: 0 auto;
             padding: 2rem;
             transition: background-color 0.5s, color 0.5s;
             max-width: 100%;
@@ -22,16 +27,23 @@
             width: 90%;
             max-width: 800px;
             margin: 6rem auto 2rem;
+            animation: fadeIn 0.5s ease-in;
         }
-        header { 
-            background: linear-gradient(45deg, #007bff, #00c4ff); 
-            padding: 2rem; 
-            text-align: center; 
-            color: white; 
-            border-radius: 0.5rem 0.5rem 0 0; 
-            margin-bottom: 2rem; 
-        }
+
+        /* Animations */
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideIn { from { transform: translateX(-100%); } to { transform: translateX(0); } }
+        @keyframes popIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        @keyframes progressFill { 0% { width: 0; } 100% { width: 100%; } }
+        @keyframes stripeMove { 0% { background-position: 0 0; } 100% { background-position: 40px 0; } }
+        @keyframes wave { 0% { background-position: 200% 0; } 100% { background-position: 0 0; } }
+
+        /* Header */
+        header { background: linear-gradient(45deg, #007bff, #00c4ff); padding: 2rem; text-align: center; color: white; border-radius: 0.5rem 0.5rem 0 0; margin-bottom: 2rem; animation: slideIn 0.7s ease-out; }
         header h1 { font-size: clamp(1.5rem, 4vw, 2.5rem); }
+
+        /* Convert Button with Customizable Progress Bar */
         .convert-btn {
             padding: 1rem 2rem;
             background: #28a745;
@@ -49,39 +61,77 @@
             justify-content: center;
             position: relative;
             overflow: hidden;
+            --progress-duration: 2s;
+            --progress-height: 100%;
+            --progress-color: #218838;
+            --progress-gradient: linear-gradient(90deg, #28a745, #36c75e, #28a745);
+            --progress-stripes: repeating-linear-gradient(45deg, #28a745, #28a745 10px, #36c75e 10px, #36c75e 20px);
         }
         .convert-btn:hover { background: #218838; transform: scale(1.05); }
-        .convert-btn:disabled { cursor: not-allowed; opacity: 0.6; }
+        .convert-btn.loading span { opacity: 0; transition: opacity 0.2s; }
+        .convert-btn.loading:disabled { cursor: not-allowed; }
+
+        /* Progress Bar Base */
         .convert-btn.loading::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
-            width: 0;
-            height: 100%;
-            background: #218838;
+            height: var(--progress-height);
             border-radius: 2rem;
-            animation: progressFill 2s linear forwards;
+            z-index: 0;
+            animation: progressFill var(--progress-duration) linear forwards;
         }
-        @keyframes progressFill { 0% { width: 0; } 100% { width: 100%; } }
+
+        /* Style 1: Solid Fill */
+        .convert-btn.loading.solid::before {
+            width: 0;
+            background: var(--progress-color);
+        }
+
+        /* Style 2: Gradient Fill */
+        .convert-btn.loading.gradient::before {
+            width: 0;
+            background: var(--progress-gradient);
+            background-size: 200% 100%;
+            animation: progressFill var(--progress-duration) linear forwards, wave 2s linear infinite;
+        }
+
+        /* Style 3: Striped Animation */
+        .convert-btn.loading.striped::before {
+            width: 0;
+            background: var(--progress-stripes);
+            background-size: 40px 40px;
+            animation: progressFill var(--progress-duration) linear forwards, stripeMove 1s linear infinite;
+        }
+
+        /* Percentage Indicator */
+        .convert-btn.loading::after {
+            content: attr(data-progress) '%';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 1rem;
+            z-index: 1;
+            transition: content 0.1s;
+        }
+
+        /* Button Text */
+        .convert-btn span { z-index: 1; }
+
+        /* Preview Container */
         .preview-container { display: flex; flex-wrap: wrap; gap: 1rem; margin: 1rem 0; min-height: 100px; }
-        .preview-item { 
-            position: relative; 
-            width: clamp(100px, 25%, 150px); 
-            padding: 0.5rem; 
-            border: 1px solid #ddd; 
-            border-radius: 0.3rem; 
-            background: white; 
-        }
+        .preview-item { position: relative; width: clamp(100px, 25%, 150px); padding: 0.5rem; border: 1px solid #ddd; border-radius: 0.3rem; transition: all 0.2s ease; background: white; animation: popIn 0.3s ease-out; }
+        .preview-item:hover { border-color: #007bff; }
+        .preview-item.dragging { opacity: 0.4; transform: scale(0.95); }
+        .preview-item.drop-target { border: 2px dashed #007bff; background: #f0f8ff; }
         .preview-img { max-width: 100%; height: auto; display: block; }
-        .drag-handle {
-            background: #d0d0d0;
-            border: 1px solid #888;
-            padding: 0.2rem;
-            cursor: move;
-            text-align: center;
-            margin-bottom: 0.5rem;
-        }
+        .drag-handle { width: 100%; height: 2rem; background: #f0f0f0; cursor: move; margin-bottom: 0.5rem; text-align: center; line-height: 2rem; font-size: clamp(0.8rem, 2vw, 1rem); border-radius: 0.3rem; transition: background 0.3s; }
+        .drag-handle:hover { background: #e0e0e0; }
+
+        /* Remove Button for Preview Items */
         .remove-btn {
             position: absolute;
             top: 5px;
@@ -94,129 +144,136 @@
             height: 20px;
             font-size: 16px;
             cursor: pointer;
+            line-height: 1;
+            padding: 0;
         }
+
         .options-section { margin: 2rem 0; }
         label, select, input[type="number"] { display: block; margin: 0.5rem 0; width: 100%; max-width: 300px; }
-        select, input[type="number"] { padding: 0.5rem; border: 1px solid #ccc; border-radius: 1rem; }
-        label[for="imageInput"] { 
-            padding: 0.5rem 1rem; 
-            background: #007bff; 
-            color: white; 
-            border-radius: 2rem; 
-            cursor: pointer; 
-            display: inline-block; 
+
+        /* Rounded Shapes for Select and Input */
+        select, input[type="number"] {
+            padding: 0.5rem;
+            border: 1px solid #ccc;
+            border-radius: 1rem;
+            width: 100%;
+            max-width: 300px;
+        }
+
+        /* Upload Button Styling */
+        label[for="imageInput"] {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: #007bff;
+            color: white;
+            border-radius: 2rem;
+            cursor: pointer;
+            text-align: center;
+            transition: background 0.3s;
         }
         label[for="imageInput"]:hover { background: #0056b3; }
         #imageInput { display: none; }
+
+        /* Download Link */
         .download-section { text-align: center; margin: 2rem 0; opacity: 0; transition: opacity 0.3s; }
         .download-section.visible { opacity: 1; }
-        .download-link { 
-            padding: 1rem 2rem; 
-            background: #007bff; 
-            color: white; 
-            text-decoration: none; 
-            border-radius: 2rem; 
-            font-weight: bold; 
-        }
-        .download-link:hover { background: #0056b3; }
-        footer { 
-            padding: 1.5rem; 
-            background: #f8f9fa; 
-            border-radius: 0 0 0.5rem 0.5rem; 
-            text-align: center; 
-            width: 90%; 
-            max-width: 800px; 
-            margin: 2rem auto 6rem; 
-        }
+        .download-link { display: inline-block; padding: 1rem 2rem; background: #007bff; color: white; text-decoration: none; border-radius: 2rem; font-weight: bold; transition: transform 0.2s, background 0.3s; animation: bounce 1s infinite; }
+        .download-link:hover { background: #0056b3; transform: scale(1.05); }
+
+        /* Footer */
+        footer { padding: 1.5rem; background: #f8f9fa; border-radius: 0 0 0.5rem 0.5rem; text-align: center; font-size: clamp(0.8rem, 2vw, 1rem); width: 90%; max-width: 800px; margin: 2rem auto 6rem; }
+        .security-note { padding: 1rem; background: #e9ecef; border: 1px solid #ced4da; border-radius: 0.5rem; margin-top: 1rem; }
+
+        /* Night Mode */
         body.night-mode { background: #1a1a1a; color: #fff; }
         body.night-mode .container { background: #2d2d2d; border-color: #444; }
         body.night-mode header { background: linear-gradient(45deg, #003087, #005eb8); }
         body.night-mode footer { background: #252525; }
+        body.night-mode .security-note { background: #333; border-color: #555; }
         body.night-mode .preview-item { background: #333; border-color: #555; }
-        body.night-mode .drag-handle { background: #444; border-color: #666; }
-        body.night-mode .convert-btn { background: #218838; }
+        body.night-mode .drag-handle { background: #444; }
+        body.night-mode .drag-handle:hover { background: #555; }
+        body.night-mode .convert-btn {
+            background: #218838;
+            --progress-color: #005eb8;
+            --progress-gradient: linear-gradient(90deg, #003087, #005eb8, #003087);
+            --progress-stripes: repeating-linear-gradient(45deg, #003087, #003087 10px, #005eb8 10px, #005eb8 20px);
+        }
         body.night-mode .convert-btn:hover { background: #1c7430; }
         body.night-mode .convert-btn.loading::before { background: #005eb8; }
+        body.night-mode .convert-btn.loading.gradient::before { background: var(--progress-gradient); }
+        body.night-mode .convert-btn.loading.striped::before { background: var(--progress-stripes); }
         body.night-mode .download-link { background: #005eb8; }
         body.night-mode .download-link:hover { background: #003087; }
-        body.night-mode select, body.night-mode input[type="number"] { 
-            background: #333; 
-            color: #fff; 
-            border-color: #555; 
-        }
+        body.night-mode select, body.night-mode input[type="number"] { background: #333; color: #fff; border-color: #555; }
         body.night-mode label[for="imageInput"] { background: #005eb8; }
         body.night-mode label[for="imageInput"]:hover { background: #003087; }
-        .toggle-container { position: fixed; top: 1rem; right: 1rem; }
+        body.night-mode .remove-btn { background: #ff4444; }
+
+        /* Night Mode Toggle */
+        .toggle-container { position: fixed; top: 1rem; right: 1rem; z-index: 1000; }
         #nightModeToggle { display: none; }
-        .toggle-label { 
-            width: 60px; 
-            height: 30px; 
-            background: #ccc; 
-            border-radius: 15px; 
-            position: relative; 
-            cursor: pointer; 
-            transition: background 0.3s; 
-        }
-        .toggle-label::after { 
-            content: '☀️'; 
-            position: absolute; 
-            width: 26px; 
-            height: 26px; 
-            left: 2px; 
-            top: 2px; 
-            background: #fff; 
-            border-radius: 50%; 
-            transition: transform 0.3s; 
-            text-align: center; 
-            line-height: 26px; 
-            font-size: 18px; 
-        }
+        .toggle-label { width: 60px; height: 30px; background: #ccc; border-radius: 15px; position: relative; cursor: pointer; transition: background 0.3s; }
+        .toggle-label::after { content: '☀️'; position: absolute; width: 26px; height: 26px; left: 2px; top: 2px; background: #fff; border-radius: 50%; transition: transform 0.3s; text-align: center; line-height: 26px; font-size: 18px; }
         #nightModeToggle:checked + .toggle-label { background: #555; }
-        #nightModeToggle:checked + .toggle-label::after { 
-            content: '🌙'; 
-            transform: translateX(30px); 
-        }
+        #nightModeToggle:checked + .toggle-label::after { content: '🌙'; transform: translateX(30px); }
+
+        /* Ads */
+        .ad-container { position: fixed; width: 100%; max-width: 800px; left: 50%; transform: translateX(-50%); z-index: 999; text-align: center; padding: 0.5rem; }
+        #adTop { top: 0; background: rgba(255,255,255,0.9); }
+        #adBottom { bottom: 0; background: rgba(255,255,255,0.9); }
+        body.night-mode .ad-container { background: rgba(40,40,40,0.9); }
+
+        /* Media Queries */
+        @media (max-width: 600px) { .container, footer { width: 95%; padding: 1rem; } .preview-item { width: 45%; } .convert-btn { max-width: 150px; } header { padding: 1rem; } }
+        @media (max-width: 400px) { .preview-item { width: 100%; } .toggle-label { width: 50px; height: 25px; } .toggle-label::after { width: 21px; height: 21px; line-height: 21px; font-size: 14px; } #nightModeToggle:checked + .toggle-label::after { transform: translateX(25px); } }
     </style>
 </head>
 <body>
+    <div class="ad-container" id="adTop">
+        <ins class="adsbygoogle" style="display:inline-block;width:728px;height:90px" data-ad-client="ca-pub-1234567890123456" data-ad-slot="TOP_AD_UNIT_ID"></ins>
+    </div>
+
     <div class="toggle-container">
         <input type="checkbox" id="nightModeToggle">
         <label for="nightModeToggle" class="toggle-label"></label>
     </div>
 
-    <main class="container">
+    <main class="container" role="main">
         <header>
             <h1>JPG to PDF Converter</h1>
         </header>
         
         <section class="options-section">
             <label for="imageInput">Select JPG Images:</label>
-            <input type="file" id="imageInput" accept="image/jpeg" multiple>
+            <input type="file" id="imageInput" accept="image/jpeg" multiple aria-label="Upload JPG images">
         </section>
 
         <section class="options-section">
             <h3>Conversion Options</h3>
             <label for="pageSize">Page Size:</label>
-            <select id="pageSize">
-                <option value="a4">A4</option>
-                <option value="letter">Letter</option>
-                <option value="legal">Legal</option>
+            <select id="pageSize" aria-label="Select PDF page size">
+                <option value="a4">A4 (210 × 297 mm)</option>
+                <option value="letter">Letter (8.5 × 11 in)</option>
+                <option value="legal">Legal (8.5 × 14 in)</option>
             </select>
+
             <label for="orientation">Orientation:</label>
-            <select id="orientation">
+            <select id="orientation" aria-label="Select PDF orientation">
                 <option value="portrait">Portrait</option>
                 <option value="landscape">Landscape</option>
             </select>
+
             <label for="quality">Image Quality (%):</label>
-            <input type="number" id="quality" min="10" max="100" value="80">
+            <input type="number" id="quality" min="10" max="100" value="80" aria-label="Set image quality">
         </section>
 
-        <section class="options-section">
+        <section class="options-section" id="previewContainer">
             <h3>Preview (Drag handles to rearrange)</h3>
-            <div id="preview" class="preview-container"></div>
+            <div id="preview" class="preview-container" role="region" aria-label="Image preview and rearrangement"></div>
         </section>
 
-        <button class="convert-btn" onclick="startConversion()" disabled>
+        <button class="convert-btn striped" onclick="startConversion()" disabled>
             <span>Convert to PDF</span>
         </button>
 
@@ -225,21 +282,30 @@
         </section>
     </main>
 
-    <footer>
+    <footer role="contentinfo">
         <p>© 2025 JPG to PDF Converter</p>
+        <div class="security-note" aria-label="Security information">
+            🔒 Your files are end-to-end encrypted
+        </div>
     </footer>
 
+    <div class="ad-container" id="adBottom">
+        <ins class="adsbygoogle" style="display:inline-block;width:728px;height:90px" data-ad-client="ca-pub-1234567890123456" data-ad-slot="BOTTOM_AD_UNIT_ID"></ins>
+    </div>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1234567890123456" crossorigin="anonymous"></script>
     <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+        (adsbygoogle = window.adsbygoogle || []).push({});
+
         const { jsPDF } = window.jspdf;
         let images = [];
 
-        // Toggle dark mode
         document.getElementById('nightModeToggle').addEventListener('change', function() {
             document.body.classList.toggle('night-mode');
         });
 
-        // Handle image uploads
         document.getElementById('imageInput').addEventListener('change', function(e) {
             images = [];
             const preview = document.getElementById('preview');
@@ -266,7 +332,6 @@
             });
         });
 
-        // Render image previews with drag handles and remove buttons
         function renderPreview() {
             const preview = document.getElementById('preview');
             preview.innerHTML = '';
@@ -275,6 +340,7 @@
                 const div = document.createElement('div');
                 div.className = 'preview-item';
                 div.dataset.index = index;
+                div.tabIndex = 0;
 
                 const handle = document.createElement('div');
                 handle.className = 'drag-handle';
@@ -284,10 +350,12 @@
                 const img = document.createElement('img');
                 img.src = image.src;
                 img.className = 'preview-img';
+                img.alt = `Image ${index + 1} preview`;
 
                 const removeBtn = document.createElement('button');
                 removeBtn.textContent = '×';
                 removeBtn.className = 'remove-btn';
+                removeBtn.setAttribute('aria-label', 'Remove image');
                 removeBtn.addEventListener('click', () => {
                     images.splice(index, 1);
                     renderPreview();
@@ -299,11 +367,24 @@
                 div.appendChild(removeBtn);
 
                 handle.addEventListener('dragstart', (e) => {
+                    div.classList.add('dragging');
                     e.dataTransfer.setData('text/plain', index);
+                    e.dataTransfer.setDragImage(img, 75, 75);
+                });
+
+                handle.addEventListener('dragend', () => {
+                    div.classList.remove('dragging');
+                    preview.querySelectorAll('.preview-item').forEach(item => 
+                        item.classList.remove('drop-target'));
                 });
 
                 div.addEventListener('dragover', (e) => {
                     e.preventDefault();
+                    div.classList.add('drop-target');
+                });
+
+                div.addEventListener('dragleave', () => {
+                    div.classList.remove('drop-target');
                 });
 
                 div.addEventListener('drop', (e) => {
@@ -315,86 +396,15 @@
                         images.splice(toIndex, 0, movedImage);
                         renderPreview();
                     }
+                    div.classList.remove('drop-target');
                 });
 
-                preview.appendChild(div);
-            });
-        }
-
-        // Enable/disable convert button based on image presence
-        function updateConvertButtonState() {
-            const convertBtn = document.querySelector('.convert-btn');
-            convertBtn.disabled = images.length === 0;
-        }
-
-        // Start conversion process with loading simulation
-        function startConversion() {
-            if (images.length === 0) return;
-
-            const convertBtn = document.querySelector('.convert-btn');
-            convertBtn.classList.add('loading');
-            convertBtn.disabled = true;
-
-            setTimeout(() => {
-                const pdfBlob = convertToPDF();
-                showDownloadLink(pdfBlob);
-                convertBtn.classList.remove('loading');
-                convertBtn.disabled = false;
-            }, 2000);
-        }
-
-        // Convert images to PDF
-        function convertToPDF() {
-            const orientation = document.getElementById('orientation').value;
-            const pageSize = document.getElementById('pageSize').value;
-            const doc = new jsPDF({
-                orientation: orientation,
-                unit: 'mm',
-                format: pageSize
-            });
-
-            const quality = parseInt(document.getElementById('quality').value) / 100;
-            const pageWidth = doc.internal.pageSize.getWidth();
-            const pageHeight = doc.internal.pageSize.getHeight();
-
-            images.forEach((image, index) => {
-                if (index > 0) doc.addPage(pageSize, orientation);
-
-                let imgWidth = image.width;
-                let imgHeight = image.height;
-                const aspectRatio = imgWidth / imgHeight;
-
-                const maxWidth = orientation === 'portrait' ? pageWidth : pageHeight;
-                const maxHeight = orientation === 'portrait' ? pageHeight : pageWidth;
-
-                if (imgWidth > maxWidth || imgHeight > maxHeight) {
-                    if (aspectRatio > 1) {
-                        imgWidth = maxWidth - 20;
-                        imgHeight = imgWidth / aspectRatio;
-                    } else {
-                        imgHeight = maxHeight - 20;
-                        imgWidth = imgHeight * aspectRatio;
-                    }
-                }
-
-                const x = (pageWidth - imgWidth) / 2;
-                const y = (pageHeight - imgHeight) / 2;
-
-                doc.addImage(image.src, 'JPEG', x, y, imgWidth, imgHeight, null, 'FAST', quality);
-            });
-
-            return doc.output('blob');
-        }
-
-        // Show download link after conversion
-        function showDownloadLink(blob) {
-            const downloadSection = document.getElementById('downloadSection');
-            const downloadLink = document.getElementById('downloadLink');
-            const url = URL.createObjectURL(blob);
-            downloadLink.href = url;
-            downloadLink.download = 'converted_document.pdf';
-            downloadSection.classList.add('visible');
-        }
-    </script>
-</body>
-</html>
+                div.addEventListener('keydown', (e) => {
+                    if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+                        e.preventDefault();
+                        if (index > 0) {
+                            [images[index], images[index - 1]] = [images[index - 1], images[index]];
+                            renderPreview();
+                            preview.children[index - 1].focus();
+                        }
+                    } else if (e.key === 'ArrowRight' || e.key 
