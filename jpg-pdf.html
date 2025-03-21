@@ -39,7 +39,7 @@
         header { background: linear-gradient(45deg, #007bff, #00c4ff); padding: 2rem; text-align: center; color: white; border-radius: 0.5rem 0.5rem 0 0; margin-bottom: 2rem; animation: slideIn 0.7s ease-out; }
         header h1 { font-size: clamp(1.5rem, 4vw, 2.5rem); }
 
-        /* Convert Button with Customizable Progress Bar */
+        /* Convert Button */
         .convert-btn {
             padding: 1rem 2rem;
             background: #28a745;
@@ -64,10 +64,8 @@
             --progress-stripes: repeating-linear-gradient(45deg, #28a745, #28a745 10px, #36c75e 10px, #36c75e 20px);
         }
         .convert-btn:hover { background: #218838; transform: scale(1.05); }
-        .convert-btn.loading span { opacity: 0; transition: opacity 0.2s; }
+        .convert-btn.loading span { opacity: 0; }
         .convert-btn.loading:disabled { cursor: not-allowed; }
-
-        /* Progress Bar Base */
         .convert-btn.loading::before {
             content: '';
             position: absolute;
@@ -77,31 +75,11 @@
             border-radius: 2rem;
             z-index: 0;
             animation: progressFill var(--progress-duration) linear forwards;
-        }
-
-        /* Style 1: Solid Fill */
-        .convert-btn.loading.solid::before {
-            width: 0;
-            background: var(--progress-color);
-        }
-
-        /* Style 2: Gradient Fill */
-        .convert-btn.loading.gradient::before {
-            width: 0;
-            background: var(--progress-gradient);
-            background-size: 200% 100%;
-            animation: progressFill var(--progress-duration) linear forwards, wave 2s linear infinite;
-        }
-
-        /* Style 3: Striped Animation */
-        .convert-btn.loading.striped::before {
             width: 0;
             background: var(--progress-stripes);
             background-size: 40px 40px;
             animation: progressFill var(--progress-duration) linear forwards, stripeMove 1s linear infinite;
         }
-
-        /* Percentage Indicator */
         .convert-btn.loading::after {
             content: attr(data-progress) '%';
             position: absolute;
@@ -111,10 +89,7 @@
             color: white;
             font-size: 1rem;
             z-index: 1;
-            transition: content 0.1s;
         }
-
-        /* Button Text */
         .convert-btn span { z-index: 1; }
 
         /* Preview Container */
@@ -127,7 +102,7 @@
         .drag-handle { width: 100%; height: 2rem; background: #f0f0f0; cursor: move; margin-bottom: 0.5rem; text-align: center; line-height: 2rem; font-size: clamp(0.8rem, 2vw, 1rem); border-radius: 0.3rem; transition: background 0.3s; }
         .drag-handle:hover { background: #e0e0e0; }
 
-        /* Remove Button for Preview Items */
+        /* Remove Button */
         .remove-btn {
             position: absolute;
             top: 5px;
@@ -146,8 +121,6 @@
 
         .options-section { margin: 2rem 0; }
         label, select, input[type="number"] { display: block; margin: 0.5rem 0; width: 100%; max-width: 300px; }
-
-        /* Rounded Shapes for Select and Input */
         select, input[type="number"] {
             padding: 0.5rem;
             border: 1px solid #ccc;
@@ -170,6 +143,20 @@
         label[for="imageInput"]:hover { background: #0056b3; }
         #imageInput { display: none; }
 
+        /* Add More Button Styling */
+        #addMoreBtn {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: #007bff;
+            color: white;
+            border-radius: 2rem;
+            cursor: pointer;
+            text-align: center;
+            transition: background 0.3s;
+            margin-left: 1rem;
+        }
+        #addMoreBtn:hover { background: #0056b3; }
+
         /* Download Link */
         .download-section { text-align: center; margin: 2rem 0; opacity: 0; transition: opacity 0.3s; }
         .download-section.visible { opacity: 1; }
@@ -189,16 +176,8 @@
         body.night-mode .preview-item { background: #333; border-color: #555; }
         body.night-mode .drag-handle { background: #444; }
         body.night-mode .drag-handle:hover { background: #555; }
-        body.night-mode .convert-btn {
-            background: #218838;
-            --progress-color: #005eb8;
-            --progress-gradient: linear-gradient(90deg, #003087, #005eb8, #003087);
-            --progress-stripes: repeating-linear-gradient(45deg, #003087, #003087 10px, #005eb8 10px, #005eb8 20px);
-        }
+        body.night-mode .convert-btn { background: #218838; }
         body.night-mode .convert-btn:hover { background: #1c7430; }
-        body.night-mode .convert-btn.loading::before { background: #005eb8; }
-        body.night-mode .convert-btn.loading.gradient::before { background: var(--progress-gradient); }
-        body.night-mode .convert-btn.loading.striped::before { background: var(--progress-stripes); }
         body.night-mode .download-link { background: #005eb8; }
         body.night-mode .download-link:hover { background: #003087; }
         body.night-mode select, body.night-mode input[type="number"] { background: #333; color: #fff; border-color: #555; }
@@ -214,22 +193,12 @@
         #nightModeToggle:checked + .toggle-label { background: #555; }
         #nightModeToggle:checked + .toggle-label::after { content: '🌙'; transform: translateX(30px); }
 
-        /* Ads */
-        .ad-container { position: fixed; width: 100%; max-width: 800px; left: 50%; transform: translateX(-50%); z-index: 999; text-align: center; padding: 0.5rem; }
-        #adTop { top: 0; background: rgba(255,255,255,0.9); }
-        #adBottom { bottom: 0; background: rgba(255,255,255,0.9); }
-        body.night-mode .ad-container { background: rgba(40,40,40,0.9); }
-
         /* Media Queries */
         @media (max-width: 600px) { .container, footer { width: 95%; padding: 1rem; } .preview-item { width: 45%; } .convert-btn { max-width: 150px; } header { padding: 1rem; } }
         @media (max-width: 400px) { .preview-item { width: 100%; } .toggle-label { width: 50px; height: 25px; } .toggle-label::after { width: 21px; height: 21px; line-height: 21px; font-size: 14px; } #nightModeToggle:checked + .toggle-label::after { transform: translateX(25px); } }
     </style>
 </head>
 <body>
-    <div class="ad-container" id="adTop">
-        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-1234567890123456" data-ad-slot="YOUR_TOP_AD_UNIT_ID" data-ad-format="auto"></ins>
-    </div>
-
     <div class="toggle-container">
         <input type="checkbox" id="nightModeToggle">
         <label for="nightModeToggle" class="toggle-label"></label>
@@ -243,6 +212,7 @@
         <section class="options-section">
             <label for="imageInput">Select JPG Images:</label>
             <input type="file" id="imageInput" accept="image/jpeg" multiple aria-label="Upload JPG images">
+            <button id="addMoreBtn">Add More Images</button>
         </section>
 
         <section class="options-section">
@@ -262,14 +232,6 @@
 
             <label for="quality">Image Quality (%):</label>
             <input type="number" id="quality" min="10" max="100" value="80" aria-label="Set image quality">
-
-            <!-- New dropdown for fit strategy -->
-            <label for="fitStrategy">Fit Strategy:</label>
-            <select id="fitStrategy" aria-label="Select fit strategy">
-                <option value="fitToPage">Fit to Page</option>
-                <option value="fitToWidth">Fit to Width</option>
-                <option value="fitToHeight">Fit to Height</option>
-            </select>
         </section>
 
         <section class="options-section" id="previewContainer">
@@ -277,7 +239,7 @@
             <div id="preview" class="preview-container" role="region" aria-label="Image preview and rearrangement"></div>
         </section>
 
-        <button class="convert-btn striped" onclick="startConversion()" disabled>
+        <button class="convert-btn" onclick="startConversion()" disabled>
             <span>Convert to PDF</span>
         </button>
 
@@ -293,12 +255,7 @@
         </div>
     </footer>
 
-    <div class="ad-container" id="adBottom">
-        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-1234567890123456" data-ad-slot="YOUR_BOTTOM_AD_UNIT_ID" data-ad-format="auto"></ins>
-    </div>
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1234567890123456" crossorigin="anonymous"></script>
     <script>
         const { jsPDF } = window.jspdf;
         let images = [];
@@ -308,29 +265,34 @@
         });
 
         document.getElementById('imageInput').addEventListener('change', function(e) {
-            images = [];
-            const preview = document.getElementById('preview');
-            preview.innerHTML = '';
-
-            Array.from(e.target.files).forEach(file => {
-                if (file.type === 'image/jpeg') {
+            const newFiles = Array.from(e.target.files).filter(file => file.type === 'image/jpeg');
+            const promises = newFiles.map(file => {
+                return new Promise((resolve) => {
                     const reader = new FileReader();
                     reader.onload = function(event) {
                         const img = new Image();
                         img.src = event.target.result;
                         img.onload = function() {
-                            images.push({
+                            resolve({
                                 src: img.src,
                                 width: img.width,
                                 height: img.height
                             });
-                            renderPreview();
-                            updateConvertButtonState();
                         };
                     };
                     reader.readAsDataURL(file);
-                }
+                });
             });
+
+            Promise.all(promises).then(newImages => {
+                images = images.concat(newImages);
+                renderPreview();
+                updateConvertButtonState();
+            });
+        });
+
+        document.getElementById('addMoreBtn').addEventListener('click', function() {
+            document.getElementById('imageInput').click();
         });
 
         function renderPreview() {
@@ -427,36 +389,6 @@
             convertBtn.disabled = images.length === 0;
         }
 
-        // New function to calculate image dimensions based on fit strategy
-        function calculateImageDimensions(image, pageWidth, pageHeight, fitStrategy) {
-            let imgWidth = image.width;
-            let imgHeight = image.height;
-            const aspectRatio = imgWidth / imgHeight;
-
-            if (fitStrategy === 'fitToWidth') {
-                // Scale to match page width
-                imgWidth = pageWidth;
-                imgHeight = imgWidth / aspectRatio;
-            } else if (fitStrategy === 'fitToHeight') {
-                // Scale to match page height
-                imgHeight = pageHeight;
-                imgWidth = imgHeight * aspectRatio;
-            } else { // Default: fitToPage
-                // Scale to fit within page while preserving aspect ratio
-                if (imgWidth > pageWidth || imgHeight > pageHeight) {
-                    if (aspectRatio > 1) { // Wider image
-                        imgWidth = pageWidth;
-                        imgHeight = imgWidth / aspectRatio;
-                    } else { // Taller image
-                        imgHeight = pageHeight;
-                        imgWidth = imgHeight * aspectRatio;
-                    }
-                }
-            }
-
-            return { imgWidth, imgHeight };
-        }
-
         function startConversion() {
             if (images.length === 0) {
                 alert('Please select at least one JPG image!');
@@ -492,7 +424,6 @@
         function convertToPDF() {
             const orientation = document.getElementById('orientation').value;
             const pageSize = document.getElementById('pageSize').value;
-            const fitStrategy = document.getElementById('fitStrategy').value; // New: get fit strategy
             const doc = new jsPDF({
                 orientation: orientation,
                 unit: 'mm',
@@ -508,10 +439,20 @@
                     doc.addPage(pageSize, orientation);
                 }
 
-                // Calculate optimal dimensions using the new function
-                const { imgWidth, imgHeight } = calculateImageDimensions(image, pageWidth, pageHeight, fitStrategy);
+                let imgWidth = image.width;
+                let imgHeight = image.height;
+                const aspectRatio = imgWidth / imgHeight;
 
-                // Center the image on the page
+                if (imgWidth > pageWidth || imgHeight > pageHeight) {
+                    if (aspectRatio > 1) {
+                        imgWidth = pageWidth;
+                        imgHeight = imgWidth / aspectRatio;
+                    } else {
+                        imgHeight = pageHeight;
+                        imgWidth = imgHeight * aspectRatio;
+                    }
+                }
+
                 const x = (pageWidth - imgWidth) / 2;
                 const y = (pageHeight - imgHeight) / 2;
 
