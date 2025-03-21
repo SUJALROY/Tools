@@ -1,314 +1,224 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Convert JPG or images to PDF easily. Add, remove, and rearrange files with a user-friendly interface.">
-  <meta name="keywords" content="PDF converter, JPG to PDF, image to PDF, online PDF tool, image to pdf online, convert image to pdf">
-  <meta name="author" content="Sujal">
-  <title>Image to PDF Converter - Convert JPG to PDF Online</title>
-  <style>
-    /* General Styles */
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f8f9fa;
-      color: #333;
-    }
-
-    header {
-      background-color: #4CAF50;
-      color: white;
-      padding: 20px;
-      text-align: center;
-    }
-
-    main {
-      padding: 20px;
-      max-width: 800px;
-      margin: 0 auto;
-    }
-
-    .upload-section {
-      background: white;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      text-align: center;
-    }
-
-    .upload-area {
-      border: 2px dashed #4CAF50;
-      border-radius: 8px;
-      padding: 20px;
-      margin: 20px 0;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-    }
-
-    .upload-area:hover {
-      background-color: #f0f8f0;
-    }
-
-    .upload-area p {
-      margin: 0;
-      font-size: 16px;
-      color: #666;
-    }
-
-    .file-list {
-      margin: 20px 0;
-    }
-
-    .file-item {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 10px;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-      margin-bottom: 10px;
-      background-color: #f9f9f9;
-    }
-
-    .file-item img {
-      width: 50px;
-      height: 50px;
-      object-fit: cover;
-      border-radius: 5px;
-    }
-
-    .file-item button {
-      background-color: #ff4d4d;
-      color: white;
-      border: none;
-      padding: 5px 10px;
-      border-radius: 3px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-    }
-
-    .file-item button:hover {
-      background-color: #cc0000;
-    }
-
-    .convert-btn {
-      background-color: #4CAF50;
-      color: white;
-      border: none;
-      padding: 12px 24px;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 16px;
-      transition: background-color 0.3s ease, transform 0.2s ease;
-    }
-
-    .convert-btn:hover {
-      background-color: #45a049;
-      transform: scale(1.05);
-    }
-
-    .convert-btn:active {
-      transform: scale(0.95);
-    }
-
-    footer {
-      text-align: center;
-      padding: 10px;
-      background-color: #333;
-      color: white;
-      position: fixed;
-      bottom: 0;
-      width: 100%;
-    }
-  </style>
-  <!-- Google AdSense Script -->
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-YOUR_AD_SENSE_ID" crossorigin="anonymous"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JPG to PDF Converter with Drag & Drop</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+        .container {
+            border: 1px solid #ccc;
+            padding: 20px;
+            border-radius: 5px;
+        }
+        .preview-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 10px 0;
+            min-height: 100px;
+        }
+        .preview-item {
+            position: relative;
+            width: 150px;
+            cursor: move;
+            padding: 5px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+        }
+        .preview-item:hover {
+            border-color: #007bff;
+        }
+        .preview-item.dragging {
+            opacity: 0.5;
+        }
+        .preview-img {
+            max-width: 100%;
+            height: auto;
+        }
+        .options-section {
+            margin: 20px 0;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
-  <header>
-    <h1>Image to PDF Converter</h1>
-    <p>Convert your JPG or images to PDF easily. Add, remove, and rearrange files as needed.</p>
-  </header>
+    <div class="container">
+        <h1>JPG to PDF Converter</h1>
+        
+        <!-- File Input -->
+        <div class="options-section">
+            <label for="imageInput">Select JPG Images:</label>
+            <input type="file" id="imageInput" accept="image/jpeg" multiple>
+        </div>
 
-  <main>
-    <!-- File Upload Section -->
-    <section class="upload-section">
-      <div class="upload-area" id="upload-area">
-        <p>Drag & Drop your files here or click to upload</p>
-        <input type="file" id="file-input" accept="image/*" multiple style="display: none;">
-      </div>
-      <div id="file-list" class="file-list"></div>
-      <button class="convert-btn" id="convert-btn">Convert to PDF</button>
-    </section>
+        <!-- Options -->
+        <div class="options-section">
+            <h3>Conversion Options</h3>
+            <label for="pageSize">Page Size:</label>
+            <select id="pageSize">
+                <option value="a4">A4 (210 × 297 mm)</option>
+                <option value="letter">Letter (8.5 × 11 in)</option>
+                <option value="legal">Legal (8.5 × 14 in)</option>
+            </select>
 
-    <!-- AdSense Ad Unit -->
-    <div class="ad-unit">
-      <ins class="adsbygoogle"
-           style="display:block"
-           data-ad-client="ca-pub-YOUR_AD_SENSE_ID"
-           data-ad-slot="YOUR_AD_SLOT_ID"
-           data-ad-format="auto"
-           data-full-width-responsive="true"></ins>
-      <script>
-        (adsbygoogle = window.adsbygoogle || []).push({});
-      </script>
+            <label for="orientation">Orientation:</label>
+            <select id="orientation">
+                <option value="portrait">Portrait</option>
+                <option value="landscape">Landscape</option>
+            </select>
+
+            <label for="quality">Image Quality (%):</label>
+            <input type="number" id="quality" min="10" max="100" value="80">
+        </div>
+
+        <!-- Preview Section -->
+        <div class="options-section" id="previewContainer">
+            <h3>Preview (Drag to Rearrange)</h3>
+            <div id="preview" class="preview-container"></div>
+        </div>
+
+        <!-- Convert Button -->
+        <button onclick="convertToPDF()">Convert to PDF</button>
     </div>
-  </main>
 
-  <footer>
-    <p>&copy; 2025 Image to PDF Converter. All rights reserved.</p>
-  </footer>
-
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const fileInput = document.getElementById('file-input');
-      const uploadArea = document.getElementById('upload-area');
-      const fileList = document.getElementById('file-list');
-      const convertBtn = document.getElementById('convert-btn');
-      let files = [];
-
-      // Drag and drop functionality
-      uploadArea.addEventListener('dragover', (e) => {
-        e.preventDefault();
-        uploadArea.style.backgroundColor = '#f0f8f0';
-      });
-
-      uploadArea.addEventListener('dragleave', () => {
-        uploadArea.style.backgroundColor = 'white';
-      });
-
-      uploadArea.addEventListener('drop', (e) => {
-        e.preventDefault();
-        uploadArea.style.backgroundColor = 'white';
-        const newFiles = Array.from(e.dataTransfer.files);
-        files = [...files, ...newFiles];
-        renderFileList();
-      });
-
-      // Click to upload
-      uploadArea.addEventListener('click', () => fileInput.click());
-
-      // Handle file selection
-      fileInput.addEventListener('change', (e) => {
-        const newFiles = Array.from(e.target.files);
-        files = [...files, ...newFiles];
-        renderFileList();
-      });
-
-      // Render file list
-      function renderFileList() {
-        fileList.innerHTML = '';
-        files.forEach((file, index) => {
-          const fileItem = document.createElement('div');
-          fileItem.className = 'file-item';
-          fileItem.draggable = true;
-          fileItem.innerHTML = `
-            <img src="${URL.createObjectURL(file)}" alt="${file.name}">
-            <span>${file.name}</span>
-            <button onclick="removeFile(${index})">Remove</button>
-          `;
-          fileList.appendChild(fileItem);
-        });
-
-        // Add drag and drop functionality for reordering
-        const fileItems = document.querySelectorAll('.file-item');
-        fileItems.forEach((item, index) => {
-          item.addEventListener('dragstart', (e) => {
-            e.dataTransfer.setData('text/plain', index);
-          });
-
-          item.addEventListener('dragover', (e) => {
-            e.preventDefault();
-          });
-
-          item.addEventListener('drop', (e) => {
-            e.preventDefault();
-            const fromIndex = e.dataTransfer.getData('text/plain');
-            const toIndex = index;
-            rearrangeFiles(fromIndex, toIndex);
-          });
-        });
-      }
-
-      // Remove file from list
-      window.removeFile = (index) => {
-        files.splice(index, 1);
-        renderFileList();
-      };
-
-      // Rearrange files
-      function rearrangeFiles(fromIndex, toIndex) {
-        const [movedFile] = files.splice(fromIndex, 1);
-        files.splice(toIndex, 0, movedFile);
-        renderFileList();
-      }
-
-      // Convert files to PDF
-      convertBtn.addEventListener('click', async () => {
-        if (files.length === 0) {
-          alert('Please add files to convert.');
-          return;
-        }
-
+    <!-- jsPDF Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script>
         const { jsPDF } = window.jspdf;
-        const doc = new jsPDF();
+        let images = [];
 
-        for (const file of files) {
-          const img = await loadImage(file);
-          const imgProps = await getImageDimensions(img);
+        // Handle file input change
+        document.getElementById('imageInput').addEventListener('change', function(e) {
+            images = [];
+            const preview = document.getElementById('preview');
+            preview.innerHTML = '';
 
-          // A4 dimensions in mm (210mm x 297mm)
-          const pdfWidth = 210; // A4 width in mm
-          const pdfHeight = 297; // A4 height in mm
+            Array.from(e.target.files).forEach(file => {
+                if (file.type === 'image/jpeg') {
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        const img = new Image();
+                        img.src = event.target.result;
+                        img.onload = function() {
+                            images.push({
+                                src: img.src,
+                                width: img.width,
+                                height: img.height
+                            });
+                            renderPreview();
+                        };
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        });
 
-          // Calculate image dimensions to fit within A4
-          const aspectRatio = imgProps.width / imgProps.height;
-          let imgWidth = pdfWidth - 20; // 10mm margin on each side
-          let imgHeight = imgWidth / aspectRatio;
+        // Render preview with drag functionality
+        function renderPreview() {
+            const preview = document.getElementById('preview');
+            preview.innerHTML = '';
 
-          if (imgHeight > pdfHeight - 20) {
-            imgHeight = pdfHeight - 20; // 10mm margin on top and bottom
-            imgWidth = imgHeight * aspectRatio;
-          }
+            images.forEach((image, index) => {
+                const div = document.createElement('div');
+                div.className = 'preview-item';
+                div.draggable = true;
+                div.dataset.index = index;
 
-          // Center the image on the page
-          const x = (pdfWidth - imgWidth) / 2;
-          const y = (pdfHeight - imgHeight) / 2;
+                const img = document.createElement('img');
+                img.src = image.src;
+                img.className = 'preview-img';
+                div.appendChild(img);
 
-          // Add image to PDF
-          doc.addImage(img, 'JPEG', x, y, imgWidth, imgHeight);
+                // Drag events
+                div.addEventListener('dragstart', (e) => {
+                    div.classList.add('dragging');
+                    e.dataTransfer.setData('text/plain', index);
+                });
 
-          // Add a new page if there are more images
-          if (files.indexOf(file) < files.length - 1) doc.addPage();
+                div.addEventListener('dragend', () => {
+                    div.classList.remove('dragging');
+                });
+
+                div.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                });
+
+                div.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    const fromIndex = parseInt(e.dataTransfer.getData('text/plain'));
+                    const toIndex = parseInt(div.dataset.index);
+                    if (fromIndex !== toIndex) {
+                        const [movedImage] = images.splice(fromIndex, 1);
+                        images.splice(toIndex, 0, movedImage);
+                        renderPreview();
+                    }
+                });
+
+                preview.appendChild(div);
+            });
         }
 
-        doc.save('converted.pdf');
-      });
+        // Convert to PDF function
+        function convertToPDF() {
+            if (images.length === 0) {
+                alert('Please select at least one JPG image!');
+                return;
+            }
 
-      // Load image as base64
-      function loadImage(file) {
-        return new Promise((resolve) => {
-          const reader = new FileReader();
-          reader.onload = (e) => resolve(e.target.result);
-          reader.readAsDataURL(file);
-        });
-      }
+            const doc = new jsPDF({
+                orientation: document.getElementById('orientation').value,
+                unit: 'mm',
+                format: document.getElementById('pageSize').value
+            });
 
-      // Get image dimensions
-      function getImageDimensions(imgSrc) {
-        return new Promise((resolve) => {
-          const img = new Image();
-          img.onload = () => {
-            resolve({ width: img.width, height: img.height });
-          };
-          img.src = imgSrc;
-        });
-      }
-    });
-  </script>
-  <!-- Include jsPDF Library -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+            const quality = parseInt(document.getElementById('quality').value) / 100;
+            const pageWidth = doc.internal.pageSize.getWidth();
+            const pageHeight = doc.internal.pageSize.getHeight();
+
+            images.forEach((image, index) => {
+                if (index > 0) doc.addPage();
+
+                // Calculate dimensions to fit page while maintaining aspect ratio
+                let imgWidth = image.width;
+                let imgHeight = image.height;
+                const aspectRatio = imgWidth / imgHeight;
+
+                if (imgWidth > pageWidth || imgHeight > pageHeight) {
+                    if (aspectRatio > 1) {
+                        imgWidth = pageWidth - 20;
+                        imgHeight = imgWidth / aspectRatio;
+                    } else {
+                        imgHeight = pageHeight - 20;
+                        imgWidth = imgHeight * aspectRatio;
+                    }
+                }
+
+                // Center the image
+                const x = (pageWidth - imgWidth) / 2;
+                const y = (pageHeight - imgHeight) / 2;
+
+                doc.addImage(image.src, 'JPEG', x, y, imgWidth, imgHeight, null, 'FAST', quality);
+            });
+
+            // Save the PDF
+            doc.save('converted_document.pdf');
+        }
+    </script>
 </body>
 </html>
