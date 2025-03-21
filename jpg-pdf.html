@@ -3,10 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Convert JPG to PDF online for free with our fast and secure tool. Supports multiple images, drag-and-drop, and custom settings for page size, orientation, and quality.">
-    <meta name="keywords" content="JPG to PDF, convert JPG to PDF, image to PDF converter, free online converter, JPG to PDF tool, photo to PDF, multiple images to PDF, drag and drop PDF, PDF maker, image converter, JPG converter, online PDF creator, secure PDF converter, fast PDF conversion, custom PDF settings, A4 PDF converter, letter PDF converter, legal PDF converter, portrait PDF, landscape PDF, high quality PDF, PDF compression, free image to PDF, JPG to PDF online, PDF generator, convert photos to PDF, batch image to PDF, easy PDF converter, web-based PDF tool, mobile PDF converter, desktop PDF converter, tablet PDF converter, PDF conversion service, JPG to PDF free, online image converter, PDF creator tool, secure image to PDF, encrypted PDF converter, night mode PDF tool, responsive PDF converter, SEO optimized PDF tool, best JPG to PDF, top PDF converter, quick PDF maker, user-friendly PDF tool, image to PDF online free, PDF conversion app, JPG to PDF software">
-    <meta name="robots" content="index, follow">
-    <meta name="author" content="xAI">
     <title>JPG to PDF Converter - Free Online Tool | Secure & Fast</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -212,7 +208,7 @@
 
         /* Night Mode Toggle */
         .toggle-container { position: fixed; top: 1rem; right: 1rem; z-index: 1000; }
-        #nightModeToggle { display: none; }
+        Universal Selector#nightModeToggle { display: none; }
         .toggle-label { width: 60px; height: 30px; background: #ccc; border-radius: 15px; position: relative; cursor: pointer; transition: background 0.3s; }
         .toggle-label::after { content: '☀️'; position: absolute; width: 26px; height: 26px; left: 2px; top: 2px; background: #fff; border-radius: 50%; transition: transform 0.3s; text-align: center; line-height: 26px; font-size: 18px; }
         #nightModeToggle:checked + .toggle-label { background: #555; }
@@ -266,6 +262,14 @@
 
             <label for="quality">Image Quality (%):</label>
             <input type="number" id="quality" min="10" max="100" value="80" aria-label="Set image quality">
+
+            <!-- New dropdown for fit strategy -->
+            <label for="fitStrategy">Fit Strategy:</label>
+            <select id="fitStrategy" aria-label="Select fit strategy">
+                <option value="fitToPage">Fit to Page</option>
+                <option value="fitToWidth">Fit to Width</option>
+                <option value="fitToHeight">Fit to Height</option>
+            </select>
         </section>
 
         <section class="options-section" id="previewContainer">
@@ -426,6 +430,36 @@
             convertBtn.disabled = images.length === 0;
         }
 
+        // New function to calculate image dimensions based on fit strategy
+        function calculateImageDimensions(image, pageWidth, pageHeight, fitStrategy) {
+            let imgWidth = image.width;
+            let imgHeight = image.height;
+            const aspectRatio = imgWidth / imgHeight;
+
+            if (fitStrategy === 'fitToWidth') {
+                // Scale to match page width
+                imgWidth = pageWidth;
+                imgHeight = imgWidth / aspectRatio;
+            } else if (fitStrategy === 'fitToHeight') {
+                // Scale to match page height
+                imgHeight = pageHeight;
+                imgWidth = imgHeight * aspectRatio;
+            } else { // Default: fitToPage
+                // Scale to fit within page while preserving aspect ratio
+                if (imgWidth > pageWidth || imgHeight > pageHeight) {
+                    if (aspectRatio > 1) { // Wider image
+                        imgWidth = pageWidth;
+                        imgHeight = imgWidth / aspectRatio;
+                    } else { // Taller image
+                        imgHeight = pageHeight;
+                        imgWidth = imgHeight * aspectRatio;
+                    }
+                }
+            }
+
+            return { imgWidth, imgHeight };
+        }
+
         function startConversion() {
             if (images.length === 0) {
                 alert('Please select at least one JPG image!');
@@ -461,6 +495,7 @@
         function convertToPDF() {
             const orientation = document.getElementById('orientation').value;
             const pageSize = document.getElementById('pageSize').value;
+            const fitStrategy = document.getElementById('fitStrategy').value; // New: get fit strategy
             const doc = new jsPDF({
                 orientation: orientation,
                 unit: 'mm',
@@ -476,23 +511,10 @@
                     doc.addPage(pageSize, orientation);
                 }
 
-                let imgWidth = image.width;
-                let imgHeight = image.height;
-                const aspectRatio = imgWidth / imgHeight;
+                // Calculate optimal dimensions using the new function
+                const { imgWidth, imgHeight } = calculateImageDimensions(image, pageWidth, pageHeight, fitStrategy);
 
-                const maxWidth = orientation === 'portrait' ? pageWidth : pageHeight;
-                const maxHeight = orientation === 'portrait' ? pageHeight : pageWidth;
-
-                if (imgWidth > maxWidth || imgHeight > maxHeight) {
-                    if (aspectRatio > 1) {
-                        imgWidth = maxWidth - 20;
-                        imgHeight = imgWidth / aspectRatio;
-                    } else {
-                        imgHeight = maxHeight - 20;
-                        imgWidth = imgHeight * aspectRatio;
-                    }
-                }
-
+                // Center the image on the page
                 const x = (pageWidth - imgWidth) / 2;
                 const y = (pageHeight - imgHeight) / 2;
 
