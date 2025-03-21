@@ -208,7 +208,7 @@
 
         /* Night Mode Toggle */
         .toggle-container { position: fixed; top: 1rem; right: 1rem; z-index: 1000; }
-        Universal Selector#nightModeToggle { display: none; }
+        #nightModeToggle { display: none; }
         .toggle-label { width: 60px; height: 30px; background: #ccc; border-radius: 15px; position: relative; cursor: pointer; transition: background 0.3s; }
         .toggle-label::after { content: '☀️'; position: absolute; width: 26px; height: 26px; left: 2px; top: 2px; background: #fff; border-radius: 50%; transition: transform 0.3s; text-align: center; line-height: 26px; font-size: 18px; }
         #nightModeToggle:checked + .toggle-label { background: #555; }
@@ -227,7 +227,7 @@
 </head>
 <body>
     <div class="ad-container" id="adTop">
-        <ins class="adsbygoogle" style="display:inline-block;width:728px;height:90px" data-ad-client="ca-pub-1234567890123456" data-ad-slot="TOP_AD_UNIT_ID"></ins>
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-1234567890123456" data-ad-slot="YOUR_TOP_AD_UNIT_ID" data-ad-format="auto"></ins>
     </div>
 
     <div class="toggle-container">
@@ -294,15 +294,12 @@
     </footer>
 
     <div class="ad-container" id="adBottom">
-        <ins class="adsbygoogle" style="display:inline-block;width:728px;height:90px" data-ad-client="ca-pub-1234567890123456" data-ad-slot="BOTTOM_AD_UNIT_ID"></ins>
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-1234567890123456" data-ad-slot="YOUR_BOTTOM_AD_UNIT_ID" data-ad-format="auto"></ins>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1234567890123456" crossorigin="anonymous"></script>
     <script>
-        (adsbygoogle = window.adsbygoogle || []).push({});
-        (adsbygoogle = window.adsbygoogle || []).push({});
-
         const { jsPDF } = window.jspdf;
         let images = [];
 
