@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JPG to PDF Converter with Drag & Drop</title>
+    <title>Enhanced JPG to PDF Converter</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -19,27 +19,44 @@
         .preview-container {
             display: flex;
             flex-wrap: wrap;
-            gap: 10px;
+            gap: 15px;
             margin: 10px 0;
             min-height: 100px;
         }
         .preview-item {
             position: relative;
             width: 150px;
-            cursor: move;
             padding: 5px;
             border: 1px solid #ddd;
             border-radius: 3px;
+            transition: all 0.2s ease;
+            background: white;
         }
         .preview-item:hover {
             border-color: #007bff;
         }
         .preview-item.dragging {
-            opacity: 0.5;
+            opacity: 0.4;
+            transform: scale(0.95);
+        }
+        .preview-item.drop-target {
+            border: 2px dashed #007bff;
+            background: #f0f8ff;
         }
         .preview-img {
             max-width: 100%;
             height: auto;
+            display: block;
+        }
+        .drag-handle {
+            width: 100%;
+            height: 20px;
+            background: #f0f0f0;
+            cursor: move;
+            margin-bottom: 5px;
+            text-align: center;
+            line-height: 20px;
+            font-size: 12px;
         }
         .options-section {
             margin: 20px 0;
@@ -61,13 +78,11 @@
     <div class="container">
         <h1>JPG to PDF Converter</h1>
         
-        <!-- File Input -->
         <div class="options-section">
             <label for="imageInput">Select JPG Images:</label>
             <input type="file" id="imageInput" accept="image/jpeg" multiple>
         </div>
 
-        <!-- Options -->
         <div class="options-section">
             <h3>Conversion Options</h3>
             <label for="pageSize">Page Size:</label>
@@ -87,23 +102,19 @@
             <input type="number" id="quality" min="10" max="100" value="80">
         </div>
 
-        <!-- Preview Section -->
         <div class="options-section" id="previewContainer">
-            <h3>Preview (Drag to Rearrange)</h3>
+            <h3>Preview (Drag handles to rearrange)</h3>
             <div id="preview" class="preview-container"></div>
         </div>
 
-        <!-- Convert Button -->
         <button onclick="convertToPDF()">Convert to PDF</button>
     </div>
 
-    <!-- jsPDF Library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script>
         const { jsPDF } = window.jspdf;
         let images = [];
 
-        // Handle file input change
         document.getElementById('imageInput').addEventListener('change', function(e) {
             images = [];
             const preview = document.getElementById('preview');
@@ -129,7 +140,6 @@
             });
         });
 
-        // Render preview with drag functionality
         function renderPreview() {
             const preview = document.getElementById('preview');
             preview.innerHTML = '';
@@ -137,26 +147,41 @@
             images.forEach((image, index) => {
                 const div = document.createElement('div');
                 div.className = 'preview-item';
-                div.draggable = true;
                 div.dataset.index = index;
+                div.tabIndex = 0; // For keyboard accessibility
+
+                const handle = document.createElement('div');
+                handle.className = 'drag-handle';
+                handle.textContent = 'Drag';
+                handle.draggable = true;
 
                 const img = document.createElement('img');
                 img.src = image.src;
                 img.className = 'preview-img';
+
+                div.appendChild(handle);
                 div.appendChild(img);
 
                 // Drag events
-                div.addEventListener('dragstart', (e) => {
+                handle.addEventListener('dragstart', (e) => {
                     div.classList.add('dragging');
                     e.dataTransfer.setData('text/plain', index);
+                    e.dataTransfer.setDragImage(img, 75, 75); // Ghost image preview
                 });
 
-                div.addEventListener('dragend', () => {
+                handle.addEventListener('dragend', () => {
                     div.classList.remove('dragging');
+                    preview.querySelectorAll('.preview-item').forEach(item => 
+                        item.classList.remove('drop-target'));
                 });
 
                 div.addEventListener('dragover', (e) => {
                     e.preventDefault();
+                    div.classList.add('drop-target');
+                });
+
+                div.addEventListener('dragleave', () => {
+                    div.classList.remove('drop-target');
                 });
 
                 div.addEventListener('drop', (e) => {
@@ -168,23 +193,44 @@
                         images.splice(toIndex, 0, movedImage);
                         renderPreview();
                     }
+                    div.classList.remove('drop-target');
+                });
+
+                // Keyboard support
+                div.addEventListener('keydown', (e) => {
+                    if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+                        e.preventDefault();
+                        if (index > 0) {
+                            [images[index], images[index - 1]] = [images[index - 1], images[index]];
+                            renderPreview();
+                            preview.children[index - 1].focus();
+                        }
+                    } else if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+                        e.preventDefault();
+                        if (index < images.length - 1) {
+                            [images[index], images[index + 1]] = [images[index + 1], images[index]];
+                            renderPreview();
+                            preview.children[index + 1].focus();
+                        }
+                    }
                 });
 
                 preview.appendChild(div);
             });
         }
 
-        // Convert to PDF function
         function convertToPDF() {
             if (images.length === 0) {
                 alert('Please select at least one JPG image!');
                 return;
             }
 
+            const orientation = document.getElementById('orientation').value;
+            const pageSize = document.getElementById('pageSize').value;
             const doc = new jsPDF({
-                orientation: document.getElementById('orientation').value,
+                orientation: orientation,
                 unit: 'mm',
-                format: document.getElementById('pageSize').value
+                format: pageSize
             });
 
             const quality = parseInt(document.getElementById('quality').value) / 100;
@@ -192,31 +238,33 @@
             const pageHeight = doc.internal.pageSize.getHeight();
 
             images.forEach((image, index) => {
-                if (index > 0) doc.addPage();
+                if (index > 0) {
+                    doc.addPage(pageSize, orientation);
+                }
 
-                // Calculate dimensions to fit page while maintaining aspect ratio
                 let imgWidth = image.width;
                 let imgHeight = image.height;
                 const aspectRatio = imgWidth / imgHeight;
 
-                if (imgWidth > pageWidth || imgHeight > pageHeight) {
+                const maxWidth = orientation === 'portrait' ? pageWidth : pageHeight;
+                const maxHeight = orientation === 'portrait' ? pageHeight : pageWidth;
+
+                if (imgWidth > maxWidth || imgHeight > maxHeight) {
                     if (aspectRatio > 1) {
-                        imgWidth = pageWidth - 20;
+                        imgWidth = maxWidth - 20;
                         imgHeight = imgWidth / aspectRatio;
                     } else {
-                        imgHeight = pageHeight - 20;
+                        imgHeight = maxHeight - 20;
                         imgWidth = imgHeight * aspectRatio;
                     }
                 }
 
-                // Center the image
                 const x = (pageWidth - imgWidth) / 2;
                 const y = (pageHeight - imgHeight) / 2;
 
                 doc.addImage(image.src, 'JPEG', x, y, imgWidth, imgHeight, null, 'FAST', quality);
             });
 
-            // Save the PDF
             doc.save('converted_document.pdf');
         }
     </script>
