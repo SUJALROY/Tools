@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Free PDF to Word Converter - Preserve Formatting & Layout</title>
+    <meta name="description" content="Convert PDF files to editable Word documents online for free. Preserve formatting, images, and layout with our fast and reliable PDF to Word converter tool.">
+    <meta name="keywords" content="PDF to Word converter, convert PDF to DOCX, free PDF converter, preserve formatting, PDF to Word online, best PDF to Word tool">
+    <meta name="robots" content="index, follow">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "PDF to Word Converter",
+      "operatingSystem": "Web",
+      "applicationCategory": "UtilityApplication",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    }
+    </script>
+    <style>
+        /* General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: white;
+            color: black;
+        }
+        header, main, footer {
+            padding: 20px;
+            text-align: center;
+        }
+        .hero-image, .how-to-image {
+            max-width: 100%;
+            height: auto;
+            margin-top: 20px;
+        }
+        /* Night Mode Toggle */
+        .night-mode-toggle {
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+            margin-right: 10px;
+        }
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        input:checked + .slider {
+            background-color: #2196F3;
+        }
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+        /* Dark Mode Styles */
+        .dark-mode {
+            background-color: black;
+            color: white;
+        }
+        .dark-mode .security-note {
+            background-color: #333;
+        }
+        /* Security Note */
+        .security-note {
+            background-color: #f0f0f0;
+            padding: 10px;
+            text-align: center;
+            margin-top: 20px;
+        }
+        /* Button Styles */
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            color: white;
+        }
+        button:hover {
+            opacity: 0.9;
+        }
+        .upload-btn { background-color: #4CAF50; }
+        .preview-btn { background-color: #795548; }
+        .convert-btn { background-color: #2196F3; }
+        .download-btn { background-color: #FF9800; }
+        .cancel-btn { background-color: #F44336; }
+        .reset-btn { background-color: #607D8B; }
+        /* Preview Section */
+        .preview-section {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        .preview-item {
+            margin: 10px;
+            text-align: center;
+        }
+        .preview-item img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border: 1px solid #ccc;
+        }
+        /* Progress Bar */
+        #progress {
+            width: 100%;
+            height: 20px;
+            margin: 10px 0;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <h1>PDF to Word Converter</h1>
+        <p>Transform your PDFs into editable Word files with ease</p>
+        <div class="night-mode-toggle">
+            <label class="switch">
+                <input type="checkbox" id="night-mode">
+                <span class="slider"></span>
+            </label>
+            <span>Night Mode</span>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <main>
+        <section class="hero">
+            <h2>Best PDF to Word Converter Online</h2>
+            <p>Convert PDF to editable Word documents while preserving formatting, images, and layout.</p>
+            <input type="file" id="pdf-upload" accept=".pdf" multiple style="display: none;">
+            <button class="upload-btn" onclick="document.getElementById('pdf-upload').click()">Upload PDF File</button>
+            <button class="preview-btn" onclick="previewFiles()" disabled id="preview-btn">Preview</button>
+            <button class="convert-btn" onclick="startConversion()" disabled id="convert-btn">Convert</button>
+            <button class="download-btn" onclick="downloadFile()" disabled id="download-btn">Download</button>
+            <button class="cancel-btn" onclick="cancelConversion()" disabled id="cancel-btn">Cancel</button>
+            <button class="reset-btn" onclick="resetTool()">Reset</button>
+            <progress id="progress" max="100" value="0"></progress>
+            <div class="preview-section" id="preview-section"></div>
+            <img src="pdf-to-word-hero.jpg" alt="PDF to Word conversion illustration" class="hero-image">
+        </section>
+
+        <!-- How It Works Section -->
+        <section class="how-it-works">
+            <h2>How to Use Our Free PDF Converter</h2>
+            <ol>
+                <li>Click "Upload PDF File" to select your PDF(s).</li>
+                <li>Click "Preview" to view the files.</li>
+                <li>Click "Convert" to start the conversion process.</li>
+                <li>Once complete, click "Download" to get your Word file.</li>
+            </ol>
+            <img src="how-to-convert.jpg" alt="Step-by-step guide" class="how-to-image">
+        </section>
+
+        <!-- Testimonials Section -->
+        <section class="testimonials">
+            <h2>User Reviews</h2>
+            <blockquote>
+                <p>"Perfect formatting every time!" - Sarah M.</p>
+            </blockquote>
+            <blockquote>
+                <p>"Fast and reliable tool!" - Mark T.</p>
+            </blockquote>
+        </section>
+    </main>
+
+    <!-- Security Note -->
+    <div class="security-note">
+        <p>Your data is end-to-end encrypted</p>
+    </div>
+
+    <!-- Footer Section -->
+    <footer>
+        <p>© 2023 PDF to Word Converter. All rights reserved.</p>
+        <nav>
+            <a href="#">Privacy Policy</a> | 
+            <a href="#">Terms of Service</a> | 
+            <a href="#">Contact Us</a>
+        </nav>
+    </footer>
+
+    <script>
+        let filesToConvert = [];
+        let conversionInProgress = false;
+
+        // Night Mode Toggle
+        document.getElementById('night-mode').addEventListener('change', function() {
+            document.body.classList.toggle('dark-mode');
+        });
+
+        // File Upload Handling
+        document.getElementById('pdf-upload').addEventListener('change', function(e) {
+            filesToConvert = Array.from(e.target.files);
+            if (filesToConvert.length > 0) {
+                document.getElementById('preview-btn').disabled = false;
+                document.getElementById('convert-btn').disabled = false;
+                previewFiles();
+            }
+        });
+
+        // Preview Files
+        function previewFiles() {
+            const previewSection = document.getElementById('preview-section');
+            previewSection.innerHTML = '';
+            filesToConvert.forEach(file => {
+                const previewItem = document.createElement('div');
+                previewItem.className = 'preview-item';
+                const img = document.createElement('img');
+                img.src = URL.createObjectURL(file);
+                img.alt = file.name;
+                const name = document.createElement('p');
+                name.textContent = file.name;
+                previewItem.appendChild(img);
+                previewItem.appendChild(name);
+                previewSection.appendChild(previewItem);
+            });
+        }
+
+        // Start Conversion
+        function startConversion() {
+            if (filesToConvert.length === 0) return;
+            conversionInProgress = true;
+            document.getElementById('progress').style.display = 'block';
+            document.getElementById('cancel-btn').disabled = false;
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += 10;
+                document.getElementById('progress').value = progress;
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    conversionInProgress = false;
+                    document.getElementById('download-btn').disabled = false;
+                    document.getElementById('progress').style.display = 'none';
+                    alert('Conversion complete! Ready to download.');
+                }
+            }, 500);
+        }
+
+        // Download Converted File (Simulated)
+        function downloadFile() {
+            const blob = new Blob(["Simulated Word content"], { type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document" });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = filesToConvert.length > 1 ? 'converted_files.zip' : filesToConvert[0].name.replace('.pdf', '.docx');
+            link.click();
+            resetTool();
+        }
+
+        // Cancel Conversion
+        function cancelConversion() {
+            if (conversionInProgress) {
+                conversionInProgress = false;
+                document.getElementById('progress').style.display = 'none';
+                document.getElementById('cancel-btn').disabled = true;
+                alert('Conversion canceled.');
+            }
+        }
+
+        // Reset Tool
+        function resetTool() {
+            filesToConvert = [];
+            document.getElementById('pdf-upload').value = '';
+            document.getElementById('preview-section').innerHTML = '';
+            document.getElementById('progress').style.display = 'none';
+            document.getElementById('preview-btn').disabled = true;
+            document.getElementById('convert-btn').disabled = true;
+            document.getElementById('download-btn').disabled = true;
+            document.getElementById('cancel-btn').disabled = true;
+        }
+    </script>
+</body>
+</html>
