@@ -3,13 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JPG to PDF Converter - Free Online Tool | Secure & Fast</title>
+    <title>Free JPG to PDF Converter - Secure & Fast Online Tool</title>
+    <meta name="description" content="Convert JPG to PDF for free with our fast, secure online tool. No software needed—easy and reliable conversion in seconds.">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Poppins', sans-serif;
             margin: 0 auto;
-            padding: 2rem;
+            padding: 0;
             transition: background-color 0.5s, color 0.5s;
             max-width: 100%;
             overflow-x: hidden;
@@ -22,7 +24,7 @@
             box-shadow: 0 0.2rem 0.5rem rgba(0,0,0,0.1);
             width: 90%;
             max-width: 800px;
-            margin: 6rem auto 2rem;
+            margin: 6.625rem auto 2rem;
             animation: fadeIn 0.5s ease-in;
         }
 
@@ -37,12 +39,15 @@
 
         /* Header */
         header { background: linear-gradient(45deg, #007bff, #00c4ff); padding: 2rem; text-align: center; color: white; border-radius: 0.5rem 0.5rem 0 0; margin-bottom: 2rem; animation: slideIn 0.7s ease-out; }
-        header h1 { font-size: clamp(1.5rem, 4vw, 2.5rem); }
+        header h1 { font-size: clamp(1.5rem, 4vw, 2.5rem); font-weight: 600; text-shadow: 1px 1px 2px rgba(0,0,0,0.2); }
+
+        /* Headings */
+        h1, h3 { font-weight: 600; }
 
         /* Convert Button with Customizable Progress Bar */
         .convert-btn {
             padding: 1rem 2rem;
-            background: #28a745;
+            background: linear-gradient(45deg, #007bff, #00c4ff);
             color: white;
             border: none;
             border-radius: 2rem;
@@ -59,11 +64,11 @@
             overflow: hidden;
             --progress-duration: 2s;
             --progress-height: 100%;
-            --progress-color: #218838;
-            --progress-gradient: linear-gradient(90deg, #28a745, #36c75e, #28a745);
-            --progress-stripes: repeating-linear-gradient(45deg, #28a745, #28a745 10px, #36c75e 10px, #36c75e 20px);
+            --progress-color: #0056b3;
+            --progress-gradient: linear-gradient(90deg, #007bff, #00c4ff, #007bff);
+            --progress-stripes: repeating-linear-gradient(45deg, #007bff, #007bff 10px, #00c4ff 10px, #00c4ff 20px);
         }
-        .convert-btn:hover { background: #218838; transform: scale(1.05); }
+        .convert-btn:hover { background: linear-gradient(45deg, #0056b3, #009acd); transform: scale(1.05); }
         .convert-btn.loading span { opacity: 0; transition: opacity 0.2s; }
         .convert-btn.loading:disabled { cursor: not-allowed; }
 
@@ -177,7 +182,7 @@
         .download-link:hover { background: #0056b3; transform: scale(1.05); }
 
         /* Footer */
-        footer { padding: 1.5rem; background: #f8f9fa; border-radius: 0 0 0.5rem 0.5rem; text-align: center; font-size: clamp(0.8rem, 2vw, 1rem); width: 90%; max-width: 800px; margin: 2rem auto 6rem; }
+        footer { padding: 1.5rem; background: #f8f9fa; border-radius: 0 0 0.5rem 0.5rem; text-align: center; font-size: clamp(0.8rem, 2vw, 1rem); width: 90%; max-width: 800px; margin: 2rem auto 6.625rem; }
         .security-note { padding: 1rem; background: #e9ecef; border: 1px solid #ced4da; border-radius: 0.5rem; margin-top: 1rem; }
 
         /* Night Mode */
@@ -190,15 +195,12 @@
         body.night-mode .drag-handle { background: #444; }
         body.night-mode .drag-handle:hover { background: #555; }
         body.night-mode .convert-btn {
-            background: #218838;
-            --progress-color: #005eb8;
+            background: linear-gradient(45deg, #003087, #005eb8);
+            --progress-color: #001f3f;
             --progress-gradient: linear-gradient(90deg, #003087, #005eb8, #003087);
             --progress-stripes: repeating-linear-gradient(45deg, #003087, #003087 10px, #005eb8 10px, #005eb8 20px);
         }
-        body.night-mode .convert-btn:hover { background: #1c7430; }
-        body.night-mode .convert-btn.loading::before { background: #005eb8; }
-        body.night-mode .convert-btn.loading.gradient::before { background: var(--progress-gradient); }
-        body.night-mode .convert-btn.loading.striped::before { background: var(--progress-stripes); }
+        body.night-mode .convert-btn:hover { background: linear-gradient(45deg, #001f3f, #003087); }
         body.night-mode .download-link { background: #005eb8; }
         body.night-mode .download-link:hover { background: #003087; }
         body.night-mode select, body.night-mode input[type="number"] { background: #333; color: #fff; border-color: #555; }
@@ -208,7 +210,7 @@
 
         /* Night Mode Toggle */
         .toggle-container { position: fixed; top: 1rem; right: 1rem; z-index: 1000; }
-        Universal Selector#nightModeToggle { display: none; }
+        #nightModeToggle { display: none; }
         .toggle-label { width: 60px; height: 30px; background: #ccc; border-radius: 15px; position: relative; cursor: pointer; transition: background 0.3s; }
         .toggle-label::after { content: '☀️'; position: absolute; width: 26px; height: 26px; left: 2px; top: 2px; background: #fff; border-radius: 50%; transition: transform 0.3s; text-align: center; line-height: 26px; font-size: 18px; }
         #nightModeToggle:checked + .toggle-label { background: #555; }
@@ -216,9 +218,9 @@
 
         /* Ads */
         .ad-container { position: fixed; width: 100%; max-width: 800px; left: 50%; transform: translateX(-50%); z-index: 999; text-align: center; padding: 0.5rem; }
-        #adTop { top: 0; background: rgba(255,255,255,0.9); }
-        #adBottom { bottom: 0; background: rgba(255,255,255,0.9); }
-        body.night-mode .ad-container { background: rgba(40,40,40,0.9); }
+        #adTop { top: 0; background: rgb(255,255,255); }
+        #adBottom { bottom: 0; background: rgb(255,255,255); }
+        body.night-mode .ad-container { background: rgb(40,40,40); }
 
         /* Media Queries */
         @media (max-width: 600px) { .container, footer { width: 95%; padding: 1rem; } .preview-item { width: 45%; } .convert-btn { max-width: 150px; } header { padding: 1rem; } }
@@ -227,7 +229,7 @@
 </head>
 <body>
     <div class="ad-container" id="adTop">
-        <ins class="adsbygoogle" style="display:inline-block;width:728px;height:90px" data-ad-client="ca-pub-1234567890123456" data-ad-slot="TOP_AD_UNIT_ID"></ins>
+        <ins class="adsbygoogle" style="display:inline-block;width:728px;height:90px" data-ad-client="ca-pub-4431270903907980" data-ad-slot="TOP_AD_UNIT_ID"></ins>
     </div>
 
     <div class="toggle-container">
@@ -239,6 +241,7 @@
         <header>
             <h1>JPG to PDF Converter</h1>
         </header>
+        <p>Our free JPG to PDF converter lets you easily convert JPG images to PDF format. Upload your files, select your options, and download your PDF instantly. Secure, fast, and no software installation required.</p>
         
         <section class="options-section">
             <label for="imageInput">Select JPG Images:</label>
@@ -294,11 +297,11 @@
     </footer>
 
     <div class="ad-container" id="adBottom">
-        <ins class="adsbygoogle" style="display:inline-block;width:728px;height:90px" data-ad-client="ca-pub-1234567890123456" data-ad-slot="BOTTOM_AD_UNIT_ID"></ins>
+        <ins class="adsbygoogle" style="display:inline-block;width:728px;height:90px" data-ad-client="ca-pub-4431270903907980" data-ad-slot="BOTTOM_AD_UNIT_ID"></ins>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1234567890123456" crossorigin="anonymous"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4431270903907980" crossorigin="anonymous"></script>
     <script>
         (adsbygoogle = window.adsbygoogle || []).push({});
         (adsbygoogle = window.adsbygoogle || []).push({});
