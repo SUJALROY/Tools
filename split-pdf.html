@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chess Next Move Analyzer with Checkmate Focus</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Chess Next Move Analyzer</title>
     <!-- Chessboard.js CSS -->
     <link rel="stylesheet" href="https://unpkg.com/chessboard-js@1.0.0/dist/chessboard-1.0.0.min.css">
     <!-- OpenCV.js for potential board recognition -->
@@ -12,44 +12,39 @@
         body {
             font-family: Arial, sans-serif;
             text-align: center;
-            margin: 20px;
+            margin: 10px;
             background-color: #f0f0f0;
             color: #333;
+            touch-action: manipulation; /* Improves touch responsiveness */
         }
         #chessboard {
-            width: 90%;
+            width: 100%;
             max-width: 400px;
-            margin: 20px auto;
+            margin: 10px auto;
             border: 2px solid #333;
             border-radius: 8px;
         }
         #screen-feed {
-            width: 90%;
+            width: 100%;
             max-width: 400px;
-            margin: 20px auto;
+            margin: 10px auto;
             border: 2px solid #333;
             border-radius: 8px;
             display: none;
         }
         #move-suggestion {
-            margin: 20px auto;
-            width: 90%;
-            max-width: 400px; 
-            background-color: #fff;
-            padding: 10px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-top: 15px;
             font-size: 16px;
             color: #2e7d32;
-            text-align: left;
+            font-weight: bold;
         }
         #status {
             margin-top: 10px;
-            font-size: 16px;
+            font-size: 14px;
             color: #d81b60;
         }
         #move-history {
-            margin: 20px auto;
+            margin: 15px auto;
             width: 90%;
             max-width: 400px;
             background-color: #fff;
@@ -57,26 +52,27 @@
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
             text-align: left;
-            max-height: 150px;
+            max-height: 120px;
             overflow-y: auto;
-            font-size: 14px;
+            font-size: 13px;
         }
         .button-container {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 10px;
-            margin: 20px 0;
+            gap: 8px;
+            margin: 15px 0;
         }
         button {
-            padding: 10px 20px;
-            font-size: 16px;
+            padding: 8px 16px;
+            font-size: 14px;
             cursor: pointer;
             background-color: #4CAF50;
             color: white;
             border: none;
             border-radius: 5px;
             transition: background-color 0.3s;
+            touch-action: manipulation;
         }
         button:hover {
             background-color: #45a049;
@@ -88,17 +84,29 @@
         #fen-input {
             margin: 10px auto;
             padding: 8px;
-            width: 80%;
+            width: 90%;
             max-width: 400px;
             border: 1px solid #ccc;
             border-radius: 5px;
-            font-size: 14px;
+            font-size: 13px;
         }
         .loading {
             display: none;
-            font-size: 14px;
+            font-size: 13px;
             color: #0288d1;
             margin-top: 10px;
+        }
+        @media (max-width: 600px) {
+            button {
+                padding: 10px;
+                font-size: 12px;
+            }
+            #chessboard, #screen-feed {
+                max-width: 300px;
+            }
+            #move-history {
+                font-size: 12px;
+            }
         }
     </style>
 </head>
@@ -109,18 +117,17 @@
         <button onclick="startScreenRecording()">Start Screen Recording</button>
         <button onclick="stopScreenRecording()">Stop Screen Recording</button>
         <button onclick="analyzeBoard()">Analyze Board</button>
-        <button onclick="suggestMove()">Suggest Checkmate Move</button>
-        <button onclick="applySuggestedMove(0)" id="apply-move-0" disabled>Apply Move 1</button>
-        <button onclick="applySuggestedMove(1)" id="apply-move-1" disabled>Apply Move 2</button>
-        <button onclick="undoMove()">Undo Last Move</button>
+        <button onclick="suggestMove()">Suggest Next Move</button>
+        <button onclick="applySuggestedMove()" id="apply-move" disabled>Apply Move</button>
+        <button onclick="undoMove()">Undo Move</button>
     </div>
     <video id="screen-feed" autoplay playsinline></video>
-    <input id="fen-input" type="text" placeholder="Enter FEN (e.g., rnbqkb1r/pppp1ppp/5n2/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R b KQkq - 0 1)">
+    <input id="fen-input" type="text" placeholder="Enter FEN (e.g., rnbqkbnr/pppppppp/5n5/4P3/4p3/5N5/PPPP1PPP/RNBQKB1R w KQkq - 0 1)">
     <button onclick="loadFen()">Load FEN</button>
     <div id="move-suggestion"></div>
     <div id="status"></div>
     <div id="move-history"><strong>Move History:</strong> <span id="history-list">None</span></div>
-    <div id="loading" class="loading">Analyzing for checkmate...</div>
+    <div id="loading" class="loading">Analyzing...</div>
 
     <!-- Chess.js for game logic -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
@@ -137,7 +144,7 @@
         let mediaRecorder = null;
         let stream = null;
         let moveHistory = [];
-        let suggestedMoves = [];
+        let suggestedMove = null;
 
         // Initialize chessboard.js
         const boardConfig = {
@@ -148,46 +155,29 @@
         };
         board = Chessboard('chessboard', boardConfig);
 
-        // Initialize Stockfish with multi-PV
+        // Initialize Stockfish
         function initStockfish() {
             stockfish = new Worker('https://cdn.jsdelivr.net/npm/stockfish@14.1.0/stockfish.js');
             stockfish.onmessage = function(event) {
                 const message = event.data;
-                if (message.startsWith('info depth')) {
-                    const pvMatch = message.match(/pv (\S+)/);
-                    const scoreMatch = message.match(/score (cp|mate) (-?\d+)/);
-                    if (pvMatch && scoreMatch) {
-                        const move = pvMatch[1];
-                        const scoreType = scoreMatch[1];
-                        const scoreValue = parseInt(scoreMatch[2]);
-                        const moveObj = {
+                if (message.startsWith('bestmove')) {
+                    const moveMatch = message.match(/bestmove (\w+)/);
+                    if (moveMatch) {
+                        const move = moveMatch[1];
+                        suggestedMove = {
                             from: move.substring(0, 2),
                             to: move.substring(2, 4),
-                            promotion: move.length > 4 ? move[4] : 'q',
-                            evaluation: scoreType === 'mate' ? `Mate in ${scoreValue}` : `${scoreValue / 100}`,
-                            isMate: scoreType === 'mate'
+                            promotion: move.length > 4 ? move[4] : 'q'
                         };
-                        const pvIndex = parseInt(message.match(/multipv (\d+)/)?.[1] || 1) - 1;
-                        suggestedMoves[pvIndex] = moveObj;
+                        const evaluation = message.match(/score cp (-?\d+)/);
+                        const evalScore = evaluation ? parseInt(evaluation[1]) / 100 : 'N/A';
+                        document.getElementById('move-suggestion').innerText = 
+                            `Suggested move: ${suggestedMove.from}-${suggestedMove.to} (Eval: ${evalScore > 0 ? '+' : ''}${evalScore})`;
+                        document.getElementById('apply-move').disabled = false;
+                        document.getElementById('loading').style.display = 'none';
                     }
-                } else if (message.startsWith('bestmove')) {
-                    displaySuggestedMoves();
-                    document.getElementById('loading').style.display = 'none';
                 }
             };
-        }
-
-        // Display suggested moves
-        function displaySuggestedMoves() {
-            let output = '<strong>Top Moves:</strong><ol>';
-            suggestedMoves.forEach((move, index) => {
-                if (move) {
-                    output += `<li>${move.from}-${move.to} (Eval: ${move.evaluation}${move.isMate ? '!' : ''})</li>`;
-                    document.getElementById(`apply-move-${index}`).disabled = false;
-                }
-            });
-            output += '</ol>';
-            document.getElementById('move-suggestion').innerHTML = output;
         }
 
         // Handle drag start
@@ -234,33 +224,29 @@
             document.getElementById('history-list').innerText = historyText;
         }
 
-        // Check screen recording support
-        function isScreenRecordingSupported() {
-            return !!(navigator.mediaDevices && navigator.mediaDevices.getDisplayMedia);
-        }
-
         // Start screen recording
         function startScreenRecording() {
-            if (!isScreenRecordingSupported()) {
-                alert('Screen recording is not supported in this browser. Please use a desktop browser (e.g., Chrome, Edge) or enter FEN manually.');
-                return;
-            }
             const video = document.getElementById('screen-feed');
             video.style.display = 'block';
-            navigator.mediaDevices.getDisplayMedia({ video: true })
-                .then(displayStream => {
-                    stream = displayStream;
-                    video.srcObject = stream;
-                    mediaRecorder = new MediaRecorder(stream);
-                    mediaRecorder.start();
-                    mediaRecorder.ondataavailable = (event) => {
-                        // Optional: Handle recorded data if needed
-                    };
-                })
-                .catch(err => {
-                    alert('Error accessing screen: ' + err.message + '. Try a different browser or enter FEN manually.');
-                    video.style.display = 'none';
-                });
+            if (navigator.mediaDevices && navigator.mediaDevices.getDisplayMedia) {
+                navigator.mediaDevices.getDisplayMedia({ video: true })
+                    .then(displayStream => {
+                        stream = displayStream;
+                        video.srcObject = stream;
+                        mediaRecorder = new MediaRecorder(stream);
+                        mediaRecorder.start();
+                        mediaRecorder.ondataavailable = (event) => {
+                            // Optional: Handle recorded data
+                        };
+                    })
+                    .catch(err => {
+                        alert('Error accessing screen: ' + err.message);
+                        video.style.display = 'none';
+                    });
+            } else {
+                alert('Screen recording not supported. Try manual FEN input.');
+                video.style.display = 'none';
+            }
         }
 
         // Stop screen recording
@@ -287,8 +273,8 @@
                 return;
             }
             const video = document.getElementById('screen-feed');
-            if (video.srcObject && !isScreenRecordingSupported()) {
-                alert('Screen recording is active but not fully supported. Please enter FEN manually.');
+            if (!video.srcObject) {
+                alert('Please start screen recording first.');
                 return;
             }
             // Placeholder for computer vision
@@ -317,39 +303,33 @@
             }
         }
 
-        // Suggest next move with checkmate focus
+        // Suggest next move using Stockfish
         function suggestMove() {
             if (!stockfish) {
                 initStockfish();
             }
-            suggestedMoves = [];
             document.getElementById('loading').style.display = 'block';
-            document.getElementById('move-suggestion').innerText = 'Analyzing for checkmate...';
-            for (let i = 0; i < 2; i++) {
-                document.getElementById(`apply-move-${i}`).disabled = true;
-            }
             stockfish.postMessage('uci');
-            stockfish.postMessage('setoption name MultiPV value 2');
             stockfish.postMessage('isready');
             stockfish.postMessage('position fen ' + game.fen());
-            stockfish.postMessage('go depth 20');
+            stockfish.postMessage('go depth 12'); // Reduced depth for mobile
+            document.getElementById('move-suggestion').innerText = 'Analyzing...';
+            document.getElementById('apply-move').disabled = true;
         }
 
         // Apply suggested move
-        function applySuggestedMove(index) {
-            if (suggestedMoves[index]) {
+        function applySuggestedMove() {
+            if (suggestedMove) {
                 const move = game.move({
-                    from: suggestedMoves[index].from,
-                    to: suggestedMoves[index].to,
-                    promotion: suggestedMoves[index].promotion
+                    from: suggestedMove.from,
+                    to: suggestedMove.to,
+                    promotion: suggestedMove.promotion
                 });
                 if (move) {
                     board.position(game.fen());
                     updateStatus();
                     updateMoveHistory();
-                    for (let i = 0; i < 2; i++) {
-                        document.getElementById(`apply-move-${i}`).disabled = true;
-                    }
+                    document.getElementById('apply-move').disabled = true;
                 }
             }
         }
@@ -360,9 +340,7 @@
             board.position(game.fen());
             updateStatus();
             updateMoveHistory();
-            for (let i = 0; i < 2; i++) {
-                document.getElementById(`apply-move-${i}`).disabled = true;
-            }
+            document.getElementById('apply-move').disabled = true;
         }
 
         // Initial status update
