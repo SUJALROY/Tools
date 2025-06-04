@@ -3,392 +3,334 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Free Advanced PDF Splitter Tool - Split PDF documents by pages or ranges online. Easily split, merge, and download PDFs with a user-friendly interface.">
-    <meta name="keywords" content="split PDF, PDF splitter, PDF tool, online PDF editor, PDF pages, PDF range splitter">
-    <meta name="author" content="Your Company Name">
-    <title>Advanced PDF Splitter | Split PDF Pages Online</title>
+    <title>Chess Next Move Analyzer with Screen Recorder</title>
+    <!-- Chessboard.js CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/chessboard-js@1.0.0/dist/chessboard-1.0.0.min.css">
+    <!-- OpenCV.js for potential board recognition -->
+    <script async src="https://docs.opencv.org/4.5.5/opencv.js" onload="onOpenCvReady()"></script>
     <style>
-        :root {
-            --bg-color: #ffffff;
-            --text-color: #2c3e50;
-            --primary: #3498db;
-            --secondary: #2ecc71;
-            --danger: #e74c3c;
-            --hover-effect: all 0.3s ease;
-        }
-
-        [data-theme="dark"] {
-            --bg-color: #2c3e50;
-            --text-color: #ecf0f1;
-            --primary: #2980b9;
-            --secondary: #27ae60;
-            --danger: #c0392b;
-        }
-
         body {
-            font-family: 'Segoe UI', system-ui, sans-serif;
-            background: var(--bg-color);
-            color: var(--text-color);
-            transition: var(--hover-effect);
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        .drop-zone {
-            border: 2px dashed var(--primary);
-            padding: 3rem;
+            font-family: Arial, sans-serif;
             text-align: center;
-            margin: 2rem 0;
-            cursor: pointer;
-            border-radius: 12px;
-            transition: var(--hover-effect);
-            background: rgba(52, 152, 219, 0.05);
+            margin: 20px;
+            background-color: #f0f0f0;
+            color: #333;
         }
-
-        .drop-zone:hover {
-            background: rgba(52, 152, 219, 0.1);
-            transform: scale(1.02);
+        #chessboard {
+            width: 90%;
+            max-width: 400px;
+            margin: 20px auto;
+            border: 2px solid #333;
+            border-radius: 8px;
         }
-
-        .controls {
+        #screen-feed {
+            width: 90%;
+            max-width: 400px;
+            margin: 20px auto;
+            border: 2px solid #333;
+            border-radius: 8px;
+            display: none;
+        }
+        #move-suggestion {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #2e7d32;
+            font-weight: bold;
+        }
+        #status {
+            margin-top: 10px;
+            font-size: 16px;
+            color: #d81b60;
+        }
+        #move-history {
+            margin: 20px auto;
+            width: 90%;
+            max-width: 400px;
+            background-color: #fff;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            text-align: left;
+            max-height: 150px;
+            overflow-y: auto;
+            font-size: 14px;
+        }
+        .button-container {
             display: flex;
-            gap: 10px;
             flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
             margin: 20px 0;
         }
-
         button {
-            padding: 12px 24px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
             border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: var(--hover-effect);
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            position: relative;
-            overflow: hidden;
+            border-radius: 5px;
+            transition: background-color 0.3s;
         }
-
-        button::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 300%;
-            height: 300%;
-            background: rgba(255, 255, 255, 0.3);
-            transform: translate(-50%, -50%) scale(0);
-            border-radius: 50%;
-            transition: var(--hover-effect);
-            pointer-events: none;
+        button:hover {
+            background-color: #45a049;
         }
-
-        button:active::after {
-            transform: translate(-50%, -50%) scale(1);
-            opacity: 0;
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
         }
-
-        .primary-btn {
-            background: var(--primary);
-            color: white;
-        }
-
-        .primary-btn:hover {
-            background: var(--hover);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
-        }
-
-        .secondary-btn {
-            background: var(--secondary);
-            color: white;
-        }
-
-        .secondary-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(46, 204, 113, 0.3);
-        }
-
-        .danger-btn {
-            background: var(--danger);
-            color: white;
-        }
-
-        .danger-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
-        }
-
-        .thumbnail-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 1rem;
-            margin: 2rem 0;
-        }
-
-        .thumbnail {
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            overflow: hidden;
-            transition: var(--hover-effect);
-            cursor: pointer;
-            position: relative;
-            touch-action: manipulation;
-            background: #f9f9f9;
-        }
-
-        .thumbnail img {
-            width: 100%;
-            height: auto;
-            display: block;
-        }
-
-        .thumbnail span {
-            position: absolute;
-            bottom: 5px;
-            right: 5px;
-            background: rgba(0, 0, 0, 0.7);
-            color: white;
-            padding: 3px 6px;
-            border-radius: 4px;
-            font-size: 12px;
-        }
-
-        .thumbnail.selected {
-            border-color: var(--primary);
-            box-shadow: 0 0 10px rgba(52, 152, 219, 0.3);
-        }
-
-        .thumbnail.selected::before {
-            content: '✔';
-            position: absolute;
-            top: 5px;
-            left: 5px;
-            background: var(--secondary);
-            color: white;
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        #fen-input {
+            margin: 10px auto;
+            padding: 8px;
+            width: 80%;
+            max-width: 400px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
             font-size: 14px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
         }
-
-        .theme-toggle {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            cursor: pointer;
-            padding: 10px;
-            border-radius: 50%;
-            transition: var(--hover-effect);
-            background: var(--primary);
-            color: white;
-        }
-
-        .theme-toggle:hover {
-            transform: rotate(20deg) scale(1.1);
-        }
-
-        .ad-container {
-            margin: 2rem 0;
-            text-align: center;
-            padding: 1rem;
-            background: rgba(0, 0, 0, 0.05);
-            border-radius: 8px;
-        }
-
-        .ad-container iframe {
-            max-width: 100%;
-            height: auto;
+        .loading {
+            display: none;
+            font-size: 14px;
+            color: #0288d1;
+            margin-top: 10px;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Advanced PDF Splitter</h1>
-        
-        <!-- Ad Space 1 -->
-        <div class="ad-container">
-            <!-- Google AdSense Ad Unit -->
-            <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-app-pub-4431270903907980/9405665423" crossorigin="anonymous"></script>
-            <ins class="adsbygoogle"
-                 style="display:block"
-                 data-ad-client="ca-app-pub-4431270903907980/9405665423"
-                 data-ad-slot="9405665423"
-                 data-ad-format="auto"
-                 data-full-width-responsive="true"></ins>
-            <script>
-                 (adsbygoogle = window.adsbygoogle || []).push({});
-            </script>
-        </div>
-
-        <div class="drop-zone" id="dropZone">
-            📁 Drag & Drop PDF or Click to Upload
-            <input type="file" id="fileInput" accept=".pdf" hidden>
-        </div>
-
-        <div class="controls">
-            <button class="primary-btn" id="btnSplit">✂️ Split PDF</button>
-            <button class="secondary-btn" id="btnSelectAll">✅ Select All</button>
-            <button class="danger-btn" id="btnDeselect">🚫 Deselect All</button>
-            <button class="secondary-btn" id="btnDownload">⬇️ Download</button>
-        </div>
-
-        <div class="thumbnail-grid" id="previewContainer"></div>
-
-        <!-- Ad Space 2 -->
-        <div class="ad-container">
-            <!-- Google AdSense Ad Unit -->
-            <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-app-pub-4431270903907980/7713309804" crossorigin="anonymous"></script>
-            <ins class="adsbygoogle"
-                 style="display:block"
-                 data-ad-client="ca-app-pub-4431270903907980/7713309804"
-                 data-ad-slot="7713309804"
-                 data-ad-format="auto"
-                 data-full-width-responsive="true"></ins>
-            <script>
-                 (adsbygoogle = window.adsbygoogle || []).push({});
-            </script>
-        </div>
-
-        <div class="theme-toggle" onclick="toggleTheme()">🌙</div>
+    <h1>Chess Next Move Analyzer</h1>
+    <div id="chessboard"></div>
+    <div class="button-container">
+        <button onclick="startScreenRecording()">Start Screen Recording</button>
+        <button onclick="stopScreenRecording()">Stop Screen Recording</button>
+        <button onclick="analyzeBoard()">Analyze Board</button>
+        <button onclick="suggestMove()">Suggest Next Move</button>
+        <button onclick="applySuggestedMove()" id="apply-move" disabled>Apply Suggested Move</button>
+        <button onclick="undoMove()">Undo Last Move</button>
     </div>
+    <video id="screen-feed" autoplay playsinline></video>
+    <input id="fen-input" type="text" placeholder="Enter FEN (optional)">
+    <button onclick="loadFen()">Load FEN</button>
+    <div id="move-suggestion"></div>
+    <div id="status"></div>
+    <div id="move-history"><strong>Move History:</strong> <span id="history-list">None</span></div>
+    <div id="loading" class="loading">Analyzing...</div>
 
-    <!-- PDF.js Library -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
+    <!-- Chess.js for game logic -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
+    <!-- Chessboard.js for board UI -->
+    <script src="https://unpkg.com/chessboard-js@1.0.0/dist/chessboard-1.0.0.min.js"></script>
+    <!-- Stockfish.js for move analysis -->
+    <script src="https://cdn.jsdelivr.net/npm/stockfish@14.1.0/stockfish.js"></script>
     <script>
-        let selectedPages = new Set();
-        let currentPDF = null;
+        // Initialize chess.js
+        const game = new Chess();
+        let board = null;
+        let stockfish = null;
+        let cvReady = false;
+        let mediaRecorder = null;
+        let stream = null;
+        let moveHistory = [];
+        let suggestedMove = null;
 
-        // Theme Management
-        function toggleTheme() {
-            document.body.setAttribute('data-theme',
-                document.body.getAttribute('data-theme') === 'dark' ? 'light' : 'dark'
-            );
+        // Initialize chessboard.js
+        const boardConfig = {
+            draggable: true,
+            position: 'start',
+            onDrop: onDrop,
+            onDragStart: onDragStart
+        };
+        board = Chessboard('chessboard', boardConfig);
+
+        // Initialize Stockfish
+        function initStockfish() {
+            stockfish = new Worker('https://cdn.jsdelivr.net/npm/stockfish@14.1.0/stockfish.js');
+            stockfish.onmessage = function(event) {
+                const message = event.data;
+                if (message.startsWith('bestmove')) {
+                    const moveMatch = message.match(/bestmove (\w+)/);
+                    if (moveMatch) {
+                        const move = moveMatch[1];
+                        suggestedMove = {
+                            from: move.substring(0, 2),
+                            to: move.substring(2, 4),
+                            promotion: move.length > 4 ? move[4] : 'q'
+                        };
+                        const evaluation = message.match(/score cp (-?\d+)/);
+                        const evalScore = evaluation ? parseInt(evaluation[1]) / 100 : 'N/A';
+                        document.getElementById('move-suggestion').innerText = 
+                            `Suggested move: ${suggestedMove.from}-${suggestedMove.to} (Eval: ${evalScore > 0 ? '+' : ''}${evalScore})`;
+                        document.getElementById('apply-move').disabled = false;
+                        document.getElementById('loading').style.display = 'none';
+                    }
+                }
+            };
         }
 
-        // Event Listeners
-        document.getElementById('dropZone').addEventListener('click', () => 
-            document.getElementById('fileInput').click());
-
-        document.getElementById('fileInput').addEventListener('change', handleFileSelect);
-        document.getElementById('btnSplit').addEventListener('click', splitPDF);
-        document.getElementById('btnSelectAll').addEventListener('click', selectAll);
-        document.getElementById('btnDeselect').addEventListener('click', deselectAll);
-        document.getElementById('btnDownload').addEventListener('click', downloadPDF);
-
-        async function handleFileSelect(e) {
-            const file = e.target.files[0];
-            if (!file) return;
-            
-            try {
-                const fileURL = URL.createObjectURL(file);
-                const pdfDoc = await pdfjsLib.getDocument(fileURL).promise;
-                currentPDF = pdfDoc;
-                renderThumbnails(pdfDoc);
-            } catch (error) {
-                alert('Error loading PDF file');
-            }
+        // Handle drag start
+        function onDragStart(source, piece, position, orientation) {
+            if (game.game_over()) return false;
+            if (piece.search(/^b/) !== -1 && game.turn() === 'w') return false;
+            if (piece.search(/^w/) !== -1 && game.turn() === 'b') return false;
         }
 
-        async function renderThumbnails(pdfDoc) {
-            const container = document.getElementById('previewContainer');
-            container.innerHTML = '';
-            
-            for (let i = 1; i <= pdfDoc.numPages; i++) {
-                const page = await pdfDoc.getPage(i);
-                const viewport = page.getViewport({ scale: 0.5 });
-                
-                const canvas = document.createElement('canvas');
-                const context = canvas.getContext('2d');
-                canvas.height = viewport.height;
-                canvas.width = viewport.width;
-
-                await page.render({
-                    canvasContext: context,
-                    viewport: viewport
-                }).promise;
-
-                const imgURL = canvas.toDataURL();
-                const thumb = document.createElement('div');
-                thumb.className = 'thumbnail';
-                thumb.innerHTML = `
-                    <img src="${imgURL}" alt="Page ${i}">
-                    <span>${i}</span>
-                `;
-                thumb.onclick = () => togglePageSelection(i);
-                container.appendChild(thumb);
-            }
-        }
-
-        function togglePageSelection(pageNumber) {
-            selectedPages.has(pageNumber) 
-                ? selectedPages.delete(pageNumber)
-                : selectedPages.add(pageNumber);
-            updateUI();
-        }
-
-        function selectAll() {
-            const pageCount = currentPDF?.numPages || 0;
-            selectedPages = new Set([...Array(pageCount).keys()].map(n => n+1));
-            updateUI();
-        }
-
-        function deselectAll() {
-            selectedPages.clear();
-            updateUI();
-        }
-
-        async function splitPDF() {
-            if (!currentPDF) return alert('Please upload a PDF first');
-            if (selectedPages.size === 0) return alert('Please select pages to split');
-            
-            try {
-                const newPdf = await PDFLib.PDFDocument.create();
-                const fileURL = document.getElementById('fileInput').files[0];
-                const pdfBytes = await fileURL.arrayBuffer();
-                const srcPdf = await PDFLib.PDFDocument.load(pdfBytes);
-
-                const pages = await newPdf.copyPages(srcPdf, 
-                    Array.from(selectedPages).map(n => n-1));
-                
-                pages.forEach(page => newPdf.addPage(page));
-                const newPdfBytes = await newPdf.save();
-                
-                // Create download link
-                const blob = new Blob([newPdfBytes], { type: 'application/pdf' });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'split-document.pdf';
-                a.click();
-                URL.revokeObjectURL(url);
-                
-            } catch (error) {
-                alert('Error processing PDF');
-            }
-        }
-
-        function downloadPDF() {
-            if (!currentPDF) return alert('No PDF to download');
-            splitPDF();
-        }
-
-        function updateUI() {
-            document.querySelectorAll('.thumbnail').forEach((thumb, i) => {
-                thumb.classList.toggle('selected', selectedPages.has(i+1));
+        // Handle drop (move piece)
+        function onDrop(source, target) {
+            const move = game.move({
+                from: source,
+                to: target,
+                promotion: 'q'
             });
+            if (move === null) return 'snapback';
+            board.position(game.fen());
+            updateStatus();
+            updateMoveHistory();
         }
+
+        // Update game status
+        function updateStatus() {
+            let status = '';
+            if (game.in_checkmate()) {
+                status = 'Game over, checkmate! ' + (game.turn() === 'b' ? 'White' : 'Black') + ' wins.';
+            } else if (game.in_draw()) {
+                status = 'Game over, draw!';
+            } else {
+                status = game.turn() === 'w' ? 'White to move' : 'Black to move';
+                if (game.in_check()) {
+                    status += ', check!';
+                }
+            }
+            document.getElementById('status').innerText = status;
+        }
+
+        // Update move history
+        function updateMoveHistory() {
+            const moves = game.history({ verbose: true });
+            moveHistory = moves.map(move => move.san);
+            const historyText = moveHistory.length ? moveHistory.join(', ') : 'None';
+            document.getElementById('history-list').innerText = historyText;
+        }
+
+        // Start screen recording
+        function startScreenRecording() {
+            const video = document.getElementById('screen-feed');
+            video.style.display = 'block';
+            if (navigator.mediaDevices && navigator.mediaDevices.getDisplayMedia) {
+                navigator.mediaDevices.getDisplayMedia({ video: true })
+                    .then(displayStream => {
+                        stream = displayStream;
+                        video.srcObject = stream;
+                        mediaRecorder = new MediaRecorder(stream);
+                        mediaRecorder.start();
+                        mediaRecorder.ondataavailable = (event) => {
+                            // Optional: Handle recorded data if needed
+                        };
+                    })
+                    .catch(err => {
+                        alert('Error accessing screen: ' + err.message);
+                        video.style.display = 'none';
+                    });
+            } else {
+                alert('Screen recording not supported by this browser.');
+                video.style.display = 'none';
+            }
+        }
+
+        // Stop screen recording
+        function stopScreenRecording() {
+            if (mediaRecorder && stream) {
+                mediaRecorder.stop();
+                stream.getTracks().forEach(track => track.stop());
+                const video = document.getElementById('screen-feed');
+                video.srcObject = null;
+                video.style.display = 'none';
+            }
+        }
+
+        // Placeholder for OpenCV.js readiness
+        function onOpenCvReady() {
+            cvReady = true;
+            console.log('OpenCV.js is ready');
+        }
+
+        // Analyze board (screen capture placeholder)
+        function analyzeBoard() {
+            if (!cvReady) {
+                alert('OpenCV.js is not loaded yet. Please wait.');
+                return;
+            }
+            const video = document.getElementById('screen-feed');
+            if (!video.srcObject) {
+                alert('Please start screen recording first.');
+                return;
+            }
+            // Placeholder for computer vision
+            const fen = prompt('Computer vision not implemented. Enter FEN manually:', game.fen());
+            if (fen && game.load(fen)) {
+                board.position(fen);
+                updateStatus();
+                updateMoveHistory();
+                document.getElementById('status').innerText = 'Board loaded from FEN: ' + fen;
+            } else {
+                alert('Invalid FEN string.');
+            }
+        }
+
+        // Load FEN from input
+        function loadFen() {
+            const fen = document.getElementById('fen-input').value;
+            if (fen && game.load(fen)) {
+                board.position(fen);
+                moveHistory = [];
+                updateStatus();
+                updateMoveHistory();
+                document.getElementById('status').innerText = 'Board loaded from FEN: ' + fen;
+            } else {
+                alert('Invalid FEN string.');
+            }
+        }
+
+        // Suggest next move using Stockfish
+        function suggestMove() {
+            if (!stockfish) {
+                initStockfish();
+            }
+            document.getElementById('loading').style.display = 'block';
+            stockfish.postMessage('uci');
+            stockfish.postMessage('isready');
+            stockfish.postMessage('position fen ' + game.fen());
+            stockfish.postMessage('go depth 15');
+            document.getElementById('move-suggestion').innerText = 'Analyzing...';
+            document.getElementById('apply-move').disabled = true;
+        }
+
+        // Apply suggested move
+        function applySuggestedMove() {
+            if (suggestedMove) {
+                const move = game.move({
+                    from: suggestedMove.from,
+                    to: suggestedMove.to,
+                    promotion: suggestedMove.promotion
+                });
+                if (move) {
+                    board.position(game.fen());
+                    updateStatus();
+                    updateMoveHistory();
+                    document.getElementById('apply-move').disabled = true;
+                }
+            }
+        }
+
+        // Undo last move
+        function undoMove() {
+            game.undo();
+            board.position(game.fen());
+            updateStatus();
+            updateMoveHistory();
+            document.getElementById('apply-move').disabled = true;
+        }
+
+        // Initial status update
+        updateStatus();
     </script>
-    <script src="https://unpkg.com/pdf-lib@^1.11.2"></script>
 </body>
 </html>
