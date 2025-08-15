@@ -1,396 +1,90 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Free PDF to JPG Converter - Convert PDF to Image Online Fast</title>
-    <meta name="description" content="Easily convert PDF to JPG or JPEG images for free. High-quality, fast, and no registration needed. Try our online PDF converter now!">
-    <meta name="keywords" content="PDF to JPG converter, convert PDF to image, free PDF converter online, PDF to JPEG tool, online PDF to JPG conversion, best PDF converter">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <style>
-        /* CSS Variables for Theming */
-        :root {
-            --background-color: #ffffff;
-            --text-color: #000000;
-            --accent-color: #28a745; /* Green in light mode */
-            --card-background: #ffffff;
-            --shadow-color: rgba(0, 0, 0, 0.1);
-            --security-bg: #e6f7e6;
-            --button-gradient-start: #28a745;
-            --button-gradient-end: #218838;
-            --spinner-color: #28a745;
-        }
-        body.dark-mode {
-            --background-color: #333333;
-            --text-color: #ffffff;
-            --accent-color: #34ce57; /* Lighter green in dark mode */
-            --card-background: #444444;
-            --shadow-color: rgba(255, 255, 255, 0.1);
-            --security-bg: #003d00;
-            --button-gradient-start: #34ce57;
-            --button-gradient-end: #2a9d4f;
-            --spinner-color: #34ce57;
-        }
-
-        /* General Styling */
-        body {
-            font-family: 'Roboto', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: var(--background-color);
-            color: var(--text-color);
-            transition: background-color 0.5s ease, color 0.5s ease;
-            overflow-x: hidden; /* Prevent horizontal scrolling */
-        }
-
-        /* Header Styling */
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px;
-            background: linear-gradient(45deg, var(--accent-color), var(--button-gradient-end));
-            color: #ffffff;
-            box-shadow: 0 2px 10px var(--shadow-color);
-            opacity: 0;
-            animation: fadeIn 0.5s forwards;
-        }
-        @keyframes fadeIn {
-            to { opacity: 1; }
-        }
-        header h1 {
-            font-size: 2em;
-            font-weight: 700;
-        }
-
-        /* Dark Mode Toggle */
-        .toggle-container {
-            position: relative;
-        }
-        #darkModeToggle {
-            display: none;
-        }
-        .toggle-label {
-            width: 50px;
-            height: 25px;
-            background-color: #cccccc;
-            border-radius: 25px;
-            position: relative;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-        .toggle-label::after {
-            content: '';
-            position: absolute;
-            top: 2px;
-            left: 2px;
-            width: 21px;
-            height: 21px;
-            background-color: #ffd700;
-            box-shadow: 0 0 3px #ffd700;
-            border-radius: 50%;
-            transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55), background-color 0.3s ease;
-        }
-        #darkModeToggle:checked + .toggle-label {
-            background-color: var(--accent-color);
-        }
-        #darkModeToggle:checked + .toggle-label::after {
-            background-color: #ffffff;
-            transform: translateX(25px);
-        }
-
-        /* Main Content */
-        main {
-            padding: 20px;
-        }
-        section {
-            margin: 20px 0;
-            padding: 20px;
-            background-color: var(--card-background);
-            border-radius: 8px;
-            box-shadow: 0 2px 10px var(--shadow-color);
-            transition: background-color 0.5s ease;
-        }
-
-        /* Upload Section */
-        #uploadSection input[type="file"] {
-            margin-bottom: 10px;
-        }
-        .security-notice {
-            color: var(--accent-color);
-            background-color: var(--security-bg);
-            border: 2px solid var(--accent-color);
-            padding: 10px;
-            border-radius: 5px;
-            margin-top: 10px;
-            font-weight: bold;
-        }
-        #settings {
-            margin: 10px 0;
-        }
-        #settings label {
-            margin-right: 20px;
-        }
-
-        /* Button Styling */
-        .premium-button {
-            background: linear-gradient(45deg, var(--button-gradient-start), var(--button-gradient-end));
-            color: #ffffff;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 25px;
-            font-size: 16px;
-            cursor: pointer;
-            box-shadow: 0 4px 6px var(--shadow-color);
-            transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
-        }
-        .premium-button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 6px 8px var(--shadow-color);
-        }
-        .premium-button:active {
-            background: linear-gradient(45deg, #218838, #1e7e34);
-            transform: scale(0.98);
-            box-shadow: 0 2px 4px var(--shadow-color);
-        }
-        .premium-button:disabled {
-            background: #cccccc;
-            cursor: not-allowed;
-            box-shadow: none;
-        }
-
-        /* Loading Indicator */
-        #progress {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-        .spinner {
-            border: 4px solid rgba(0, 0, 0, 0.1);
-            border-top: 4px solid var(--spinner-color);
-            border-radius: 50%;
-            width: 24px;
-            height: 24px;
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        /* Results Section */
-        #resultsContainer {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-        .result-item {
-            text-align: center;
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.5s ease, transform 0.5s ease;
-            flex: 1 1 200px;
-            max-width: 200px;
-        }
-        .result-item.fade-in {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        .result-item img {
-            width: 100%;
-            height: auto;
-            border: 1px solid var(--text-color);
-            border-radius: 5px;
-            margin-bottom: 5px;
-        }
-        .download-link {
-            display: inline-block;
-            margin-top: 10px;
-            padding: 8px 16px;
-            background-color: var(--accent-color);
-            color: #ffffff;
-            text-decoration: none;
-            border-radius: 5px;
-            transition: background-color 0.3s ease;
-        }
-        .download-link:hover {
-            background-color: #218838;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            header h1 {
-                font-size: 1.5em;
-            }
-            #settings label {
-                display: block;
-                margin-bottom: 10px;
-                margin-right: 0;
-            }
-        }
-
-        @media (max-width: 480px) {
-            header {
-                flex-direction: column;
-                align-items: center;
-            }
-            header h1 {
-                font-size: 1.2em;
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>Student Registration Form</title>
+  <style>
+    body { font-family: Arial, sans-serif; }
+    .form-container { max-width: 500px; margin: auto; padding: 20px; border: 1px solid #ccc; border-radius: 10px; }
+    label { display: block; margin-top: 15px; font-weight: bold; }
+    input[type="text"], input[type="email"], select, input[type="file"] { width: 100%; padding: 8px; margin-top: 5px; }
+    button { margin-top: 20px; padding: 10px 20px; }
+    .note { font-size: 12px; color: #666; margin-top: 3px; }
+  </style>
 </head>
 <body>
-    <header>
-        <h1>PDF to JPG Converter 🔥</h1>
-        <div class="toggle-container">
-            <input type="checkbox" id="darkModeToggle" aria-label="Toggle dark mode">
-            <label for="darkModeToggle" class="toggle-label"></label>
-        </div>
-    </header>
+  <div class="form-container">
+    <h2>Student Registration Form</h2>
+    <form id="studentForm" action="/submit" method="POST" enctype="multipart/form-data">
+      <label for="candidate_name">Candidate Name:</label>
+      <input type="text" id="candidate_name" name="candidate_name" required>
 
-    <main>
-        <section id="uploadSection">
-            <input type="file" accept=".pdf" id="pdfInput">
-            <p id="fileName">No file selected</p>
-            <p class="security-notice">🔒 Your file is end-to-end encrypted 🩷</p>
-            <div id="settings">
-                <label>Scale: 
-                    <select id="scaleSelect">
-                        <option value="0.5">50%</option>
-                        <option value="1" selected>100%</option>
-                        <option value="1.5">150%</option>
-                        <option value="2">200%</option>
-                    </select>
-                </label>
-                <label>Quality: 
-                    <input type="range" min="0" max="100" value="80" id="qualitySlider">
-                </label>
-            </div>
-            <button id="convertButton" class="premium-button" disabled>Convert</button>
-        </section>
+      <label for="father_name">Father's Name:</label>
+      <input type="text" id="father_name" name="father_name" required>
 
-        <section id="progress" style="display: none;">
-            <div class="spinner"></div>
-            <p>Converting... <span id="progressText"></span></p>
-        </section>
+      <label for="gender">Gender:</label>
+      <select id="gender" name="gender" required>
+        <option value="" disabled selected>Choose Gender</option>
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+        <option value="others">Others</option>
+      </select>
 
-        <section id="results" style="display: none;">
-            <h2>Results</h2>
-            <div id="resultsContainer"></div>
-        </section>
-    </main>
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" required>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
-    <script>
-        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.worker.min.js';
+      <label for="aadhaar_number">Aadhaar Number:</label>
+      <input type="text" id="aadhaar_number" name="aadhaar_number" required>
 
-        const pdfInput = document.getElementById('pdfInput');
-        const fileName = document.getElementById('fileName');
-        const convertButton = document.getElementById('convertButton');
-        const scaleSelect = document.getElementById('scaleSelect');
-        const qualitySlider = document.getElementById('qualitySlider');
-        const progress = document.getElementById('progress');
-        const progressText = document.getElementById('progressText');
-        const results = document.getElementById('results');
-        const resultsContainer = document.getElementById('resultsContainer');
-        const darkModeToggle = document.getElementById('darkModeToggle');
+      <label for="aadhaar_photo">Aadhaar Card Photo:</label>
+      <input type="file" id="aadhaar_photo" name="aadhaar_photo" accept="image/*" required>
+      <div class="note">Max size: 12KB</div>
 
-        let selectedFile = null;
+      <label for="candidate_photo">Candidate Photo:</label>
+      <input type="file" id="candidate_photo" name="candidate_photo" accept="image/*" required>
+      <div class="note">Max size: 12KB</div>
 
-        pdfInput.addEventListener('change', () => {
-            selectedFile = pdfInput.files[0];
-            fileName.textContent = selectedFile ? selectedFile.name : 'No file selected';
-            convertButton.disabled = !selectedFile;
-        });
+      <label for="marksheet">10th Marksheet:</label>
+      <input type="file" id="marksheet" name="marksheet" accept="image/*,application/pdf" required>
+      <div class="note">Max size: 12KB</div>
 
-        convertButton.addEventListener('click', async () => {
-            if (!selectedFile) return;
-            const scale = parseFloat(scaleSelect.value);
-            const quality = parseInt(qualitySlider.value) / 100;
-            progress.style.display = 'flex';
-            results.style.display = 'none';
-            resultsContainer.innerHTML = '';
-            await convertPDF(selectedFile, scale, quality);
-        });
+      <button type="submit">Proceed to Payment</button>
+    </form>
+  </div>
 
-        darkModeToggle.addEventListener('change', () => {
-            document.body.classList.toggle('dark-mode');
-        });
+  <script>
+    // Limit file size for all uploads to 12KB
+    function checkFileSize(input) {
+      if (input.files[0] && input.files[0].size > 12288) {
+        alert("File size must be less than 12KB!");
+        input.value = ""; // Clear the file input
+        return false;
+      }
+      return true;
+    }
 
-        async function convertPDF(file, scale, quality) {
-            try {
-                const url = URL.createObjectURL(file);
-                const pdf = await pdfjsLib.getDocument(url).promise;
-                const numPages = pdf.numPages;
-                const zip = new JSZip();
+    document.getElementById('aadhaar_photo').addEventListener('change', function() {
+      checkFileSize(this);
+    });
 
-                for (let i = 1; i <= numPages; i++) {
-                    const page = await pdf.getPage(i);
-                    const viewport = page.getViewport({ scale });
-                    const canvas = document.createElement('canvas');
-                    canvas.width = viewport.width;
-                    canvas.height = viewport.height;
-                    const context = canvas.getContext('2d');
-                    await page.render({ canvasContext: context, viewport }).promise;
+    document.getElementById('candidate_photo').addEventListener('change', function() {
+      checkFileSize(this);
+    });
 
-                    const blob = await new Promise(resolve => 
-                        canvas.toBlob(resolve, 'image/jpeg', quality)
-                    );
-                    zip.file(`page_${i}.jpg`, blob);
+    document.getElementById('marksheet').addEventListener('change', function() {
+      checkFileSize(this);
+    });
 
-                    const thumbCanvas = document.createElement('canvas');
-                    const thumbWidth = 200;
-                    const thumbScale = thumbWidth / viewport.width;
-                    thumbCanvas.width = thumbWidth;
-                    thumbCanvas.height = viewport.height * thumbScale;
-                    const thumbContext = thumbCanvas.getContext('2d');
-                    thumbContext.drawImage(canvas, 0, 0, thumbCanvas.width, thumbCanvas.height);
-                    const thumbData = thumbCanvas.toDataURL('image/jpeg', 0.5);
+    // Check all files before submitting the form
+    document.getElementById('studentForm').addEventListener('submit', function(e) {
+      var aadhaar = document.getElementById('aadhaar_photo');
+      var photo = document.getElementById('candidate_photo');
+      var marksheet = document.getElementById('marksheet');
 
-                    displayResult(i, thumbData, URL.createObjectURL(blob));
-                    progressText.textContent = `Page ${i} of ${numPages}`;
-                }
-
-                const zipBlob = await zip.generateAsync({ type: 'blob' });
-                displayZipDownload(zipBlob);
-                progress.style.display = 'none';
-                results.style.display = 'block';
-                URL.revokeObjectURL(url);
-            } catch (error) {
-                console.error('Conversion failed:', error);
-                progressText.textContent = 'Error during conversion.';
-            }
-        }
-
-        function displayResult(pageNum, thumbData, fullUrl) {
-            const resultDiv = document.createElement('div');
-            resultDiv.className = 'result-item';
-            const img = document.createElement('img');
-            img.src = thumbData;
-            img.alt = `Page ${pageNum}`;
-            const link = document.createElement('a');
-            link.href = fullUrl;
-            link.download = `page_${pageNum}.jpg`;
-            link.textContent = `Download Page ${pageNum}`;
-            link.className = 'download-link';
-            resultDiv.appendChild(img);
-            resultDiv.appendChild(link);
-            resultsContainer.appendChild(resultDiv);
-            setTimeout(() => resultDiv.classList.add('fade-in'), 10);
-        }
-
-        function displayZipDownload(zipBlob) {
-            const zipLink = document.createElement('a');
-            zipLink.href = URL.createObjectURL(zipBlob);
-            zipLink.download = 'converted_pages.zip';
-            zipLink.textContent = 'Download All as ZIP';
-            zipLink.className = 'download-link';
-            resultsContainer.appendChild(zipLink);
-            setTimeout(() => zipLink.classList.add('fade-in'), 10);
-        }
-    </script>
+      if (!checkFileSize(aadhaar) || !checkFileSize(photo) || !checkFileSize(marksheet)) {
+        e.preventDefault(); // Stop form submission
+      }
+    });
+  </script>
 </body>
 </html>
