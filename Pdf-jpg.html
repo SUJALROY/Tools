@@ -11,17 +11,17 @@
     button { margin-top: 20px; padding: 10px 20px; }
     .note { font-size: 12px; color: #666; margin-top: 3px; }
   </style>
+  <!-- Razorpay Checkout script -->
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 </head>
 <body>
   <div class="form-container">
     <h2>Student Registration Form</h2>
-    <form id="studentForm" action="/submit" method="POST" enctype="multipart/form-data">
+    <form id="studentForm" enctype="multipart/form-data">
       <label for="candidate_name">Candidate Name:</label>
       <input type="text" id="candidate_name" name="candidate_name" required>
-
       <label for="father_name">Father's Name:</label>
       <input type="text" id="father_name" name="father_name" required>
-
       <label for="gender">Gender:</label>
       <select id="gender" name="gender" required>
         <option value="" disabled selected>Choose Gender</option>
@@ -29,61 +29,102 @@
         <option value="female">Female</option>
         <option value="others">Others</option>
       </select>
-
       <label for="email">Email:</label>
       <input type="email" id="email" name="email" required>
-
       <label for="aadhaar_number">Aadhaar Number:</label>
       <input type="text" id="aadhaar_number" name="aadhaar_number" required>
-
       <label for="aadhaar_photo">Aadhaar Card Photo:</label>
       <input type="file" id="aadhaar_photo" name="aadhaar_photo" accept="image/*" required>
       <div class="note">Max size: 12KB</div>
-
       <label for="candidate_photo">Candidate Photo:</label>
       <input type="file" id="candidate_photo" name="candidate_photo" accept="image/*" required>
       <div class="note">Max size: 12KB</div>
-
       <label for="marksheet">10th Marksheet:</label>
       <input type="file" id="marksheet" name="marksheet" accept="image/*,application/pdf" required>
       <div class="note">Max size: 12KB</div>
-
       <button type="submit">Proceed to Payment</button>
     </form>
   </div>
 
   <script>
-    // Limit file size for all uploads to 12KB
+    // File size validation
     function checkFileSize(input) {
-      if (input.files[0] && input.files[0].size > 12288) {
+      if (input.files[0] && input.files.size > 12288) {
         alert("File size must be less than 12KB!");
-        input.value = ""; // Clear the file input
+        input.value = ""; // Clear the input
         return false;
       }
       return true;
     }
+    document.getElementById('aadhaar_photo').addEventListener('change', function() { checkFileSize(this); });
+    document.getElementById('candidate_photo').addEventListener('change', function() { checkFileSize(this); });
+    document.getElementById('marksheet').addEventListener('change', function() { checkFileSize(this); });
 
-    document.getElementById('aadhaar_photo').addEventListener('change', function() {
-      checkFileSize(this);
-    });
-
-    document.getElementById('candidate_photo').addEventListener('change', function() {
-      checkFileSize(this);
-    });
-
-    document.getElementById('marksheet').addEventListener('change', function() {
-      checkFileSize(this);
-    });
-
-    // Check all files before submitting the form
+    // Razorpay integration and form submission
     document.getElementById('studentForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+
       var aadhaar = document.getElementById('aadhaar_photo');
       var photo = document.getElementById('candidate_photo');
       var marksheet = document.getElementById('marksheet');
 
       if (!checkFileSize(aadhaar) || !checkFileSize(photo) || !checkFileSize(marksheet)) {
-        e.preventDefault(); // Stop form submission
+        return;
       }
+
+      // Collect form data
+      var formData = new FormData(this);
+
+      // Send form data to backend to create registration and Razorpay order
+      fetch('/create-order', { // Your backend endpoint to create the order (adjust URL as needed)
+        method: 'POST',
+        body: formData
+      })
+      .then(response => response.json())
+      .then(orderData => {
+        var options = {
+          "key": "YOUR_RAZORPAY_KEY_ID", // Replace with your Razorpay Key ID
+          "amount": orderData.amount, // Amount in paise (e.g., 50000 means ₹500)
+          "currency": "INR",
+          "name": "Your Website Title",
+          "description": "Registration Fee",
+          "order_id": orderData.id, // The Razorpay order_id from your backend
+          "handler": function (response){
+            // On successful payment, send payment info back to backend for verification and save registration
+            fetch('/payment-success', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_order_id: response.razorpay_order_id,
+                razorpay_signature: response.razorpay_signature
+              })
+            })
+            .then(result => result.json())
+            .then(res => {
+              alert("Registration and payment successful!");
+              // Optionally redirect or show a confirmation page
+            })
+            .catch(() => {
+              alert("Payment verification failed, please contact support.");
+            });
+          },
+          "prefill": {
+            "name": document.getElementById('candidate_name').value,
+            "email": document.getElementById('email').value
+          },
+          "theme": {
+            "color": "#3399cc"
+          }
+        };
+        var rzp1 = new Razorpay(options);
+        rzp1.open();
+      })
+      .catch(() => {
+        alert("Error submitting form or creating payment order. Please try again.");
+      });
     });
   </script>
 </body>
