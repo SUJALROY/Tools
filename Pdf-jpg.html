@@ -1,28 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Student Registration & Payment</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Responsive Student Registration & Payment</title>
   <!-- Razorpay Checkout script -->
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
   <style>
+    /* Reset and base */
+    * {
+      box-sizing: border-box;
+    }
     body {
-      background: linear-gradient(135deg, #7f53ac 0%, #647dee 100%);
       margin: 0;
-      font-family: 'Segoe UI', Arial, sans-serif;
+      padding: 0;
+      background: linear-gradient(135deg, #7f53ac 0%, #647dee 100%);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       color: #222;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 15px;
     }
     .form-container {
       background: #fff;
-      max-width: 480px;
-      margin: 40px auto 0 auto;
-      padding: 32px 28px 24px 28px;
       border-radius: 16px;
       box-shadow: 0 6px 36px rgba(100, 125, 238, 0.17);
+      max-width: 480px;
+      width: 100%;
+      padding: 32px 28px;
       transition: box-shadow 0.2s;
     }
-    .form-container:hover {
+    .form-container:hover,
+    .form-container:focus-within {
       box-shadow: 0 8px 40px 0 rgba(100, 125, 238, 0.25);
     }
     h2 {
@@ -30,96 +44,132 @@
       margin-bottom: 16px;
       color: #6e42ae;
       letter-spacing: 1px;
+      font-weight: 700;
+      font-size: 1.8rem;
     }
     label {
-      font-weight: 500;
       display: block;
       margin-top: 18px;
       margin-bottom: 6px;
       color: #404040;
-      letter-spacing: 0.2px;
+      font-weight: 600;
+      font-size: 1rem;
     }
-    input[type="text"], input[type="email"], select, input[type="file"] {
+    input[type='text'],
+    input[type='email'],
+    select {
       width: 100%;
       background: #f3f3ff;
       border: 1px solid #c2bff2;
       border-radius: 6px;
-      padding: 10px 14px;
-      margin-bottom: 5px;
-      font-size: 15px;
-      transition: border-color 0.2s;
+      padding: 12px 16px;
+      font-size: 1rem;
+      transition: border-color 0.2s ease-in-out;
     }
-    input[type="text"]:focus, input[type="email"]:focus, select:focus {
-      border-color: #7f53ac;
+    input[type='text']:focus,
+    input[type='email']:focus,
+    select:focus {
       outline: none;
+      border-color: #7f53ac;
+      box-shadow: 0 0 8px rgba(127, 83, 172, 0.5);
+      background: #fefaff;
     }
     .custom-file-upload {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
       background: #f9f7fe;
       border: 1px solid #c2bff2;
-      padding: 8px 10px;
+      padding: 10px 14px;
       border-radius: 6px;
       cursor: pointer;
-      font-size: 15px;
-      transition: border-color 0.2s;
+      font-size: 1rem;
+      transition: border-color 0.2s ease;
+      user-select: none;
     }
-    input[type="file"] {
+    .custom-file-upload:hover {
+      border-color: #7f53ac;
+      background: #faf8ff;
+    }
+    input[type='file'] {
       display: none;
     }
     .note {
-      font-size: 12px;
+      font-size: 0.8rem;
       color: #6767ac;
-      margin-top: 2px;
-      margin-bottom: 5px;
+      margin-top: 4px;
+      margin-bottom: 6px;
       font-style: italic;
     }
-    button[type="submit"] {
+    button[type='submit'] {
       width: 100%;
-      padding: 12px;
-      margin-top: 24px;
+      padding: 14px;
       background: linear-gradient(90deg, #7f53ac 0%, #647dee 100%);
       color: #fff;
-      font-size: 16px;
+      font-size: 1.1rem;
       border: none;
-      border-radius: 8px;
+      border-radius: 10px;
       cursor: pointer;
-      font-weight: bold;
-      letter-spacing: 1px;
-      transition: background 0.2s;
+      font-weight: 700;
+      letter-spacing: 1.1px;
+      margin-top: 26px;
+      transition: background 0.3s ease;
     }
-    button[type="submit"]:hover {
+    button[type='submit']:hover,
+    button[type='submit']:focus {
       background: linear-gradient(90deg, #6e42ae 0%, #5479dc 100%);
+      outline: none;
     }
-    .success-msg, .error-msg {
+    .feedback {
+      margin-top: 18px;
       text-align: center;
+      font-weight: 600;
+      font-size: 1rem;
+      border-radius: 8px;
       padding: 10px 14px;
-      margin-top: 15px;
-      border-radius: 6px;
-      font-weight: 500;
-      letter-spacing: 0.5px;
-      font-size: 16px;
+      width: 100%;
+      box-sizing: border-box;
+      display: none;
     }
     .success-msg {
-      color: #317e37;
       background: #e2fbe6;
+      color: #317e37;
+      display: block;
     }
     .error-msg {
-      color: #b8000f;
       background: #ffeaea;
+      color: #b8000f;
+      display: block;
     }
-    @media (max-width:600px) {
+
+    /* Responsive adjustments */
+    @media (max-width: 600px) {
       .form-container {
-        padding: 20px 8px 16px 8px;
+        padding: 24px 16px;
+        border-radius: 12px;
       }
       h2 {
-        font-size: 22px;
-        margin-bottom: 11px;
+        font-size: 1.5rem;
+        margin-bottom: 14px;
       }
-      button[type="submit"] {
-        font-size: 15px;
-        padding: 10px;
+      label {
+        margin-top: 14px;
+        margin-bottom: 4px;
+      }
+      input[type='text'],
+      input[type='email'],
+      select,
+      .custom-file-upload {
+        font-size: 0.95rem;
+        padding: 10px 12px;
+      }
+      button[type='submit'] {
+        font-size: 1rem;
+        padding: 12px;
+        margin-top: 20px;
+      }
+      .note {
+        font-size: 0.75rem;
       }
     }
   </style>
@@ -127,15 +177,29 @@
 <body>
   <div class="form-container">
     <h2>Student Registration</h2>
-    <form id="studentForm" enctype="multipart/form-data" autocomplete="off">
+    <form id="studentForm" enctype="multipart/form-data" autocomplete="off" novalidate>
       <label for="candidate_name">Candidate Name</label>
-      <input type="text" id="candidate_name" name="candidate_name" placeholder="Enter your name" required>
+      <input
+        type="text"
+        id="candidate_name"
+        name="candidate_name"
+        placeholder="Enter your full name"
+        required
+        aria-required="true"
+      />
 
       <label for="father_name">Father's Name</label>
-      <input type="text" id="father_name" name="father_name" placeholder="Enter father's name" required>
+      <input
+        type="text"
+        id="father_name"
+        name="father_name"
+        placeholder="Enter father's full name"
+        required
+        aria-required="true"
+      />
 
       <label for="gender">Gender</label>
-      <select id="gender" name="gender" required>
+      <select id="gender" name="gender" required aria-required="true" aria-describedby="genderHelp">
         <option value="" disabled selected>Select Gender</option>
         <option value="male">Male</option>
         <option value="female">Female</option>
@@ -143,135 +207,195 @@
       </select>
 
       <label for="email">Email</label>
-      <input type="email" id="email" name="email" placeholder="Enter valid email" required>
+      <input
+        type="email"
+        id="email"
+        name="email"
+        placeholder="example@mail.com"
+        required
+        aria-required="true"
+      />
 
       <label for="aadhaar_number">Aadhaar Number</label>
-      <input type="text" id="aadhaar_number" name="aadhaar_number" placeholder="12 digit Aadhaar" pattern="\d{12}" maxlength="12" required>
+      <input
+        type="text"
+        id="aadhaar_number"
+        name="aadhaar_number"
+        placeholder="12-digit Aadhaar Number"
+        pattern="\d{12}"
+        maxlength="12"
+        required
+        aria-required="true"
+        title="Enter exactly 12 digits"
+      />
 
       <label for="aadhaar_photo">Aadhaar Card Photo</label>
-      <label class="custom-file-upload">
-        <input type="file" id="aadhaar_photo" name="aadhaar_photo" accept="image/*" required>
+      <label class="custom-file-upload" for="aadhaar_photo" tabindex="0" role="button" aria-label="Upload Aadhaar Card Photo">
+        <input type="file" id="aadhaar_photo" name="aadhaar_photo" accept="image/*" required aria-required="true" />
         <span id="aadhaar_label">Choose file...</span>
       </label>
       <div class="note">Max size: 12KB</div>
 
       <label for="candidate_photo">Candidate Photo</label>
-      <label class="custom-file-upload">
-        <input type="file" id="candidate_photo" name="candidate_photo" accept="image/*" required>
+      <label class="custom-file-upload" for="candidate_photo" tabindex="0" role="button" aria-label="Upload Candidate Photo">
+        <input type="file" id="candidate_photo" name="candidate_photo" accept="image/*" required aria-required="true" />
         <span id="candidate_label">Choose file...</span>
       </label>
       <div class="note">Max size: 12KB</div>
 
       <label for="marksheet">10th Marksheet</label>
-      <label class="custom-file-upload">
-        <input type="file" id="marksheet" name="marksheet" accept="image/*,application/pdf" required>
+      <label class="custom-file-upload" for="marksheet" tabindex="0" role="button" aria-label="Upload 10th Marksheet">
+        <input
+          type="file"
+          id="marksheet"
+          name="marksheet"
+          accept="image/*,application/pdf"
+          required
+          aria-required="true"
+        />
         <span id="marksheet_label">Choose file...</span>
       </label>
       <div class="note">Max size: 12KB</div>
 
-      <button type="submit">Proceed to Payment</button>
-      <div id="feedback"></div>
+      <button type="submit" aria-label="Proceed to Payment">Proceed to Payment</button>
+      <div id="feedback" role="alert" class="feedback" aria-live="polite"></div>
     </form>
   </div>
+
   <script>
-    // Enhance file input labels
+    // Update file input labels when a file is selected
     function updateFileLabel(input, labelId) {
       const label = document.getElementById(labelId);
       if (input.files.length > 0) {
         label.textContent = input.files[0].name;
       } else {
-        label.textContent = "Choose file...";
+        label.textContent = 'Choose file...';
       }
     }
-    document.getElementById('aadhaar_photo').addEventListener('change', function() {
-      updateFileLabel(this, 'aadhaar_label');
-      checkFileSize(this);
-    });
-    document.getElementById('candidate_photo').addEventListener('change', function() {
-      updateFileLabel(this, 'candidate_label');
-      checkFileSize(this);
-    });
-    document.getElementById('marksheet').addEventListener('change', function() {
-      updateFileLabel(this, 'marksheet_label');
-      checkFileSize(this);
-    });
 
-    // File size validation
+    // File size validation (max 12KB)
     function checkFileSize(input) {
       if (input.files[0] && input.files[0].size > 12288) {
-        document.getElementById('feedback').innerHTML = '<div class="error-msg">File "' + input.files[0].name + '" is over 12KB!</div>';
-        input.value = ""; // Clear the input
+        showFeedback(`File "${input.files[0].name}" exceeds 12KB limit.`, 'error-msg');
+        input.value = ''; // Clear the input
         updateFileLabel(input, input.id + '_label');
-        setTimeout(() => {
-          document.getElementById('feedback').innerHTML = '';
-        }, 2500);
         return false;
       }
-      document.getElementById('feedback').innerHTML = '';
+      clearFeedback();
       return true;
     }
 
-    // Razorpay & submission
-    document.getElementById('studentForm').addEventListener('submit', function(e) {
+    // Show feedback message
+    function showFeedback(message, className) {
+      const feedbackEl = document.getElementById('feedback');
+      feedbackEl.textContent = message;
+      feedbackEl.className = 'feedback ' + className;
+      feedbackEl.style.display = 'block';
+    }
+
+    // Clear feedback
+    function clearFeedback() {
+      const feedbackEl = document.getElementById('feedback');
+      feedbackEl.textContent = '';
+      feedbackEl.className = 'feedback';
+      feedbackEl.style.display = 'none';
+    }
+
+    // Add event listeners to update labels and validate file size
+    ['aadhaar_photo', 'candidate_photo', 'marksheet'].forEach(id => {
+      const input = document.getElementById(id);
+      input.addEventListener('change', function () {
+        updateFileLabel(this, this.id + '_label');
+        checkFileSize(this);
+      });
+    });
+
+    // Form submission with Razorpay integration
+    document.getElementById('studentForm').addEventListener('submit', function (e) {
       e.preventDefault();
 
-      var aadhaar = document.getElementById('aadhaar_photo');
-      var photo = document.getElementById('candidate_photo');
-      var marksheet = document.getElementById('marksheet');
+      // Validate all file sizes
+      let valid = true;
+      ['aadhaar_photo', 'candidate_photo', 'marksheet'].forEach(id => {
+        const input = document.getElementById(id);
+        if (!checkFileSize(input)) valid = false;
+      });
+      if (!valid) return;
 
-      if (!checkFileSize(aadhaar) || !checkFileSize(photo) || !checkFileSize(marksheet)) {
+      // Additional HTML5 validation
+      if (!this.checkValidity()) {
+        showFeedback('Please fill all fields correctly.', 'error-msg');
+        this.reportValidity();
         return;
       }
 
-      var formData = new FormData(this);
+      const formData = new FormData(this);
 
-      // Show loader or message (optional)
-      document.getElementById('feedback').innerHTML = '<div class="note">Processing registration&hellip;</div>';
+      // Show processing feedback
+      showFeedback('Processing registration & payment...', '');
 
-      fetch('/create-order', { // Backend endpoint
+      // Send form data to backend to create Razorpay order
+      fetch('/create-order', {
         method: 'POST',
         body: formData
       })
-      .then(response => response.json())
-      .then(orderData => {
-        var options = {
-          "key": "YOUR_RAZORPAY_KEY_ID", // Replace with your Razorpay Key ID
-          "amount": orderData.amount, // Amount in paise
-          "currency": "INR",
-          "name": "Student Registration",
-          "description": "Registration Fee Payment",
-          "order_id": orderData.id, // Razorpay order_id
-          "handler": function (response){
-            fetch('/payment-success', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                razorpay_payment_id: response.razorpay_payment_id,
-                razorpay_order_id: response.razorpay_order_id,
-                razorpay_signature: response.razorpay_signature
+        .then(response => response.json())
+        .then(orderData => {
+          if (!orderData || !orderData.id || !orderData.amount) {
+            throw new Error('Invalid order data');
+          }
+
+          const options = {
+            key: 'YOUR_RAZORPAY_KEY_ID', // Replace with your key
+            amount: orderData.amount,
+            currency: 'INR',
+            name: 'Student Registration',
+            description: 'Registration Fee',
+            order_id: orderData.id,
+            handler: function (response) {
+              // Send payment confirmation to backend
+              fetch('/payment-success', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  razorpay_payment_id: response.razorpay_payment_id,
+                  razorpay_order_id: response.razorpay_order_id,
+                  razorpay_signature: response.razorpay_signature,
+                  candidate_name: document.getElementById('candidate_name').value,
+                  email: document.getElementById('email').value
+                })
               })
-            })
-            .then(res => res.json())
-            .then(result => {
-              document.getElementById('feedback').innerHTML = '<div class="success-msg">Registration and payment successful!</div>';
-            })
-            .catch(() => {
-              document.getElementById('feedback').innerHTML = '<div class="error-msg">Payment verification failed. Contact support.</div>';
-            });
-          },
-          "prefill": {
-            "name": document.getElementById('candidate_name').value,
-            "email": document.getElementById('email').value
-          },
-          "theme": { "color": "#7f53ac" }
-        };
-        var rzp1 = new Razorpay(options);
-        rzp1.open();
-        document.getElementById('feedback').innerHTML = '';
-      })
-      .catch(() => {
-        document.getElementById('feedback').innerHTML = '<div class="error-msg">Error submitting form or creating payment order. Try again.</div>';
-      });
+                .then(res => res.json())
+                .then(result => {
+                  if (result.success) {
+                    showFeedback('Registration and payment successful!', 'success-msg');
+                    document.getElementById('studentForm').reset();
+                    ['aadhaar_label', 'candidate_label', 'marksheet_label'].forEach((lbl) => {
+                      document.getElementById(lbl).textContent = 'Choose file...';
+                    });
+                  } else {
+                    showFeedback('Payment verification failed. Please contact support.', 'error-msg');
+                  }
+                })
+                .catch(() => {
+                  showFeedback('Payment verification error. Please try again later.', 'error-msg');
+                });
+            },
+            prefill: {
+              name: document.getElementById('candidate_name').value,
+              email: document.getElementById('email').value
+            },
+            theme: {
+              color: '#7f53ac'
+            }
+          };
+          const rzp = new Razorpay(options);
+          rzp.open();
+          clearFeedback();
+        })
+        .catch(() => {
+          showFeedback('Error processing your request. Please try again.', 'error-msg');
+        });
     });
   </script>
 </body>
