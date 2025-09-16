@@ -18,7 +18,7 @@
             justify-content: center;
         }
         .container {
-            max-width: 700px;
+            max-width: 1200px; /* Increased width for side-by-side previews */
             background: white;
             padding: 40px;
             border-radius: 15px;
@@ -89,6 +89,13 @@
             margin: 10px auto;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
+        #splitPreviews {
+            display: none;
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 8px;
+            background: #f8f9fa;
+        }
         #watermarkOptions {
             display: none;
         }
@@ -106,68 +113,102 @@
             from { opacity: 0; transform: translateX(-20px); }
             to { opacity: 1; transform: translateX(0); }
         }
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+        }
+        .col-md-6 {
+            flex: 0 0 50%;
+            max-width: 50%;
+            padding: 15px;
+        }
+        #loadingSpinner {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+        }
+        #processingTime {
+            margin-top: 10px;
+            font-style: italic;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1><i class="fas fa-file-pdf icon"></i>Advanced PDF Splitter</h1>
-        <form id="form">
-            <div class="form-group">
-                <label for="file"><i class="fas fa-upload icon"></i>Upload PDF File:</label>
-                <input type="file" id="file" accept=".pdf" class="form-control" required>
+        <div class="row">
+            <div class="col-md-6">
+                <form id="form">
+                    <div class="form-group">
+                        <label for="file"><i class="fas fa-upload icon"></i>Upload PDF File:</label>
+                        <input type="file" id="file" accept=".pdf" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="pagesPerFile"><i class="fas fa-divide icon"></i>Pages per Split PDF:</label>
+                        <input type="number" id="pagesPerFile" class="form-control" min="1" value="1" required>
+                        <small class="form-text text-muted">Enter the number of pages each split file should contain. Defaults to 1 (individual pages).</small>
+                    </div>
+                    <div class="form-group animate-slideIn">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="enableWatermark">
+                            <label class="form-check-label" for="enableWatermark"><i class="fas fa-water icon"></i>Enable Watermark</label>
+                        </div>
+                    </div>
+                    <div id="watermarkOptions" class="animate-fadeIn">
+                        <div class="form-group">
+                            <label for="watermarkText">Watermark Text:</label>
+                            <input type="text" id="watermarkText" class="form-control" placeholder="Enter watermark text">
+                        </div>
+                        <div class="form-group">
+                            <label for="watermarkFont">Font:</label>
+                            <select id="watermarkFont" class="form-control">
+                                <option value="Helvetica">Helvetica</option>
+                                <option value="HelveticaBold">Helvetica Bold</option>
+                                <option value="TimesRoman">Times Roman</option>
+                                <option value="TimesBold">Times Bold</option>
+                                <option value="Courier">Courier</option>
+                                <option value="CourierBold">Courier Bold</option>
+                                <option value="ZapfDingbats">ZapfDingbats</option>
+                                <option value="Symbol">Symbol</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="watermarkColor">Color:</label>
+                            <input type="color" id="watermarkColor" class="form-control" value="#808080">
+                        </div>
+                        <div class="form-group">
+                            <label for="watermarkOpacity">Transparency (0-100%):</label>
+                            <input type="range" id="watermarkOpacity" class="form-control-range" min="0" max="100" value="50">
+                        </div>
+                        <div class="form-group">
+                            <label for="watermarkPosition">Position:</label>
+                            <select id="watermarkPosition" class="form-control">
+                                <option value="center">Center</option>
+                                <option value="top-left">Top-Left</option>
+                                <option value="top-right">Top-Right</option>
+                                <option value="bottom-left">Bottom-Left</option>
+                                <option value="bottom-right">Bottom-Right</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div id="result" class="animate-slideIn"></div>
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-cut icon"></i>Split and Download PDFs</button>
+                </form>
+                <div id="loadingSpinner">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                    <p>Processing...</p>
+                </div>
+                <div id="preview"></div>
             </div>
-            <div class="form-group">
-                <label for="pagesPerFile"><i class="fas fa-divide icon"></i>Pages per Split PDF:</label>
-                <input type="number" id="pagesPerFile" class="form-control" min="1" value="1" required>
-                <small class="form-text text-muted">Enter the number of pages each split file should contain. Defaults to 1 (individual pages).</small>
-            </div>
-            <div class="form-group animate-slideIn">
-                <div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="enableWatermark">
-                    <label class="form-check-label" for="enableWatermark"><i class="fas fa-water icon"></i>Enable Watermark</label>
+            <div class="col-md-6">
+                <div id="splitPreviews">
+                    <h3>Split PDFs</h3>
+                    <ul id="splitList" class="download-list"></ul>
                 </div>
             </div>
-            <div id="watermarkOptions" class="animate-fadeIn">
-                <div class="form-group">
-                    <label for="watermarkText">Watermark Text:</label>
-                    <input type="text" id="watermarkText" class="form-control" placeholder="Enter watermark text">
-                </div>
-                <div class="form-group">
-                    <label for="watermarkFont">Font:</label>
-                    <select id="watermarkFont" class="form-control">
-                        <option value="Helvetica">Helvetica</option>
-                        <option value="HelveticaBold">Helvetica Bold</option>
-                        <option value="TimesRoman">Times Roman</option>
-                        <option value="TimesBold">Times Bold</option>
-                        <option value="Courier">Courier</option>
-                        <option value="CourierBold">Courier Bold</option>
-                        <option value="ZapfDingbats">ZapfDingbats</option>
-                        <option value="Symbol">Symbol</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="watermarkColor">Color:</label>
-                    <input type="color" id="watermarkColor" class="form-control" value="#808080">
-                </div>
-                <div class="form-group">
-                    <label for="watermarkOpacity">Transparency (0-100%):</label>
-                    <input type="range" id="watermarkOpacity" class="form-control-range" min="0" max="100" value="50">
-                </div>
-                <div class="form-group">
-                    <label for="watermarkPosition">Position:</label>
-                    <select id="watermarkPosition" class="form-control">
-                        <option value="center">Center</option>
-                        <option value="top-left">Top-Left</option>
-                        <option value="top-right">Top-Right</option>
-                        <option value="bottom-left">Bottom-Left</option>
-                        <option value="bottom-right">Bottom-Right</option>
-                    </select>
-                </div>
-            </div>
-            <div id="result" class="animate-slideIn"></div>
-            <div id="preview"></div>
-            <button type="submit" class="btn btn-primary"><i class="fas fa-cut icon"></i>Split and Download PDFs</button>
-        </form>
+        </div>
         <div class="footer">Powered by pdf.js & pdf-lib | No data leaves your device</div>
     </div>
 
@@ -184,10 +225,36 @@
                 <div class="modal-body">
                     <p>Your PDF has been split. Download individual parts below or all as a ZIP.</p>
                     <ul id="downloadList" class="download-list"></ul>
+                    <div id="processingTime"></div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     <button type="button" id="downloadAllZip" class="btn btn-primary"><i class="fas fa-file-archive icon"></i>Download All as ZIP</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for HD Preview -->
+    <div class="modal fade" id="hdPreviewModal" tabindex="-1" role="dialog" aria-labelledby="hdPreviewModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="hdPreviewModalLabel">HD PDF Preview</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id="hdPreviewControls">
+                        <button id="zoomIn" class="btn btn-secondary"><i class="fas fa-search-plus"></i> Zoom In</button>
+                        <button id="zoomOut" class="btn btn-secondary"><i class="fas fa-search-minus"></i> Zoom Out</button>
+                        <button id="fitToWidth" class="btn btn-secondary"><i class="fas fa-arrows-alt-h"></i> Fit to Width</button>
+                    </div>
+                    <div id="hdPreview" style="max-height: 600px; overflow-y: auto; border: 1px solid #ddd; padding: 10px; background: #f8f9fa;"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
@@ -214,7 +281,10 @@
         let watermarkOpacity = document.getElementById('watermarkOpacity');
         let watermarkPosition = document.getElementById('watermarkPosition');
         let typedarray;
-        let splitPdfs = []; // Array to hold {name, bytes} for each split
+        let splitPdfs = []; // Array to hold {name, bytes, blobUrl} for each split
+        let currentPreviewPdf = null;
+        let currentScale = 1.0;
+        let previewContainerWidth = 0;
 
         enableWatermark.addEventListener('change', () => {
             if (enableWatermark.checked) {
@@ -232,7 +302,21 @@
                 alert('Pages per file must be at least 1.');
                 return;
             }
+            document.getElementById('loadingSpinner').style.display = 'block';
+            const startTime = performance.now();
             await splitPdfIntoGroups(typedarray, pagesPerFile);
+            const endTime = performance.now();
+            const timeTaken = ((endTime - startTime) / 1000).toFixed(2);
+            document.getElementById('processingTime').innerHTML = `Processing time: ${timeTaken} seconds`;
+            document.getElementById('loadingSpinner').style.display = 'none';
+
+            // Clear splitPdfs after 5 minutes
+            setTimeout(() => {
+                splitPdfs.forEach(split => URL.revokeObjectURL(split.blobUrl));
+                splitPdfs = [];
+                document.getElementById('splitList').innerHTML = '';
+                document.getElementById('splitPreviews').style.display = 'none';
+            }, 300000); // 5 minutes
         });
 
         inputElement.onchange = function(event) {
@@ -258,7 +342,7 @@
                     previewDiv.classList.add('animate-fadeIn');
                     for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
                         const page = await pdf.getPage(pageNum);
-                        const viewport = page.getViewport({ scale: 1.0 }); // Increased scale for higher quality
+                        const viewport = page.getViewport({ scale: 1.0 }); // Higher quality
                         const canvas = document.createElement('canvas');
                         canvas.height = viewport.height;
                         canvas.width = viewport.width;
@@ -342,15 +426,17 @@
                 }
 
                 const pdfBytes = await groupPdf.save();
+                const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+                const blobUrl = URL.createObjectURL(blob);
                 const fileName = `Part_${partNumber}.pdf`;
-                splitPdfs.push({ name: fileName, bytes: pdfBytes });
+                splitPdfs.push({ name: fileName, bytes: pdfBytes, blobUrl });
                 partNumber++;
             }
 
-            // Populate the modal with download links
+            // Populate the download modal
             const downloadList = document.getElementById('downloadList');
             downloadList.innerHTML = '';
-            splitPdfs.forEach((split, index) => {
+            splitPdfs.forEach((split) => {
                 const li = document.createElement('li');
                 const btn = document.createElement('button');
                 btn.className = 'btn btn-outline-primary';
@@ -359,6 +445,25 @@
                 li.appendChild(btn);
                 downloadList.appendChild(li);
             });
+
+            // Populate the split previews list
+            const splitList = document.getElementById('splitList');
+            splitList.innerHTML = '';
+            splitPdfs.forEach((split, index) => {
+                const li = document.createElement('li');
+                const previewBtn = document.createElement('button');
+                previewBtn.className = 'btn btn-outline-info';
+                previewBtn.innerHTML = `<i class="fas fa-eye icon"></i>Preview ${split.name}`;
+                previewBtn.onclick = () => showHdPreview(index);
+                li.appendChild(previewBtn);
+                const downloadBtn = document.createElement('button');
+                downloadBtn.className = 'btn btn-outline-primary ml-2';
+                downloadBtn.innerHTML = `<i class="fas fa-download icon"></i>Download`;
+                downloadBtn.onclick = () => download(split.bytes, split.name, "application/pdf");
+                li.appendChild(downloadBtn);
+                splitList.appendChild(li);
+            });
+            document.getElementById('splitPreviews').style.display = 'block';
 
             // Show the modal automatically
             $('#downloadModal').modal('show');
@@ -372,6 +477,57 @@
             });
             const zipContent = await zip.generateAsync({ type: 'blob' });
             download(zipContent, 'Split_PDFs.zip', 'application/zip');
+        });
+
+        // Show HD Preview
+        async function showHdPreview(index) {
+            const split = splitPdfs[index];
+            const loadingTask = pdfjsLib.getDocument(split.blobUrl);
+            currentPreviewPdf = await loadingTask.promise;
+            previewContainerWidth = document.getElementById('hdPreview').clientWidth;
+            currentScale = 1.0;
+            renderHdPreview();
+            $('#hdPreviewModal').modal('show');
+        }
+
+        async function renderHdPreview(scale = currentScale) {
+            const hdPreviewDiv = document.getElementById('hdPreview');
+            hdPreviewDiv.innerHTML = '';
+            for (let pageNum = 1; pageNum <= currentPreviewPdf.numPages; pageNum++) {
+                const page = await currentPreviewPdf.getPage(pageNum);
+                const viewport = page.getViewport({ scale });
+                const canvas = document.createElement('canvas');
+                canvas.height = viewport.height;
+                canvas.width = viewport.width;
+                const renderContext = {
+                    canvasContext: canvas.getContext('2d'),
+                    viewport: viewport
+                };
+                await page.render(renderContext).promise;
+                hdPreviewDiv.appendChild(canvas);
+            }
+        }
+
+        // Zoom controls
+        document.getElementById('zoomIn').addEventListener('click', () => {
+            currentScale += 0.25;
+            renderHdPreview();
+        });
+
+        document.getElementById('zoomOut').addEventListener('click', () => {
+            if (currentScale > 0.25) {
+                currentScale -= 0.25;
+                renderHdPreview();
+            }
+        });
+
+        document.getElementById('fitToWidth').addEventListener('click', async () => {
+            if (currentPreviewPdf) {
+                const page = await currentPreviewPdf.getPage(1); // Assume first page for width
+                const viewport = page.getViewport({ scale: 1.0 });
+                currentScale = previewContainerWidth / viewport.width;
+                renderHdPreview();
+            }
         });
     </script>
 </body>
