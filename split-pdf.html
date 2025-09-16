@@ -77,7 +77,7 @@
         #preview {
             display: none;
             margin-top: 20px;
-            max-height: 300px;
+            max-height: 600px;
             overflow-y: auto;
             border: 1px solid #ddd;
             padding: 10px;
@@ -136,11 +136,11 @@
                     <label for="watermarkFont">Font:</label>
                     <select id="watermarkFont" class="form-control">
                         <option value="Helvetica">Helvetica</option>
-                        <option value="Helvetica-Bold">Helvetica Bold</option>
-                        <option value="Times-Roman">Times Roman</option>
-                        <option value="Times-Bold">Times Bold</option>
+                        <option value="HelveticaBold">Helvetica Bold</option>
+                        <option value="TimesRoman">Times Roman</option>
+                        <option value="TimesBold">Times Bold</option>
                         <option value="Courier">Courier</option>
-                        <option value="Courier-Bold">Courier Bold</option>
+                        <option value="CourierBold">Courier Bold</option>
                         <option value="ZapfDingbats">ZapfDingbats</option>
                         <option value="Symbol">Symbol</option>
                     </select>
@@ -258,7 +258,7 @@
                     previewDiv.classList.add('animate-fadeIn');
                     for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
                         const page = await pdf.getPage(pageNum);
-                        const viewport = page.getViewport({ scale: 0.5 }); // Thumbnail scale
+                        const viewport = page.getViewport({ scale: 1.0 }); // Increased scale for higher quality
                         const canvas = document.createElement('canvas');
                         canvas.height = viewport.height;
                         canvas.width = viewport.width;
@@ -302,7 +302,7 @@
                         const { width, height } = page.getSize();
                         let x, y;
                         const fontSize = 50;
-                        const textWidth = font.stringWidth(watermarkText.value, fontSize);
+                        const textWidth = font.widthOfTextAtSize(watermarkText.value, fontSize);
                         const textHeight = font.heightAtSize(fontSize);
 
                         switch (watermarkPosition.value) {
