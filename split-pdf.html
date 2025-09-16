@@ -3,48 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PDF Splitter Website</title>
+    <title>Advanced PDF Splitter</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
         body {
-            background: linear-gradient(to right, #c31432, #240b36);
-            color: white;
-            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #4e54c8, #8f94fb);
+            color: #333;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         .container {
-            max-width: 600px;
-            margin: 50px auto;
-            padding: 20px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            max-width: 700px;
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+            margin: 20px;
         }
         h1 {
             text-align: center;
+            color: #4e54c8;
             margin-bottom: 30px;
+            font-weight: bold;
         }
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 25px;
+        }
+        label {
+            font-weight: 600;
+            color: #555;
         }
         #result {
             display: none;
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
         }
         button {
             width: 100%;
+            background: linear-gradient(to right, #4e54c8, #8f94fb);
+            border: none;
+            font-weight: bold;
+            transition: opacity 0.3s;
+        }
+        button:hover {
+            opacity: 0.9;
+        }
+        .icon {
+            margin-right: 8px;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #777;
+            font-size: 0.9em;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>PDF Splitter</h1>
+        <h1><i class="fas fa-file-pdf icon"></i>Advanced PDF Splitter</h1>
         <form id="form">
             <div class="form-group">
-                <label for="file">Upload PDF File:</label>
+                <label for="file"><i class="fas fa-upload icon"></i>Upload PDF File:</label>
                 <input type="file" id="file" accept=".pdf" class="form-control" required>
             </div>
-            <div class="form-group" id="result"></div>
-            <button type="submit" class="btn btn-primary">Split and Download PDFs</button>
+            <div class="form-group">
+                <label for="pagesPerFile"><i class="fas fa-divide icon"></i>Pages per Split PDF:</label>
+                <input type="number" id="pagesPerFile" class="form-control" min="1" value="1" required>
+                <small class="form-text text-muted">Enter the number of pages each split file should contain. Defaults to 1 (individual pages).</small>
+            </div>
+            <div id="result"></div>
+            <button type="submit" class="btn btn-primary"><i class="fas fa-cut icon"></i>Split and Download PDFs</button>
         </form>
+        <div class="footer">Powered by pdf.js & pdf-lib | No data leaves your device</div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.12.313/pdf.min.js"></script>
@@ -56,11 +93,17 @@
 
         let form = document.getElementById('form');
         let inputElement = document.getElementById('file');
+        let pagesPerFileInput = document.getElementById('pagesPerFile');
         let typedarray;
 
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
-            await splitIntoIndividualPages(typedarray);
+            const pagesPerFile = parseInt(pagesPerFileInput.value, 10);
+            if (pagesPerFile < 1) {
+                alert('Pages per file must be at least 1.');
+                return;
+            }
+            await splitPdfIntoGroups(typedarray, pagesPerFile);
         });
 
         inputElement.onchange = function(event) {
@@ -73,13 +116,8 @@
                 const loadingTask = pdfjsLib.getDocument(typedarray);
 
                 loadingTask.promise.then(async (pdf) => {
-                    let pages = [];
-                    for (let i = 0; i < pdf.numPages; i++) {
-                        pages.push(i + 1);
-                    }
                     let html = `
-                        <label>Select PDF Pages to Split (All will be split into separate files):</label>
-                        <p>Total Pages: ${pdf.numPages}</p>`;
+                        <p><strong>Total Pages:</strong> ${pdf.numPages}</p>`;
                     document.getElementById('result').innerHTML = html;
                     document.getElementById('result').style.display = "block";
                 });
@@ -88,16 +126,22 @@
             fileReader.readAsArrayBuffer(file);
         };
 
-        async function splitIntoIndividualPages(typedarray) {
+        async function splitPdfIntoGroups(typedarray, pagesPerFile) {
             const pdfDoc = await PDFDocument.load(typedarray);
+            const totalPages = pdfDoc.getPageCount();
+            let partNumber = 1;
 
-            for (let i = 0; i < pdfDoc.getPageCount(); i++) {
-                const singlePagePdf = await PDFDocument.create();
-                const [copiedPage] = await singlePagePdf.copyPages(pdfDoc, [i]);
-                singlePagePdf.addPage(copiedPage);
-                const pdfBytes = await singlePagePdf.save();
-                download(pdfBytes, `Page_${i + 1}.pdf`, "application/pdf");
-                await new Promise(resolve => setTimeout(resolve, 500)); // Small delay to avoid browser blocking multiple downloads
+            for (let i = 0; i < totalPages; i += pagesPerFile) {
+                const groupPdf = await PDFDocument.create();
+                const end = Math.min(i + pagesPerFile, totalPages);
+                const pageIndices = Array.from({ length: end - i }, (_, idx) => i + idx);
+                const copiedPages = await groupPdf.copyPages(pdfDoc, pageIndices);
+                copiedPages.forEach(page => groupPdf.addPage(page));
+
+                const pdfBytes = await groupPdf.save();
+                download(pdfBytes, `Part_${partNumber}.pdf`, "application/pdf");
+                partNumber++;
+                await new Promise(resolve => setTimeout(resolve, 500)); // Delay to avoid browser blocking
             }
         }
     </script>
