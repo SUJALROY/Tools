@@ -6,6 +6,7 @@
     <title>Advanced PDF Splitter</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     <style>
         body {
             background: linear-gradient(to right, #4e54c8, #8f94fb);
@@ -73,6 +74,38 @@
         .download-list .btn {
             width: 100%;
         }
+        #preview {
+            display: none;
+            margin-top: 20px;
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 8px;
+            background: #f8f9fa;
+        }
+        #preview canvas {
+            display: block;
+            margin: 10px auto;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        #watermarkOptions {
+            display: none;
+        }
+        .animate-fadeIn {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-slideIn {
+            animation: slideIn 0.5s ease-in-out;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
     </style>
 </head>
 <body>
@@ -88,7 +121,51 @@
                 <input type="number" id="pagesPerFile" class="form-control" min="1" value="1" required>
                 <small class="form-text text-muted">Enter the number of pages each split file should contain. Defaults to 1 (individual pages).</small>
             </div>
-            <div id="result"></div>
+            <div class="form-group animate-slideIn">
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="enableWatermark">
+                    <label class="form-check-label" for="enableWatermark"><i class="fas fa-water icon"></i>Enable Watermark</label>
+                </div>
+            </div>
+            <div id="watermarkOptions" class="animate-fadeIn">
+                <div class="form-group">
+                    <label for="watermarkText">Watermark Text:</label>
+                    <input type="text" id="watermarkText" class="form-control" placeholder="Enter watermark text">
+                </div>
+                <div class="form-group">
+                    <label for="watermarkFont">Font:</label>
+                    <select id="watermarkFont" class="form-control">
+                        <option value="Helvetica">Helvetica</option>
+                        <option value="Helvetica-Bold">Helvetica Bold</option>
+                        <option value="Times-Roman">Times Roman</option>
+                        <option value="Times-Bold">Times Bold</option>
+                        <option value="Courier">Courier</option>
+                        <option value="Courier-Bold">Courier Bold</option>
+                        <option value="ZapfDingbats">ZapfDingbats</option>
+                        <option value="Symbol">Symbol</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="watermarkColor">Color:</label>
+                    <input type="color" id="watermarkColor" class="form-control" value="#808080">
+                </div>
+                <div class="form-group">
+                    <label for="watermarkOpacity">Transparency (0-100%):</label>
+                    <input type="range" id="watermarkOpacity" class="form-control-range" min="0" max="100" value="50">
+                </div>
+                <div class="form-group">
+                    <label for="watermarkPosition">Position:</label>
+                    <select id="watermarkPosition" class="form-control">
+                        <option value="center">Center</option>
+                        <option value="top-left">Top-Left</option>
+                        <option value="top-right">Top-Right</option>
+                        <option value="bottom-left">Bottom-Left</option>
+                        <option value="bottom-right">Bottom-Right</option>
+                    </select>
+                </div>
+            </div>
+            <div id="result" class="animate-slideIn"></div>
+            <div id="preview"></div>
             <button type="submit" class="btn btn-primary"><i class="fas fa-cut icon"></i>Split and Download PDFs</button>
         </form>
         <div class="footer">Powered by pdf.js & pdf-lib | No data leaves your device</div>
@@ -124,13 +201,29 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 
     <script>
-        const { PDFDocument } = PDFLib;
+        const { PDFDocument, StandardFonts, rgb } = PDFLib;
 
         let form = document.getElementById('form');
         let inputElement = document.getElementById('file');
         let pagesPerFileInput = document.getElementById('pagesPerFile');
+        let enableWatermark = document.getElementById('enableWatermark');
+        let watermarkOptions = document.getElementById('watermarkOptions');
+        let watermarkText = document.getElementById('watermarkText');
+        let watermarkFont = document.getElementById('watermarkFont');
+        let watermarkColor = document.getElementById('watermarkColor');
+        let watermarkOpacity = document.getElementById('watermarkOpacity');
+        let watermarkPosition = document.getElementById('watermarkPosition');
         let typedarray;
         let splitPdfs = []; // Array to hold {name, bytes} for each split
+
+        enableWatermark.addEventListener('change', () => {
+            if (enableWatermark.checked) {
+                watermarkOptions.style.display = 'block';
+                watermarkOptions.classList.add('animate-fadeIn');
+            } else {
+                watermarkOptions.style.display = 'none';
+            }
+        });
 
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -156,6 +249,26 @@
                         <p><strong>Total Pages:</strong> ${pdf.numPages}</p>`;
                     document.getElementById('result').innerHTML = html;
                     document.getElementById('result').style.display = "block";
+                    document.getElementById('result').classList.add('animate-slideIn');
+
+                    // Render preview
+                    const previewDiv = document.getElementById('preview');
+                    previewDiv.innerHTML = '';
+                    previewDiv.style.display = 'block';
+                    previewDiv.classList.add('animate-fadeIn');
+                    for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+                        const page = await pdf.getPage(pageNum);
+                        const viewport = page.getViewport({ scale: 0.5 }); // Thumbnail scale
+                        const canvas = document.createElement('canvas');
+                        canvas.height = viewport.height;
+                        canvas.width = viewport.width;
+                        const renderContext = {
+                            canvasContext: canvas.getContext('2d'),
+                            viewport: viewport
+                        };
+                        await page.render(renderContext).promise;
+                        previewDiv.appendChild(canvas);
+                    }
                 });
             };
 
@@ -174,6 +287,59 @@
                 const pageIndices = Array.from({ length: end - i }, (_, idx) => i + idx);
                 const copiedPages = await groupPdf.copyPages(pdfDoc, pageIndices);
                 copiedPages.forEach(page => groupPdf.addPage(page));
+
+                if (enableWatermark.checked && watermarkText.value) {
+                    const font = await groupPdf.embedStandardFont(StandardFonts[watermarkFont.value]);
+                    const opacity = parseInt(watermarkOpacity.value) / 100;
+                    const hexColor = watermarkColor.value;
+                    const r = parseInt(hexColor.substr(1,2), 16) / 255;
+                    const g = parseInt(hexColor.substr(3,2), 16) / 255;
+                    const b = parseInt(hexColor.substr(5,2), 16) / 255;
+                    const color = rgb(r, g, b);
+
+                    const pages = groupPdf.getPages();
+                    pages.forEach(page => {
+                        const { width, height } = page.getSize();
+                        let x, y;
+                        const fontSize = 50;
+                        const textWidth = font.stringWidth(watermarkText.value, fontSize);
+                        const textHeight = font.heightAtSize(fontSize);
+
+                        switch (watermarkPosition.value) {
+                            case 'top-left':
+                                x = 50;
+                                y = height - 50 - textHeight;
+                                break;
+                            case 'top-right':
+                                x = width - 50 - textWidth;
+                                y = height - 50 - textHeight;
+                                break;
+                            case 'bottom-left':
+                                x = 50;
+                                y = 50;
+                                break;
+                            case 'bottom-right':
+                                x = width - 50 - textWidth;
+                                y = 50;
+                                break;
+                            case 'center':
+                            default:
+                                x = (width / 2) - (textWidth / 2);
+                                y = (height / 2) - (textHeight / 2);
+                                break;
+                        }
+
+                        page.drawText(watermarkText.value, {
+                            x,
+                            y,
+                            size: fontSize,
+                            font,
+                            color,
+                            opacity,
+                            rotate: PDFLib.degrees(0),
+                        });
+                    });
+                }
 
                 const pdfBytes = await groupPdf.save();
                 const fileName = `Part_${partNumber}.pdf`;
