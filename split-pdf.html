@@ -18,7 +18,7 @@
             justify-content: center;
         }
         .container {
-            max-width: 1200px; /* Increased width for side-by-side previews */
+            max-width: 1200px;
             background: white;
             padding: 40px;
             border-radius: 15px;
@@ -131,6 +131,43 @@
             margin-top: 10px;
             font-style: italic;
         }
+        
+        /* New styles for font indicator */
+        .font-indicator {
+            display: flex;
+            align-items: center;
+            background: #f8f9fa;
+            padding: 10px 15px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            border-left: 4px solid #4e54c8;
+        }
+        .font-sample {
+            margin-left: 10px;
+            font-size: 16px;
+            flex-grow: 1;
+        }
+        .change-font-btn {
+            width: auto;
+            padding: 5px 10px;
+            font-size: 12px;
+            background: #6c757d;
+            margin-left: 10px;
+        }
+        .font-option {
+            padding: 8px 12px;
+            margin: 5px 0;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .font-option:hover {
+            background: #e9ecef;
+        }
+        .font-option.active {
+            background: #4e54c8;
+            color: white;
+        }
     </style>
 </head>
 <body>
@@ -159,19 +196,24 @@
                             <label for="watermarkText">Watermark Text:</label>
                             <input type="text" id="watermarkText" class="form-control" placeholder="Enter watermark text">
                         </div>
-                        <div class="form-group">
-                            <label for="watermarkFont">Font:</label>
-                            <select id="watermarkFont" class="form-control">
-                                <option value="Helvetica">Helvetica</option>
-                                <option value="HelveticaBold">Helvetica Bold</option>
-                                <option value="TimesRoman">Times Roman</option>
-                                <option value="TimesBold">Times Bold</option>
-                                <option value="Courier">Courier</option>
-                                <option value="CourierBold">Courier Bold</option>
-                                <option value="ZapfDingbats">ZapfDingbats</option>
-                                <option value="Symbol">Symbol</option>
-                            </select>
+                        
+                        <!-- Font indicator to replace the dropdown -->
+                        <div class="font-indicator">
+                            <i class="fas fa-font"></i>
+                            <div class="font-sample" id="fontSample">Helvetica (Recommended)</div>
+                            <button type="button" class="btn change-font-btn" id="changeFontBtn">Change</button>
                         </div>
+                        
+                        <!-- Font options (hidden by default) -->
+                        <div id="fontOptions" style="display: none;">
+                            <div class="font-option active" data-font="Helvetica">Helvetica (Recommended)</div>
+                            <div class="font-option" data-font="HelveticaBold">Helvetica Bold</div>
+                            <div class="font-option" data-font="TimesRoman">Times Roman</div>
+                            <div class="font-option" data-font="TimesBold">Times Bold</div>
+                            <div class="font-option" data-font="Courier">Courier</div>
+                            <div class="font-option" data-font="CourierBold">Courier Bold</div>
+                        </div>
+
                         <div class="form-group">
                             <label for="watermarkColor">Color:</label>
                             <input type="color" id="watermarkColor" class="form-control" value="#808080">
@@ -179,6 +221,7 @@
                         <div class="form-group">
                             <label for="watermarkOpacity">Transparency (0-100%):</label>
                             <input type="range" id="watermarkOpacity" class="form-control-range" min="0" max="100" value="50">
+                            <output for="watermarkOpacity" id="opacityValue">50%</output>
                         </div>
                         <div class="form-group">
                             <label for="watermarkPosition">Position:</label>
@@ -276,15 +319,52 @@
         let enableWatermark = document.getElementById('enableWatermark');
         let watermarkOptions = document.getElementById('watermarkOptions');
         let watermarkText = document.getElementById('watermarkText');
-        let watermarkFont = document.getElementById('watermarkFont');
         let watermarkColor = document.getElementById('watermarkColor');
         let watermarkOpacity = document.getElementById('watermarkOpacity');
+        let opacityValue = document.getElementById('opacityValue');
         let watermarkPosition = document.getElementById('watermarkPosition');
         let typedarray;
         let splitPdfs = []; // Array to hold {name, bytes, blobUrl} for each split
         let currentPreviewPdf = null;
         let currentScale = 1.0;
         let previewContainerWidth = 0;
+        
+        // Font selection variables
+        let selectedFont = 'Helvetica';
+        const fontSample = document.getElementById('fontSample');
+        const changeFontBtn = document.getElementById('changeFontBtn');
+        const fontOptions = document.getElementById('fontOptions');
+        const fontOptionElements = document.querySelectorAll('.font-option');
+
+        // Update opacity value display
+        watermarkOpacity.addEventListener('input', () => {
+            opacityValue.value = `${watermarkOpacity.value}%`;
+        });
+
+        // Font selection functionality
+        changeFontBtn.addEventListener('click', () => {
+            const isShowing = fontOptions.style.display === 'block';
+            fontOptions.style.display = isShowing ? 'none' : 'block';
+            changeFontBtn.textContent = isShowing ? 'Change' : 'Hide Options';
+        });
+
+        fontOptionElements.forEach(option => {
+            option.addEventListener('click', () => {
+                // Remove active class from all options
+                fontOptionElements.forEach(opt => opt.classList.remove('active'));
+                
+                // Add active class to clicked option
+                option.classList.add('active');
+                
+                // Update selected font and sample display
+                selectedFont = option.getAttribute('data-font');
+                fontSample.textContent = option.textContent;
+                
+                // Hide the options
+                fontOptions.style.display = 'none';
+                changeFontBtn.textContent = 'Change';
+            });
+        });
 
         enableWatermark.addEventListener('change', () => {
             if (enableWatermark.checked) {
@@ -373,7 +453,7 @@
                 copiedPages.forEach(page => groupPdf.addPage(page));
 
                 if (enableWatermark.checked && watermarkText.value) {
-                    const font = await groupPdf.embedStandardFont(StandardFonts[watermarkFont.value]);
+                    const font = await groupPdf.embedStandardFont(StandardFonts[selectedFont]);
                     const opacity = parseInt(watermarkOpacity.value) / 100;
                     const hexColor = watermarkColor.value;
                     const r = parseInt(hexColor.substr(1,2), 16) / 255;
